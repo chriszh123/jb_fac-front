@@ -430,17 +430,33 @@ Page({
     buyNowInfo.kjId = this.data.kjId;
     return buyNowInfo;
   },
-  onShareAppMessage: function() {
-    return {
-      title: this.data.goodsDetail.basicInfo.name,
-      path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'),
-      success: function(res) {
-        // 转发成功
-      },
-      fail: function(res) {
-        // 转发失败
-      }
-    }
+  onShareAppMessage: function(options) {
+    var shareObj = {
+        title: this.data.goodsDetail.basicInfo.name,
+        path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'),
+        success: function(res) {
+         // 转发成功之后的回调
+  　　　　if (res.errMsg == 'shareAppMessage:ok') {
+  
+  　　　　}
+        },
+        fail: function(res) {
+          // 转发失败之后的回调
+  　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+      　　　　// 用户取消转发
+      　　}else if(res.errMsg == 'shareAppMessage:fail'){
+      　　　　// 转发失败，其中 detail message 为详细失败信息
+      　　}
+        }
+    };
+
+    // 来自页面内的按钮的转发
+　　if(options.from == 'button' ){
+       var eData = options.target
+　　　　console.log(eData);     // shareBtn
+　　}
+
+    return shareObj;
   },
   reputation: function(goodsId) {
     var that = this;
