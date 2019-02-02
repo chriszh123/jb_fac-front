@@ -433,7 +433,7 @@ Page({
   onShareAppMessage: function(options) {
     var shareObj = {
         title: this.data.goodsDetail.basicInfo.name,
-        path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'),
+        path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'), // inviter:邀请人
         success: function(res) {
          // 转发成功之后的回调
   　　　　if (res.errMsg == 'shareAppMessage:ok') {
