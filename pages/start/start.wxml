@@ -12,6 +12,7 @@
         <image class="wave wave-bg" src="/images/more/wave.png" mode="aspectFill"></image>
       </view>
       <view class="bd">
+        <!--这里需要修改文字:zgf-->
         <image class="smalltitle" src="/images/more/confirm-word1.png"></image>
         <form bindsubmit="goToIndex" report-submit="true">
           <button class="confirm-btn" form-type="submit">

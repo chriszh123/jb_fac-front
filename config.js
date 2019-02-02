@@ -3,7 +3,7 @@ module.exports = {
   note: '优化接口调用流程',
   subDomain: "zgf", // 如果你的域名是： https://api.it120.cc/abcd 那么这里只要填写 abcd
   appid: "wx29494f30fe5e1026", // 您的小程序的appid，购物单功能需要使用
-  shareProfile: 'zgf111' // 首页转发的时候话术
+  shareProfile: '分享：江北便利站' // 首页转发的时候话术
 }
 /*
 根据自己需要修改下单时候的模板消息内容设置，可增加关闭订单、收货时候模板消息提醒；

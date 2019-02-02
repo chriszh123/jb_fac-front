@@ -36,16 +36,18 @@ Page({
   },
   //事件处理函数
   swiperchange: function(e) {
-    //console.log(e.detail.current)
+    console.log("swiperchange|e.detail.current = " + e.detail.current)
     this.setData({
       swiperCurrent: e.detail.current
     })
   },
+  // 商品分类下的商品点击事件
   toDetailsTap: function(e) {
     wx.navigateTo({
       url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
     })
   },
+  // 顶部轮播图片对应的商品点击事件
   tapBanner: function(e) {
     if (e.currentTarget.dataset.id != 0) {
       wx.navigateTo({
@@ -63,10 +65,7 @@ Page({
     wx.setNavigationBarTitle({
       title: wx.getStorageSync('mallName')
     })
-    /**
-     * 示例：
-     * 调用接口封装方法
-     */
+    // 初始化轮播商品
     api.fetchRequest('/banner/list', {
       key: 'mallName'
     }).then(function(res) {
@@ -87,6 +86,7 @@ Page({
         icon: 'none'
       })
     })
+    // 初始化商品分类
     api.fetchRequest('/shop/goods/category/all').then(function(res) {
       var categories = [{
         id: 0,
@@ -104,7 +104,9 @@ Page({
       });
       that.getGoodsList(0);
     })
+    // 优惠卷
     that.getCoupons();
+    // 公告
     that.getNotice();
   },
   onPageScroll(e) {
@@ -151,6 +153,7 @@ Page({
       });
     })
   },
+  // 优惠卷
   getCoupons: function() {
     var that = this;
     api.fetchRequest('/discounts/coupons').then(function (res) {
@@ -162,6 +165,7 @@ Page({
       }
     })
   },
+  // 点击优惠卷，领取优惠卷
   gitCoupon: function(e) {
     var that = this;
     api.fetchRequest('/discounts/fetch', {
@@ -215,18 +219,22 @@ Page({
       }
     })
   },
+  // 分享
   onShareAppMessage: function() {
     return {
       title: wx.getStorageSync('mallName') + '——' + CONFIG.shareProfile,
       path: '/pages/index/index',
       success: function(res) {
         // 转发成功
+        console.log('onShareAppMessage : success');
       },
       fail: function(res) {
         // 转发失败
+        console.log('onShareAppMessage : fail');
       }
     }
   },
+  // 公告
   getNotice: function() {
     var that = this;
     api.fetchRequest('/notice/list', {pageSize: 5}).then(function (res) {
@@ -237,24 +245,28 @@ Page({
       }
     })
   },
+  // 商品搜索输入框
   listenerSearchInput: function(e) {
     this.setData({
       searchInput: e.detail.value
     })
 
   },
+  // 搜索按钮
   toSearch: function() {
     this.setData({
       curPage: 1
     });
     this.getGoodsList(this.data.activeCategoryId);
   },
+  // 上滑，查看更多商品
   onReachBottom: function() {
     this.setData({
       curPage: this.data.curPage + 1
     });
     this.getGoodsList(this.data.activeCategoryId, true)
   },
+  // 下滑，查看上面的商品
   onPullDownRefresh: function() {
     this.setData({
       curPage: 1
