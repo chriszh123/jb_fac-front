@@ -1,5 +1,4 @@
-//index.js
-const api = require('../../utils/request.js')
+const WXAPI = require('../../wxapi/main')
 const CONFIG = require('../../config.js')
 //获取应用实例
 var app = getApp()
@@ -36,18 +35,17 @@ Page({
   },
   //事件处理函数
   swiperchange: function(e) {
+    //console.log(e.detail.current)
     console.log("swiperchange|e.detail.current = " + e.detail.current)
     this.setData({
       swiperCurrent: e.detail.current
     })
   },
-  // 商品分类下的商品点击事件
   toDetailsTap: function(e) {
     wx.navigateTo({
       url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
     })
   },
-  // 顶部轮播图片对应的商品点击事件
   tapBanner: function(e) {
     if (e.currentTarget.dataset.id != 0) {
       wx.navigateTo({
@@ -65,11 +63,12 @@ Page({
     wx.setNavigationBarTitle({
       title: wx.getStorageSync('mallName')
     })
-    // 初始化轮播商品
-    api.fetchRequest('/banner/list', {
-      key: 'mallName'
-    }).then(function(res) {
-      if (res.data.code == 404) {
+    /**
+     * 示例：
+     * 调用接口封装方法
+     */
+    WXAPI.banners().then(function(res) {
+      if (res.code == 700) {
         wx.showModal({
           title: '提示',
           content: '请在后台添加 banner 轮播图片',
@@ -77,24 +76,23 @@ Page({
         })
       } else {
         that.setData({
-          banners: res.data.data
+          banners: res.data
         });
       }
-    }).catch(function(res) {
+    }).catch(function(e) {
       wx.showToast({
-        title: res.data.msg,
+        title: res.msg,
         icon: 'none'
       })
     })
-    // 初始化商品分类
-    api.fetchRequest('/shop/goods/category/all').then(function(res) {
+    WXAPI.goodsCategory().then(function(res) {
       var categories = [{
         id: 0,
         name: "全部"
       }];
-      if (res.data.code == 0) {
-        for (var i = 0; i < res.data.data.length; i++) {
-          categories.push(res.data.data[i]);
+      if (res.code == 0) {
+        for (var i = 0; i < res.data.length; i++) {
+          categories.push(res.data[i]);
         }
       }
       that.setData({
@@ -104,9 +102,7 @@ Page({
       });
       that.getGoodsList(0);
     })
-    // 优惠卷
     that.getCoupons();
-    // 公告
     that.getNotice();
   },
   onPageScroll(e) {
@@ -123,14 +119,14 @@ Page({
     wx.showLoading({
       "mask": true
     })
-    api.fetchRequest('/shop/goods/list', {
+    WXAPI.goods({
       categoryId: categoryId,
       nameLike: that.data.searchInput,
       page: this.data.curPage,
       pageSize: this.data.pageSize
     }).then(function(res) {
       wx.hideLoading()
-      if (res.data.code == 404 || res.data.code == 700) {
+      if (res.code == 404 || res.code == 700) {
         let newData = {
           loadingMoreHidden: false
         }
@@ -144,8 +140,8 @@ Page({
       if (append) {
         goods = that.data.goods
       }
-      for (var i = 0; i < res.data.data.length; i++) {
-        goods.push(res.data.data[i]);
+      for (var i = 0; i < res.data.length; i++) {
+        goods.push(res.data[i]);
       }
       that.setData({
         loadingMoreHidden: true,
@@ -153,26 +149,24 @@ Page({
       });
     })
   },
-  // 优惠卷
   getCoupons: function() {
     var that = this;
-    api.fetchRequest('/discounts/coupons').then(function (res) {
-      if (res.data.code == 0) {
+    WXAPI.coupons().then(function (res) {
+      if (res.code == 0) {
         that.setData({
           hasNoCoupons: false,
-          coupons: res.data.data
+          coupons: res.data
         });
       }
     })
   },
-  // 点击优惠卷，领取优惠卷
   gitCoupon: function(e) {
     var that = this;
-    api.fetchRequest('/discounts/fetch', {
+    WXAPI.fetchCoupons({
       id: e.currentTarget.dataset.id,
       token: wx.getStorageSync('token')
     }).then(function (res) {
-      if (res.data.code == 20001 || res.data.code == 20002) {
+      if (res.code == 20001 || res.code == 20002) {
         wx.showModal({
           title: '错误',
           content: '来晚了',
@@ -180,7 +174,7 @@ Page({
         })
         return;
       }
-      if (res.data.code == 20003) {
+      if (res.code == 20003) {
         wx.showModal({
           title: '错误',
           content: '你领过了，别贪心哦~',
@@ -188,7 +182,7 @@ Page({
         })
         return;
       }
-      if (res.data.code == 30001) {
+      if (res.code == 30001) {
         wx.showModal({
           title: '错误',
           content: '您的积分不足',
@@ -196,7 +190,7 @@ Page({
         })
         return;
       }
-      if (res.data.code == 20004) {
+      if (res.code == 20004) {
         wx.showModal({
           title: '错误',
           content: '已过期~',
@@ -204,7 +198,7 @@ Page({
         })
         return;
       }
-      if (res.data.code == 0) {
+      if (res.code == 0) {
         wx.showToast({
           title: '领取成功，赶紧去下单吧~',
           icon: 'success',
@@ -213,13 +207,12 @@ Page({
       } else {
         wx.showModal({
           title: '错误',
-          content: res.data.msg,
+          content: res.msg,
           showCancel: false
         })
       }
     })
   },
-  // 分享
   onShareAppMessage: function() {
     return {
       title: wx.getStorageSync('mallName') + '——' + CONFIG.shareProfile,
@@ -234,39 +227,34 @@ Page({
       }
     }
   },
-  // 公告
   getNotice: function() {
     var that = this;
-    api.fetchRequest('/notice/list', {pageSize: 5}).then(function (res) {
-      if (res.data.code == 0) {
+    WXAPI.noticeList({pageSize: 5}).then(function (res) {
+      if (res.code == 0) {
         that.setData({
-          noticeList: res.data.data
+          noticeList: res.data
         });
       }
     })
   },
-  // 商品搜索输入框
   listenerSearchInput: function(e) {
     this.setData({
       searchInput: e.detail.value
     })
 
   },
-  // 搜索按钮
   toSearch: function() {
     this.setData({
       curPage: 1
     });
     this.getGoodsList(this.data.activeCategoryId);
   },
-  // 上滑，查看更多商品
   onReachBottom: function() {
     this.setData({
       curPage: this.data.curPage + 1
     });
     this.getGoodsList(this.data.activeCategoryId, true)
   },
-  // 下滑，查看上面的商品
   onPullDownRefresh: function() {
     this.setData({
       curPage: 1

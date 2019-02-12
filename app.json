@@ -17,7 +17,10 @@
     "pages/withdraw/index",
     "pages/kanjia/index",
     "pages/authorize/index",
-    "pages/score-excharge/index"
+    "pages/score-excharge/index",
+    "pages/asset/index",
+    "pages/score/index",
+    "pages/sign/index"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -31,7 +34,6 @@
     "selectedColor": "#e64340",
     "borderStyle": "white",
     "backgroundColor": "#fff",
-    "box-shadow":"0 0 6px 0",
     "list": [{
      "pagePath": "pages/index/index",
       "iconPath": "images/nav/home-off.png",
