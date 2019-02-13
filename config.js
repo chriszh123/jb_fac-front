@@ -1,7 +1,8 @@
 module.exports = {
   version: "6.0.2",
   note: '接口封装',
-  subDomain: "zgf", // 如果你的域名是： https://api.it120.cc/abcd 那么这里只要填写 abcd
+//   subDomain: "zgf", // 如果你的域名是： https://api.it120.cc/abcd 那么这里只要填写 abcd
+  subDomain: "fac/client",
   appid: "wx29494f30fe5e1026", // 您的小程序的appid，购物单功能需要使用
   shareProfile: '百款精品商品，总有一款适合您' // 首页转发的时候话术
 }
