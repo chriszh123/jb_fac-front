@@ -36,7 +36,6 @@ Page({
   //事件处理函数
   swiperchange: function(e) {
     //console.log(e.detail.current)
-    console.log("swiperchange|e.detail.current = " + e.detail.current)
     this.setData({
       swiperCurrent: e.detail.current
     })
@@ -219,11 +218,9 @@ Page({
       path: '/pages/index/index',
       success: function(res) {
         // 转发成功
-        console.log('onShareAppMessage : success');
       },
       fail: function(res) {
         // 转发失败
-        console.log('onShareAppMessage : fail');
       }
     }
   },

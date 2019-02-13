@@ -1,17 +1,16 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": false,
 		"minified": true,
-		"newFeature": true,
-		"autoAudits": false
+		"newFeature": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.4.3",
 	"appid": "wx29494f30fe5e1026",
-	"projectname": "江北便利站",
+	"projectname": "%E5%A4%A9%E4%BD%BF%E7%AB%A5%E8%A3%85",
 	"scripts": {},
 	"condition": {
 		"search": {
