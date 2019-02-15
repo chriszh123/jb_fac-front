@@ -4,7 +4,9 @@ const CONFIG = require('./config.js')
 const API_BASE_URL = 'http://192.168.1.14:80'
 
 const request = (url, needSubDomain, method, data) => {
-  let _url = API_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + url
+  let _url = API_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + url;
+  console.log("API_BASE_URL = " + API_BASE_URL)
+  console.log("_url = " + _url)
   return new Promise((resolve, reject) => {
     wx.request({
       url: _url,
@@ -12,6 +14,7 @@ const request = (url, needSubDomain, method, data) => {
       data: data,
       header: {
         'Content-Type': 'application/x-www-form-urlencoded'
+        // 'Content-Type': 'application/json;charset=utf-8'
       },
       success(request) {
         resolve(request.data)
@@ -55,7 +58,7 @@ module.exports = {
     return request('/common/mobile-segment/location', false, 'get', data)
   },
   queryConfig: (data) => {
-    return request('/config/get-value', true, 'get', data)
+    return request('/config/get-value', true, 'post', data)
   },
   scoreRules: (data) => {
     return request('/score/send/rule', true, 'post', data)
