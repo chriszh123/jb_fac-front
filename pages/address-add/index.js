@@ -14,9 +14,11 @@ Page({
     selCityIndex:0,
     selDistrictIndex:0
   },
+  // 取消按钮
   bindCancel:function () {
     wx.navigateBack({})
   },
+  // 保存地址
   bindSave: function(e) {
     var that = this;
     var linkMan = e.detail.value.linkMan;
@@ -80,13 +82,17 @@ Page({
       return
     }
     let apiResult
+    // 更新地址
     if (that.data.id) {
       apiResult = WXAPI.updateAddress({
         token: wx.getStorageSync('token'),
         id: that.data.id,
         provinceId: commonCityData.cityData[this.data.selProvinceIndex].id,
+        provinceStr: selProvince,
         cityId: cityId,
+        cityStr : selCity,
         districtId: districtId,
+        areaStr : selDistrict,
         linkMan: linkMan,
         address: address,
         mobile: mobile,
@@ -94,11 +100,15 @@ Page({
         isDefault: 'true'
       })
     } else {
+      // 新增地址
       apiResult = WXAPI.addAddress({
         token: wx.getStorageSync('token'),
         provinceId: commonCityData.cityData[this.data.selProvinceIndex].id,
+        provinceStr: selProvince,
         cityId: cityId,
+        cityStr : selCity,
         districtId: districtId,
+        areaStr : selDistrict,
         linkMan: linkMan,
         address: address,
         mobile: mobile,
@@ -111,7 +121,7 @@ Page({
         // 登录错误 
         wx.hideLoading();
         wx.showModal({
-          title: '失败',
+          title: '操作失败',
           content: res.msg,
           showCancel: false
         })
@@ -123,6 +133,7 @@ Page({
   },
   initCityData:function(level, obj){
     if(level == 1){
+        // 地址页面数据初始化：初始化省份数据
       var pinkArray = [];
       for(var i = 0;i<commonCityData.cityData.length;i++){
         pinkArray.push(commonCityData.cityData[i].name);
@@ -131,6 +142,7 @@ Page({
         provinces:pinkArray
       });
     } else if (level == 2){
+        // 确定指定省份下的城市
       var pinkArray = [];
       var dataArray = obj.cityList
       for(var i = 0;i<dataArray.length;i++){
@@ -140,6 +152,7 @@ Page({
         citys:pinkArray
       });
     } else if (level == 3){
+        // 确定指定城市下的区域
       var pinkArray = [];
       var dataArray = obj.districtList
       for(var i = 0;i<dataArray.length;i++){
@@ -149,9 +162,9 @@ Page({
         districts:pinkArray
       });
     }
-    
   },
   bindPickerProvinceChange:function(event){
+      // 选择省份
     var selIterm = commonCityData.cityData[event.detail.value];
     this.setData({
       selProvince:selIterm.name,
@@ -164,6 +177,7 @@ Page({
     this.initCityData(2, selIterm)
   },
   bindPickerCityChange:function (event) {
+      // 选择城市
     var selIterm = commonCityData.cityData[this.data.selProvinceIndex].cityList[event.detail.value];
     this.setData({
       selCity:selIterm.name,
@@ -174,6 +188,7 @@ Page({
     this.initCityData(3, selIterm)
   },
   bindPickerChange:function (event) {
+      // 选择区域
     var selIterm = commonCityData.cityData[this.data.selProvinceIndex].cityList[this.data.selCityIndex].districtList[event.detail.value];
     if (selIterm && selIterm.name && event.detail.value) {
       this.setData({
@@ -210,6 +225,7 @@ Page({
     }
   },
   setDBSaveAddressId: function(data) {
+      // 根据数据库里的数据初始化 地区数据：省份、城市、区域
     var retSelIdx = 0;
     for (var i = 0; i < commonCityData.cityData.length; i++) {
       if (data.provinceId == commonCityData.cityData[i].id) {
@@ -248,6 +264,7 @@ Page({
     })
   },
   readFromWx : function () {
+      // 从微信中读取响应用户地址
     let that = this;
     wx.chooseAddress({
       success: function (res) {

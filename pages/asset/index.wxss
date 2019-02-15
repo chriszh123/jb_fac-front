@@ -55,3 +55,6 @@
 .cashlogs .amount {
   width:150rpx;
 }
+.temp-hide {
+    display: none;
+}

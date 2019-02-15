@@ -151,7 +151,7 @@ module.exports = {
     return request('/shop/goods/list', true, 'post', data)
   },
   goodsDetail: (id) => {
-    return request('/shop/goods/detail', true, 'get', {
+    return request('/shop/goods/detail', true, 'post', {
       id
     })
   },
@@ -201,7 +201,7 @@ module.exports = {
     })
   },
   addressDetail: (id, token) => {
-    return request('/user/shipping-address/detail', true, 'get', {
+    return request('/user/shipping-address/detail', true, 'post', {
       id,
       token
     })
@@ -231,7 +231,7 @@ module.exports = {
     })
   },
   userAmount: (token) => {
-    return request('/user/amount', true, 'get', {
+    return request('/user/amount', true, 'post', {
       token
     })
   },

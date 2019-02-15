@@ -35,17 +35,20 @@ Page({
     })
   },
   onLoad: function(e) {
+      // inviter_id：邀请人id,有值时，说明这个商品明细页面是通过别人分享过来的，后面如果买了，需要给分享人佣金
     if (e.inviter_id) {
       wx.setStorage({
         key: 'inviter_id_' + e.id,
         data: e.inviter_id
       })
+      // 推荐者
       wx.setStorage({
         key: 'referrer',
         data: e.inviter_id
       })
     }
     var that = this;
+    // 砍价需求暂时忽略 20190215
     that.data.kjId = e.kjId;
     // 获取购物车数据
     wx.getStorage({
@@ -56,9 +59,11 @@ Page({
           shopNum: res.data.shopNum
         });
       }
-    })
+    });
+    // 当前商品明细信息
     WXAPI.goodsDetail(e.id).then(function(res) {
       var selectSizeTemp = "";
+      // 规格:暂时忽略 20190215
       if (res.data.properties) {
         for (var i = 0; i < res.data.properties.length; i++) {
           selectSizeTemp = selectSizeTemp + " " + res.data.properties[i].name;
@@ -70,10 +75,12 @@ Page({
           totalScoreToPay: res.data.basicInfo.minScore
         });
       }
+      // 拼团:暂时忽略 20190215
       if (res.data.basicInfo.pingtuan) {
         that.pingtuanList(e.id)
       }
       that.data.goodsDetail = res.data;
+      // 商品视频:暂时忽略 20190215
       if (res.data.basicInfo.videoId) {
         that.getVideoSrc(res.data.basicInfo.videoId);
       }
@@ -87,19 +94,23 @@ Page({
       WxParse.wxParse('article', 'html', res.data.content, that, 5);
     })
     this.reputation(e.id);
+    // 砍价需求暂时忽略 20190215
     this.getKanjiaInfo(e.id);
   },
+  // 去购物车
   goShopCar: function() {
     wx.reLaunch({
       url: "/pages/shop-cart/index"
     });
   },
+  // 加入购物车
   toAddShopCar: function() {
     this.setData({
       shopType: "addShopCar"
     })
     this.bindGuiGeTap();
   },
+  // 单独购买
   tobuy: function() {
     this.setData({
       shopType: "tobuy",
@@ -107,6 +118,7 @@ Page({
     });
     this.bindGuiGeTap();
   },
+  // 去拼单: 拼团暂忽略 20190215
   toPingtuan: function(e) {
     let pingtuanopenid = 0
     if (e.currentTarget.dataset.pingtuanopenid) {
@@ -135,6 +147,7 @@ Page({
       hideShopPopup: true
     })
   },
+  // 商品购买数量：减号
   numJianTap: function() {
     if (this.data.buyNumber > this.data.buyNumMin) {
       var currentNum = this.data.buyNumber;
@@ -144,6 +157,7 @@ Page({
       })
     }
   },
+  // 商品购买数量：加号
   numJiaTap: function() {
     if (this.data.buyNumber < this.data.buyNumMax) {
       var currentNum = this.data.buyNumber;
@@ -154,7 +168,7 @@ Page({
     }
   },
   /**
-   * 选择商品规格
+   * 选择商品规格:暂不考虑商品规格 20190215
    * @param {Object} e
    */
   labelItemTap: function(e) {
@@ -219,6 +233,7 @@ Page({
    * 加入购物车
    */
   addShopCar: function() {
+      // 当前商品存在子规格
     if (this.data.goodsDetail.properties && !this.data.canSubmit) {
       if (!this.data.canSubmit) {
         wx.showModal({
@@ -240,7 +255,6 @@ Page({
     }
     //组建购物车
     var shopCarInfo = this.bulidShopCarInfo();
-
     this.setData({
       shopCarInfo: shopCarInfo,
       shopNum: shopCarInfo.shopNum
@@ -251,6 +265,7 @@ Page({
       key: 'shopCarInfo',
       data: shopCarInfo
     })
+    // 隐藏规格选择弹出框
     this.closePopupTap();
     wx.showToast({
       title: '加入购物车成功',
@@ -267,7 +282,8 @@ Page({
   buyNow: function(e) {
     let that = this
     let shoptype = e.currentTarget.dataset.shoptype
-    console.log(shoptype)
+    console.log("buyNow = " + shoptype);
+    // 当前商品存在子规格的场景
     if (this.data.goodsDetail.properties && !this.data.canSubmit) {
       if (!this.data.canSubmit) {
         wx.showModal({
@@ -284,6 +300,7 @@ Page({
       })
       return;
     }
+
     if (this.data.buyNumber < 1) {
       wx.showModal({
         title: '提示',
@@ -292,6 +309,7 @@ Page({
       })
       return;
     }
+
     //组建立即购买信息
     var buyNowInfo = this.buliduBuyNowInfo(shoptype);
     // 写入本地存储
@@ -299,6 +317,7 @@ Page({
       key: "buyNowInfo",
       data: buyNowInfo
     })
+    // 隐藏商品规格弹框
     this.closePopupTap();
     if (shoptype == 'toPingtuan') {
       if (this.data.pingtuanopenid) {
@@ -427,7 +446,7 @@ Page({
   onShareAppMessage: function() {
     return {
       title: this.data.goodsDetail.basicInfo.name,
-      path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'),
+      path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'), // 商品分享出去时带上当前用户id
       success: function(res) {
         // 转发成功
       },

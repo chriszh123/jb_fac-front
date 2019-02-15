@@ -1,3 +1,4 @@
+<!--收获地址：新增/修改页面-->
 <view class="container">
     <form bindsubmit="bindSave">
     <view class="form-box">

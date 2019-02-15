@@ -1,3 +1,4 @@
+<!--商品明细页面-->
 <import src="../../wxParse/wxParse.wxml" />
 <view class="container"> 
    <view class="swiper-container" wx:if="{{!goodsDetail.basicInfo.videoId}}">

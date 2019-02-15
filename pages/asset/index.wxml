@@ -1,3 +1,4 @@
+<!--消费明细页面-->
 <view class="asset">
   <view class='item'>    
     <view>可用余额(元)</view>
@@ -12,7 +13,8 @@
     <view>{{totleConsumed}}</view>
   </view>
 </view>
-<view class='btn-view'>
+<!--充值、体现功能暂时不提供，页面隐藏:20190215 -->
+<view class='btn-view temp-hide'>
   <form bindsubmit="recharge" report-submit="true">
     <button
       class="btn"

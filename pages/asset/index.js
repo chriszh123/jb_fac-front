@@ -11,7 +11,7 @@ Page({
     freeze: 0,
     score: 0,
     score_sign_continuous: 0,
-    cashlogs: undefined
+    cashlogs: undefined  // 资金明细
   },
 
   /**
@@ -59,18 +59,20 @@ Page({
         });
       }
     })
-    // 读取资金明细
-    WXAPI.cashLogs({
-      token: token,
-      page:1,
-      pageSize:50
-    }).then(res => {
-      if (res.code == 0) {
-        _this.setData({
-          cashlogs: res.data
-        })
-      }
-    })
+    // 读取资金明细:这一块暂时不做:20190215
+    // WXAPI.cashLogs({
+    //   token: token,
+    //   page:1,
+    //   pageSize:50
+    // }).then(res => {
+    //   if (res.code == 0) {
+    //     _this.setData({
+    //       cashlogs: res.data
+    //     })
+    //   }
+    // });
+
+
   },
 
   /**
@@ -108,6 +110,7 @@ Page({
 
   },
 
+  // 充值：这一块暂时不做
   recharge: function (e) {
     WXAPI.addTempleMsgFormid({
       token: wx.getStorageSync('token'),
@@ -118,6 +121,7 @@ Page({
       url: "/pages/recharge/index"
     })
   },
+  // 体现：这一块暂时不做
   withdraw: function (e) {
     WXAPI.addTempleMsgFormid({
       token: wx.getStorageSync('token'),
