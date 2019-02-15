@@ -112,7 +112,9 @@ Page({
             })
             return;
           }
+          // 这里的token，后端返回的是当前用户对应的openid,唯一标识当前用户
           wx.setStorageSync('token', res.data.token)
+          // 当前用户对应后端存储的自增长id
           wx.setStorageSync('uid', res.data.uid)
           // 回到原来的地方放
           app.navigateToLogin = false
@@ -136,6 +138,7 @@ Page({
               referrer = referrer_storge;
             }
             // 下面开始调用注册接口
+            console.log("encryptedData = " + encryptedData + ", iv = " + iv + ", referrer = " + referrer);
             WXAPI.register( {
               code: code,
               encryptedData: encryptedData,

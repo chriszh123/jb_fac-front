@@ -1,5 +1,5 @@
 // 小程序开发api接口工具包，https://github.com/gooking/wxapi
-const CONFIG = require('config.js')
+const CONFIG = require('./config.js')
 // const API_BASE_URL = 'https://api.it120.cc'
 const API_BASE_URL = 'http://192.168.1.14:80'
 
@@ -17,13 +17,36 @@ const request = (url, needSubDomain, method, data) => {
         resolve(request.data)
       },
       fail(error) {
-        reject(error.data)
+        reject(error)
       },
       complete(aaa) {
         // 加载完成
       }
     })
   })
+}
+
+/**
+ * 小程序的promise没有finally方法，自己扩展下
+ */
+Promise.prototype.finally = function (callback) {
+    var Promise = this.constructor;
+    return this.then(
+      function (value) {
+        Promise.resolve(callback()).then(
+          function () {
+            return value;
+          }
+        );
+      },
+      function (reason) {
+        Promise.resolve(callback()).then(
+          function () {
+            throw reason;
+          }
+        );
+      }
+    );
 }
 
 module.exports = {
