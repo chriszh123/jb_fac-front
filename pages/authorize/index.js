@@ -98,8 +98,8 @@ Page({
       success: function(res) {
         WXAPI.login(res.code).then(function(res) {
           if (res.code == 10000) {
-            // 去注册
-            that.registerUser();
+            // 去注册 zgf
+            // that.registerUser();
             return;
           }
           if (res.code != 0) {
