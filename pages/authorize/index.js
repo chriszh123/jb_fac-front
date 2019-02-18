@@ -87,8 +87,8 @@ Page({
           wx.removeStorageSync('token')
           that.login();
         } else {
-          // 回到原来的地方放
-          app.navigateToLogin = false
+          // 回到原来的地方
+          app.navigateToLogin = false;
           wx.navigateBack();
         }
       })

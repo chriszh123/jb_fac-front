@@ -25,12 +25,12 @@ function wxpay(app, money, orderId, redirectUrl) {
           wx.showToast({ title: '支付失败:' + aaa })
         },
         success: function () {
-          // 保存 formid
-          WXAPI.addTempleMsgFormid({
-            token: wx.getStorageSync('token'),
-            type: 'pay',
-            formId: res.data.prepayId
-          })
+          // 保存 formid 暂忽略这块业务 zgf
+        //   WXAPI.addTempleMsgFormid({
+        //     token: wx.getStorageSync('token'),
+        //     type: 'pay',
+        //     formId: res.data.prepayId
+        //   });
           // 提示支付成功
           wx.showToast({ title: '支付成功' })
           wx.redirectTo({

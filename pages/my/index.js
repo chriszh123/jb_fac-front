@@ -1,6 +1,7 @@
 const app = getApp()
 const CONFIG = require('../../config.js')
 const WXAPI = require('../../wxapi/main')
+
 Page({
 	data: {
     balance:0.00,
@@ -28,11 +29,13 @@ Page({
   aboutUs : function () {
     wx.showModal({
       title: '关于我们',
-      content: '本系统基于开源小程序商城系统 https://github.com/EastWorld/wechat-app-mall 搭建，祝大家使用愉快！',
+      content: '定期为您提供身边最优质的优惠套餐',
       showCancel:false
     })
   },
+  //绑定手机号码
   getPhoneNumber: function(e) {
+      console.log("getPhoneNumber e :" + JSON.stringify(e.detail));
     if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
       wx.showModal({
         title: '提示',

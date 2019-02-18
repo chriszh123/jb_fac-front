@@ -1,4 +1,4 @@
-<!--index.wxml-->
+<!--首页-->
 <!--1px = 750/320 = 2.34rpx;-->
 <view class="container">
    <view class="swiper-container">

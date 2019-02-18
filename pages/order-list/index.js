@@ -1,3 +1,4 @@
+//订单列表
 const wxpay = require('../../utils/pay.js')
 const app = getApp()
 const WXAPI = require('../../wxapi/main')
@@ -7,6 +8,7 @@ Page({
     currentType: 0,
     tabClass: ["", "", "", "", ""]
   },
+  // 订单种类tab点击事件
   statusTap: function(e) {
     const curType = e.currentTarget.dataset.index;
     this.data.currentType = curType
@@ -15,12 +17,14 @@ Page({
     });
     this.onShow();
   },
+  // 当条订单
   orderDetail: function(e) {
     var orderId = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: "/pages/order-details/index?id=" + orderId
     })
   },
+  //取消订单
   cancelOrderTap: function(e) {
     var that = this;
     var orderId = e.currentTarget.dataset.id;
@@ -38,6 +42,8 @@ Page({
       }
     })
   },
+
+  // 马上付款
   toPayTap: function(e) {
     var that = this;
     var orderId = e.currentTarget.dataset.id;
@@ -46,6 +52,7 @@ Page({
     WXAPI.userAmount(wx.getStorageSync('token')).then(function(res) {
       if (res.code == 0) {
         // res.data.data.balance
+        // 用户余额，这里逻辑可能会要变化，我们这里暂时只要直接调用微信支付去付款就可以了：zgf
         money = money - res.data.balance;
         if (res.data.score < needScore) {
           wx.showModal({
@@ -55,8 +62,10 @@ Page({
           })
           return;
         }
+        //用户余额大于或等于当前订单费用
+        console.log("money = " + money);
         if (money <= 0) {
-          // 直接使用余额支付
+          // 直接使用余额支付 :zgf
           WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function(res) {
             that.onShow();
           })

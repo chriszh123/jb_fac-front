@@ -47,6 +47,7 @@ Page({
         url: "/pages/wuliu/index?id=" + orderId
       })
     },
+    // 确认收货，暂时忽略这块业务 zgf20190218
     confirmBtnTap:function(e){
       let that = this;
       let orderId = this.data.orderId;
@@ -85,6 +86,7 @@ Page({
           }
       })
     },
+    // 提交评价:暂时忽略这块业务 zgf20190218
     submitReputation: function (e) {
       let that = this;
       WXAPI.addTempleMsgFormid({

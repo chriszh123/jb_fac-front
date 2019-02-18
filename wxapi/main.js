@@ -1,7 +1,7 @@
 // 小程序开发api接口工具包，https://github.com/gooking/wxapi
 const CONFIG = require('./config.js')
-// const API_BASE_URL = 'https://api.it120.cc'
-const API_BASE_URL = 'http://192.168.1.14:80'
+const API_BASE_URL = 'https://api.it120.cc'
+// const API_BASE_URL = 'http://192.168.1.14:80'
 
 const request = (url, needSubDomain, method, data) => {
   let _url = API_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + url;
@@ -239,7 +239,7 @@ module.exports = {
     return request('/order/create', true, 'post', data)
   },
   orderList: (data) => {
-    return request('/order/list', true, 'post', data)
+    return request('/order/listData', true, 'post', data)
   },
   orderDetail: (id, token) => {
     return request('/order/detail', true, 'get', {

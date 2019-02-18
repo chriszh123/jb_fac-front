@@ -25,7 +25,7 @@ Page({
     curPage: 1,
     pageSize: 20
   },
-
+// 商品分类
   tabClick: function(e) {
     this.setData({
       activeCategoryId: e.currentTarget.id,
@@ -33,18 +33,20 @@ Page({
     });
     this.getGoodsList(this.data.activeCategoryId);
   },
-  //事件处理函数
+  //事件处理函数:顶部轮播商品
   swiperchange: function(e) {
     //console.log(e.detail.current)
     this.setData({
       swiperCurrent: e.detail.current
     })
   },
+  // 点击商品，跳转至商品详情页
   toDetailsTap: function(e) {
     wx.navigateTo({
       url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
     })
   },
+  // 点击顶部轮播商品，跳转至商品详情页
   tapBanner: function(e) {
     if (e.currentTarget.dataset.id != 0) {
       wx.navigateTo({
@@ -53,6 +55,7 @@ Page({
     }
   },
   bindTypeTap: function(e) {
+      console.log("bindTypeTap index = " + e.index);
     this.setData({
       selectCurrent: e.index
     })
@@ -67,23 +70,30 @@ Page({
      * 调用接口封装方法
      */
     WXAPI.banners().then(function(res) {
-      if (res.code == 700) {
+      if (res.code == 404) {
         wx.showModal({
           title: '提示',
           content: '请在后台添加 banner 轮播图片',
           showCancel: false
         })
-      } else {
+      } else if (res.code == 0) {
         that.setData({
           banners: res.data
         });
+      } else {
+        wx.showToast({
+            title: res.msg,
+            icon: 'none'
+          });
       }
     }).catch(function(e) {
       wx.showToast({
         title: res.msg,
         icon: 'none'
-      })
-    })
+      });
+    });
+
+    // 列举所有商品分类
     WXAPI.goodsCategory().then(function(res) {
       var categories = [{
         id: 0,
@@ -101,15 +111,19 @@ Page({
       });
       that.getGoodsList(0);
     })
+    // 优惠卷
     that.getCoupons();
+    // 公告
     that.getNotice();
   },
+
   onPageScroll(e) {
     let scrollTop = this.data.scrollTop
     this.setData({
       scrollTop: e.scrollTop
     })
   },
+
   getGoodsList: function(categoryId, append) {
     if (categoryId == 0) {
       categoryId = "";
@@ -240,18 +254,22 @@ Page({
     })
 
   },
+
   toSearch: function() {
     this.setData({
       curPage: 1
     });
     this.getGoodsList(this.data.activeCategoryId);
   },
+// 触底
   onReachBottom: function() {
     this.setData({
       curPage: this.data.curPage + 1
     });
     this.getGoodsList(this.data.activeCategoryId, true)
   },
+
+  // 下拉
   onPullDownRefresh: function() {
     this.setData({
       curPage: 1
