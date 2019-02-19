@@ -1,7 +1,7 @@
 // 小程序开发api接口工具包，https://github.com/gooking/wxapi
 const CONFIG = require('./config.js')
 // const API_BASE_URL = 'https://api.it120.cc'
-const API_BASE_URL = 'http://192.168.0.7:80'
+const API_BASE_URL = 'http://172.18.95.145:80'
 
 const request = (url, needSubDomain, method, data) => {
   let _url = API_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + url;
@@ -55,7 +55,7 @@ Promise.prototype.finally = function (callback) {
 module.exports = {
   request,
   queryMobileLocation: (data) => {
-    return request('/common/mobile-segment/location', false, 'get', data)
+    return request('/common/mobile-segment/location', false, 'post', data)
   },
   queryConfig: (data) => {
     return request('/config/get-value', true, 'post', data)
@@ -72,7 +72,7 @@ module.exports = {
     return request('/score/sign/logs', true, 'post', data)
   },
   scoreTodaySignedInfo: (token) => {
-    return request('/score/today-signed', true, 'get', {
+    return request('/score/today-signed', true, 'post', {
       token
     })
   },
@@ -95,7 +95,7 @@ module.exports = {
     })
   },
   kanjiaDetail: (kjid, joiner) => {
-    return request('/shop/goods/kanjia/info', true, 'get', {
+    return request('/shop/goods/kanjia/info', true, 'post', {
       kjid,
       joiner
     })
@@ -109,14 +109,14 @@ module.exports = {
     })
   },
   kanjiaHelpDetail: (kjid, joiner, token) => {
-    return request('/shop/goods/kanjia/myHelp', true, 'get', {
+    return request('/shop/goods/kanjia/myHelp', true, 'post', {
       kjid,
       joinerUser: joiner,
       token
     })
   },
   checkToken: (token) => {
-    return request('/user/check-token', true, 'get', {
+    return request('/user/check-token', true, 'post', {
       token
     })
   },
@@ -142,10 +142,10 @@ module.exports = {
     return request('/user/wxapp/register/complex', true, 'post', data)
   },
   banners: (data) => {
-    return request('/banner/list', true, 'get', data)
+    return request('/banner/list', true, 'post', data)
   },
   goodsCategory: () => {
-    return request('/shop/goods/category/all', true, 'get')
+    return request('/shop/goods/category/all', true, 'post')
   },
   goods: (data) => {
     return request('/shop/goods/list', true, 'post', data)
@@ -162,10 +162,10 @@ module.exports = {
     return request('/shop/goods/reputation', true, 'post', data)
   },
   coupons: (data) => {
-    return request('/discounts/coupons', true, 'get', data)
+    return request('/discounts/coupons', true, 'post', data)
   },
   myCoupons: (data) => {
-    return request('/discounts/my', true, 'get', data)
+    return request('/discounts/my', true, 'post', data)
   },
   fetchCoupons: (data) => {
     return request('/discounts/fetch', true, 'post', data)
@@ -174,7 +174,7 @@ module.exports = {
     return request('/notice/list', true, 'post', data)
   },
   noticeDetail: (id) => {
-    return request('/notice/detail', true, 'get', {
+    return request('/notice/detail', true, 'post', {
       id
     })
   },
@@ -191,12 +191,12 @@ module.exports = {
     })
   },
   queryAddress: (token) => {
-    return request('/user/shipping-address/list', true, 'get', {
+    return request('/user/shipping-address/list', true, 'post', {
       token
     })
   },
   defaultAddress: (token) => {
-    return request('/user/shipping-address/default', true, 'get', {
+    return request('/user/shipping-address/default', true, 'post', {
       token
     })
   },
@@ -213,12 +213,12 @@ module.exports = {
     })
   },
   pingtuanList: (goodsId) => {
-    return request('/shop/goods/pingtuan/list', true, 'get', {
+    return request('/shop/goods/pingtuan/list', true, 'post', {
       goodsId
     })
   },
   videoDetail: (videoId) => {
-    return request('/media/video/detail', true, 'get', {
+    return request('/media/video/detail', true, 'post', {
       videoId
     })
   },
@@ -226,7 +226,7 @@ module.exports = {
     return request('/user/wxapp/bindMobile', true, 'post', data)
   },
   userDetail: (token) => {
-    return request('/user/detail', true, 'get', {
+    return request('/user/detail', true, 'post', {
       token
     })
   },
@@ -242,7 +242,7 @@ module.exports = {
     return request('/order/listData', true, 'post', data)
   },
   orderDetail: (id, token) => {
-    return request('/order/detail', true, 'get', {
+    return request('/order/detail', true, 'post', {
       id,
       token
     })
@@ -269,7 +269,7 @@ module.exports = {
     })
   },
   orderStatistics: (token) => {
-    return request('/order/statistics', true, 'get', {
+    return request('/order/statistics', true, 'post', {
       token
     })
   },
@@ -280,10 +280,10 @@ module.exports = {
     })
   },
   province: () => {
-    return request('/common/region/v2/province', false, 'get')
+    return request('/common/region/v2/province', false, 'post')
   },
   nextRegion: (pid) => {
-    return request('/common/region/v2/child', false, 'get', {
+    return request('/common/region/v2/child', false, 'post', {
       pid
     })
   },
