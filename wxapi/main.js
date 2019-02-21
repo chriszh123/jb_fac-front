@@ -10,7 +10,7 @@ const request = (url, needSubDomain, method, data) => {
   return new Promise((resolve, reject) => {
     wx.request({
       url: _url,
-      method: method,
+      method: method.toUpperCase(),
       data: data,
       header: {
         // 'Content-Type': 'application/x-www-form-urlencoded'

@@ -119,7 +119,9 @@ Page({
           // 回到原来的地方放
           app.navigateToLogin = false
           wx.navigateBack();
-        })
+        }).catch(error => {
+            console.log("登录请求失败", error);
+        });
       }
     })
   },
