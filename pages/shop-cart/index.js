@@ -264,13 +264,16 @@ Page({
     });
     this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
   },
-  toPayOrder: function() {
+  toPayOrder: function(e) {
+      console.log("111111111");
     wx.showLoading();
     var that = this;
     if (this.data.goodsList.noSelect) {
+        console.log("222222222");
       wx.hideLoading();
       return;
     }
+    console.log("3333333333");
     // 重新计算价格，判断库存
     var shopList = [];
     var shopCarInfoMem = wx.getStorageSync('shopCarInfo');
@@ -295,9 +298,11 @@ Page({
       let carShopBean = shopList[i];
       // 获取价格和库存
       if (!carShopBean.propertyChildIds || carShopBean.propertyChildIds == "") {
+          console.log("444")
         WXAPI.goodsDetail(carShopBean.goodsId).then(function(res) {
           doneNumber++;
           if (res.data.properties) {
+            console.log("555")
             wx.showModal({
               title: '提示',
               content: res.data.basicInfo.name + ' 商品已失效，请重新购买',
@@ -327,6 +332,7 @@ Page({
             wx.hideLoading();
             return;
           }
+          console.log("666")
           if (needDoneNUmber == doneNumber) {
             that.navigateToPayOrder();
           }
