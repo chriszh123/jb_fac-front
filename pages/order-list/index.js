@@ -136,18 +136,19 @@ Page({
       token: wx.getStorageSync('token')
     };
     postData.status = that.data.currentType;
+    // 存在订单的tab标红点
     this.getOrderStatistics();
     WXAPI.orderList(postData).then(function(res) {
       if (res.code == 0) {
         that.setData({
           orderList: res.data.orderList,
-          logisticsMap: res.data.logisticsMap,
+        //   logisticsMap: res.data.logisticsMap,
           goodsMap: res.data.goodsMap
         });
       } else {
         that.setData({
           orderList: null,
-          logisticsMap: {},
+        //   logisticsMap: {},
           goodsMap: {}
         });
       }

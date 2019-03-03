@@ -10,9 +10,10 @@
             </view>
             <view class="right-text">
                 <view class="status red">{{orderDetail.orderInfo.statusStr}}</view>
-                <view class="des" hidden="true">请于11时59分59秒内付款，超时订单将自动关闭</view>
+                <!-- <view class="des" hidden="true">请于11时59分59秒内付款，超时订单将自动关闭</view> -->
             </view>
         </view>
+        <!--物流-->
         <block wx:if="{{orderDetail.logistics}}">
           <view wx:if="{{orderDetail.logisticsTraces}}" class="wuliu-box">
               <view class="icon-box">
@@ -115,7 +116,7 @@
                 <view class="row-label">商品金额</view>
                 <view class="right-text">¥ {{orderDetail.orderInfo.amount}}</view>
             </view>
-            <view class="row-box">
+            <view class="row-box" wx:if="{{orderDetail.orderInfo.amountLogistics}}">
                 <view class="row-label">运费</view>
                 <view class="right-text">+ ¥ {{orderDetail.orderInfo.amountLogistics}}</view>
             </view>
