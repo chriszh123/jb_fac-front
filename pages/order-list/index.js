@@ -77,7 +77,6 @@ Page({
                     return;
                 }
                 //用户余额大于或等于当前订单费用
-                console.log("money = " + money);
                 // if (money <= 0) {
                 //     // 直接使用余额支付 :zgf
                 //     WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function (res) {
@@ -97,7 +96,8 @@ Page({
                 if (needScore > 0) {
                     _msg += ',并扣除 ' + money + ' 积分'
                 }
-                money = money - res.data.balance
+                money = money - res.data.balance;
+                console.log("money = " + money);
                 wx.showModal({
                     title: '请确认支付',
                     content: _msg,
@@ -125,10 +125,12 @@ Page({
         const _this = this
         if (money <= 0) {
             // 直接使用余额支付
+            console.log("马上付款：直接使用余额支付");
             WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function (res) {
                 _this.onShow();
             })
         } else {
+            console.log("马上付款：直接付款");
             wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
         }
     },
