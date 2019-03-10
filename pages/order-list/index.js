@@ -37,11 +37,11 @@ Page({
                         if (res.code == 0) {
                             that.onShow();
                             wx.showToast({
-                              title: '订单取消成功', //提示的内容,
-                              icon: 'success', //图标,
-                              duration: 2000, //延迟时间,
-                              mask: true, //显示透明蒙层，防止触摸穿透,
-                              success: res => {}
+                                title: '订单取消成功', //提示的内容,
+                                icon: 'success', //图标,
+                                duration: 2000, //延迟时间,
+                                mask: true, //显示透明蒙层，防止触摸穿透,
+                                success: res => {}
                             });
                         } else {
                             wx.showToast({
@@ -60,10 +60,10 @@ Page({
 
     // 马上付款
     toPayTap: function (e) {
-        var that = this;
-        var orderId = e.currentTarget.dataset.id;
-        var money = e.currentTarget.dataset.money;
-        var needScore = e.currentTarget.dataset.score;
+        const that = this;
+        const orderId = e.currentTarget.dataset.id;
+        let money = e.currentTarget.dataset.money;
+        const needScore = e.currentTarget.dataset.score;
         WXAPI.userAmount(wx.getStorageSync('token')).then(function (res) {
             if (res.code == 0) {
                 // res.data.data.balance
@@ -71,22 +71,47 @@ Page({
                 money = money - res.data.balance;
                 if (res.data.score < needScore) {
                     wx.showModal({
-                        title: '错误',
-                        content: '您的积分不足，无法支付',
-                        showCancel: false
+                        title: '您的积分不足，无法支付',
+                        icon: 'none'
                     })
                     return;
                 }
                 //用户余额大于或等于当前订单费用
                 console.log("money = " + money);
-                if (money <= 0) {
-                    // 直接使用余额支付 :zgf
-                    WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function (res) {
-                        that.onShow();
-                    })
-                } else {
-                    wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
+                // if (money <= 0) {
+                //     // 直接使用余额支付 :zgf
+                //     WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function (res) {
+                //         that.onShow();
+                //     })
+                // } else {
+                //     wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
+                // }
+
+                let _msg = '订单金额: ' + money + ' 元'
+                if (res.data.balance > 0) {
+                    _msg += ',可用余额为 ' + res.data.balance + ' 元'
+                    if (money - res.data.balance > 0) {
+                        _msg += ',仍需微信支付 ' + (money - res.data.balance) + ' 元'
+                    }
                 }
+                if (needScore > 0) {
+                    _msg += ',并扣除 ' + money + ' 积分'
+                }
+                money = money - res.data.balance
+                wx.showModal({
+                    title: '请确认支付',
+                    content: _msg,
+                    confirmText: "确认支付",
+                    cancelText: "取消支付",
+                    success: function (res) {
+                        console.log(res);
+                        if (res.confirm) {
+                            that._toPayTap(orderId, money)
+                        } else {
+                            console.log('用户点击取消支付')
+                        }
+                    }
+                });
             } else {
                 wx.showModal({
                     title: '错误',
@@ -95,6 +120,17 @@ Page({
                 })
             }
         })
+    },
+    _toPayTap: function (orderId, money) {
+        const _this = this
+        if (money <= 0) {
+            // 直接使用余额支付
+            WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function (res) {
+                _this.onShow();
+            })
+        } else {
+            wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
+        }
     },
     onLoad: function (options) {
         if (options && options.type) {

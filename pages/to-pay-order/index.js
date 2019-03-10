@@ -265,7 +265,8 @@ Page({
             isNeedLogistics: isNeedLogistics,
             goodsJsonStr: goodsJsonStr
         });
-        that.createOrder();
+        // 这里导致订单重复提交，只有"提交订单"按钮触发创建订单请求
+        //that.createOrder();
     },
     addAddress: function () {
         wx.navigateTo({
