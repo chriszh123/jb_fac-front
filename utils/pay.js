@@ -32,11 +32,11 @@ function wxpay(app, money, orderId, redirectUrl) {
         },
         success: function () {
           // 保存 formid
-          WXAPI.addTempleMsgFormid({
-            token: wx.getStorageSync('token'),
-            type: 'pay',
-            formId: res.data.prepayId
-          })
+        //   WXAPI.addTempleMsgFormid({
+        //     token: wx.getStorageSync('token'),
+        //     type: 'pay',
+        //     formId: res.data.prepayId
+        //   })
           // 提示支付成功
           wx.showToast({
             title: '支付成功'
