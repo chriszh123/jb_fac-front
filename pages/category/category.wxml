@@ -23,7 +23,7 @@
       <block wx:for="{{item.goods}}" wx:for-item="goods" wx:key="id">
         <view class='goods-item' bindtap="toDetailsTap" data-id="{{goods.id}}">
 
-          <image class='goods-pic' mode='aspectFill' lazy-load="true" src="{{goods.pic}}_m"></image>
+          <image class='goods-pic' mode='aspectFill' lazy-load="true" src="{{goods.pic}}"></image>
 
           <view class='goods-info'>
             <text >{{goods.name}}</text>
