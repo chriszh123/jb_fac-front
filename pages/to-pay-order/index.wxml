@@ -27,7 +27,7 @@
             </view>
         </view>
      </view>
-     <view class="peisong-way">
+     <view class="peisong-way" style="margin-bottom: -34px;">
         <view class="row-box" wx:if="{{isNeedLogistics > 0}}">
             <view class="row-label">配送方式</view>
             <view class="right-text" wx:if="{{yunPrice > 0}}">快递</view>
@@ -40,7 +40,7 @@
             </view>
         </view>
      </view>
-     <view class="peisong-way" hidden="{{hasNoCoupons}}">
+     <!-- <view class="peisong-way" hidden="{{hasNoCoupons}}">
         <view class="row-box" style="border-bottom:none;">
             <view class="row-label">选择使用优惠券</view>
         </view>
@@ -52,10 +52,10 @@
             </picker-view-column>
           </picker-view>
         </view>
-     </view>
+     </view> -->
 
 
-     <view class="goods-info" wx:if="{{(isNeedLogistics > 0 && yunPrice > 0) || (!hasNoCoupons)}}">
+     <!-- <view class="goods-info" wx:if="{{(isNeedLogistics > 0 && yunPrice > 0) || (!hasNoCoupons)}}">
         <view class="row-box" wx:if="{{isNeedLogistics > 0 && yunPrice > 0}}">
             <view class="row-label">商品金额</view>
             <view class="right-text">¥ {{allGoodsPrice}}</view>
@@ -68,7 +68,7 @@
             <view class="row-label">优惠券</view>
             <view class="right-text">- ¥ {{youhuijine}}</view>
         </view>
-     </view>
+     </view> -->
 
      <view class="jiesuan-box">
         <view class="left-price">

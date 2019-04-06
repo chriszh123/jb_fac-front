@@ -23,6 +23,7 @@ Page({
     onShow: function () {
         var that = this;
         var shopList = [];
+        var allGoodsRealPrice = 0;
         //立即购买下单
         if ("buyNow" == that.data.orderType) {
             var buyNowInfoMem = wx.getStorageSync('buyNowInfo');
@@ -41,8 +42,16 @@ Page({
                 });
             }
         }
+        // 商品总待付款价格汇总
+        if (shopList && shopList.length > 0) {
+            for (var i = 0, size = shopList.length; i < size; i++) {
+                var good = shopList[i];
+                allGoodsRealPrice = allGoodsRealPrice + (good.number * good.price);
+            }
+        }
         that.setData({
             goodsList: shopList,
+            allGoodsAndYunPrice: allGoodsRealPrice
         });
         that.initShippingAddress();
     },
@@ -52,14 +61,11 @@ Page({
             e.orderType = "cart";
         }
         console.log("onLoad = " + JSON.stringify(e));
-        let _data = {
-            isNeedLogistics: 1,
+        this.setData({
+            isNeedLogistics: 0, // 暂时不支持物流
             orderType: e.orderType
-        }
-        if (e.pingtuanOpenId) {
-            _data.pingtuanOpenId = e.pingtuanOpenId
-        }
-        this.setData(_data);
+            // pingtuanOpenId: e.pingtuanOpenId
+        });
     },
 
     getDistrictId: function (obj, aaa) {

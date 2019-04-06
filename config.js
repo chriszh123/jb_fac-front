@@ -1,5 +1,5 @@
 module.exports = {
-  version: "6.0.2",
+  version: "1.0.1",
   note: '接口封装',
 //   subDomain: "zgf", // 如果你的域名是： https://api.it120.cc/abcd 那么这里只要填写 abcd
   subDomain: "fac/client",

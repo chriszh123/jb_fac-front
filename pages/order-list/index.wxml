@@ -16,8 +16,9 @@
                 <view class="status {{(item.status==-1 || item.status==4) ? '':'red'}}">{{item.statusStr}}</view>
             </view>
             <view class="goods-info" bindtap="orderDetail" data-id="{{item.id}}">
-                <view class="goods-des">
-                   <view>订单号:{{item.orderNumber}} </view>
+                <view class="goods-des" style="height:140rpx;">
+                   <view>订单号：{{item.orderNumber}} </view>
+                   <view wx:if="{{item.status==1}}">核销码：{{item.writeOffCode}}</view>
                    <view wx:if="{{item.remark && item.remark != ''}}">备注： {{item.remark}}</view>
                 </view>
             </view>

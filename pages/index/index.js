@@ -80,11 +80,8 @@ Page({
          */
         WXAPI.banners().then(function (res) {
             if (res.code == 404) {
-                wx.showModal({
-                    title: '提示',
-                    content: '请在后台添加 banner 轮播图片',
-                    showCancel: false
-                })
+               // 后台暂时没有 banner 轮播图片
+               console.log("后台暂时没有配置banner轮播图片");
             } else if (res.code == 0) {
                 that.setData({
                     banners: res.data
