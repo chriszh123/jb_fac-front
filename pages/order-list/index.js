@@ -29,13 +29,13 @@ Page({
     //取消订单
     cancelOrderTap: function (e) {
         var that = this;
-        var orderId = e.currentTarget.dataset.id;
+        var orderNo = e.currentTarget.dataset.id;
         wx.showModal({
             title: '确定要取消该订单吗？',
             content: '',
             success: function (res) {
                 if (res.confirm) {
-                    WXAPI.orderClose(orderId, wx.getStorageSync('token')).then(function (res) {
+                    WXAPI.orderClose(orderNo, wx.getStorageSync('token')).then(function (res) {
                         if (res.code == 0) {
                             that.onShow();
                             wx.showToast({

@@ -260,9 +260,9 @@ module.exports = {
     orderReputation: (data) => {
         return request('/order/reputation', true, 'post', data)
     },
-    orderClose: (orderId, token) => {
+    orderClose: (orderNo, token) => {
         return request('/order/close', true, 'post', {
-            orderId,
+            orderNo,
             token
         })
     },
