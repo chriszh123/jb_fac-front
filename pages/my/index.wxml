@@ -25,7 +25,7 @@
     <view class='item' bindtap='goOrder' data-type="1">
       <image class="icon" src="/images/order/fahuo.png" background-size="cover"></image>
       <!-- <view class='text'>待发货</view> -->
-      <view class='text'>待核销</view>
+      <view class='text'>去核销</view>
     </view>
     <!-- <view class='item' bindtap='goOrder' data-type="2">
       <image class="icon" src="/images/order/shouhuo.png" background-size="cover"></image>
@@ -36,7 +36,7 @@
       <view class='text'>待评价</view>
     </view>
     <view class='item' bindtap='goOrder' data-type="3">
-      <image class="icon" src="/images/order/pj.png" background-size="cover"></image>
+      <image class="icon" src="/images/order/shouhuo.png" background-size="cover"></image>
       <view class='text'>已完成</view>
     </view>
   </view>

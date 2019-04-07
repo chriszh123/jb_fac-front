@@ -5,7 +5,8 @@ const WXAPI = require('../../wxapi/main')
 Page({
     data: {
         // statusType: ["待付款", "待发货", "待收货", "待评价", "已完成"],
-        statusType: ["待付款", "待核销", "待评价", "已完成"],
+        // statusType: ["待付款", "去核销", "待评价", "已完成", "待核销"], // 这里的待核销是给商家用的
+        statusType: ["待付款", "去核销", "待评价", "已完成"],
         currentType: 0,
         // tabClass: ["", "", "", "", ""]
         tabClass: ["", "", "", ""]

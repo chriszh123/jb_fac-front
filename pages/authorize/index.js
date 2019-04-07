@@ -112,6 +112,23 @@ Page({
             })
             return;
           }
+          wx.getUserInfo({
+            withCredentials: false,
+            success: res => {
+                console.log("从前端获取当前用户信息，然后再去更新后台用户数据 : " + JSON.stringify(res.userInfo));
+                //  {
+                //     "nickName":"风声",
+                //     "gender":1,
+                //     "language":"zh_CN",
+                //     "city":"Nanjing",
+                //     "province":"Jiangsu",
+                //     "country":"China",
+                //     "avatarUrl":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTK8fyGFaEeep5zVTBpibZNL9CicvicuSTiaI25CwZy8AeKPmpmdkRCOxuWtHcibS4Xp2yj6rYXXTKvubjg/132"
+                //     }
+            },
+            fail: () => {},
+            complete: () => {}
+          });
           // 这里的token，后端返回的是当前用户对应的openid,唯一标识当前用户
           wx.setStorageSync('token', res.data.token)
           // 当前用户对应后端存储的自增长id
