@@ -54,7 +54,7 @@ Promise.prototype.finally = function (callback) {
 module.exports = {
     request,
     queryMobileLocation: (data) => {
-        return request('/common/mobile-segment/location', false, 'post', data)
+        return request('/common/mobile-segment/location', true, 'post', data)
     },
     queryConfig: (data) => {
         return request('/config/get-value', true, 'post', data)
@@ -284,10 +284,10 @@ module.exports = {
         })
     },
     province: () => {
-        return request('/common/region/v2/province', false, 'post')
+        return request('/common/region/v2/province', true, 'post')
     },
     nextRegion: (pid) => {
-        return request('/common/region/v2/child', false, 'post', {
+        return request('/common/region/v2/child', true, 'post', {
             pid
         })
     },
@@ -296,5 +296,8 @@ module.exports = {
     },
     rechargeSendRules: () => {
         return request('/user/recharge/send/rule', true, 'get')
+    },
+    updateUserInfo: (userInfo) => {
+        return request('/user/updateUserInfo', true, 'post', userInfo)
     }
 }
