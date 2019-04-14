@@ -6,10 +6,11 @@ Page({
     data: {
         // statusType: ["待付款", "待发货", "待收货", "待评价", "已完成"],
         // statusType: ["待付款", "去核销", "待评价", "已完成", "待核销"], // 这里的待核销是给商家用的
-        statusType: ["待付款", "去核销", "待评价", "已完成"],
+        statusType: ["待付款", "去核销", "待评价", "已完成", "已取消"],
         currentType: 0,
+        userType: 0, // 用户类型：0-普通购买用户,1-商家
         // tabClass: ["", "", "", "", ""]
-        tabClass: ["", "", "", ""]
+        tabClass: ["", "", "", "", ""]
     },
     // 订单种类tab点击事件
     statusTap: function (e) {
@@ -153,34 +154,47 @@ Page({
         WXAPI.orderStatistics(wx.getStorageSync('token')).then(function (res) {
             if (res.code == 0) {
                 var tabClass = that.data.tabClass;
-                if (res.data.count_id_no_pay > 0) {
+                // 待付款
+                if (res.data.paying > 0) {
+
                     tabClass[0] = "red-dot"
                 } else {
                     tabClass[0] = ""
                 }
-                if (res.data.count_id_no_transfer > 0) {
+                // 去核销
+                if (res.data.toWriteoff > 0) {
                     tabClass[1] = "red-dot"
                 } else {
                     tabClass[1] = ""
                 }
-                if (res.data.count_id_no_confirm > 0) {
+                // 待评价
+                if (res.data.toEvaluate > 0) {
                     tabClass[2] = "red-dot"
                 } else {
                     tabClass[2] = ""
                 }
-                if (res.data.count_id_no_reputation > 0) {
+                // 已完成
+                if (res.data.complete > 0) {
                     tabClass[3] = "red-dot"
                 } else {
                     tabClass[3] = ""
                 }
-                if (res.data.count_id_success > 0) {
-                    //tabClass[4] = "red-dot"
+                // 待核销：商家要核销的自己的商品
+                if (res.data.writeoffing > 0) {
+                    tabClass[4] = "red-dot"
                 } else {
-                    //tabClass[4] = ""
+                    tabClass[4] = ""
+                }
+                // 用户类型：0-普通购买用户,1-商家
+                var statusType = ["待付款", "去核销", "待评价", "已完成", "已取消"];
+                if (res.data.userType == 1) {
+                    statusType = ["待付款", "去核销", "待评价", "已完成", "已取消", "待核销"];
                 }
 
                 that.setData({
+                    statusType: statusType,
                     tabClass: tabClass,
+                    userType: res.data.userType
                 });
             }
         })
@@ -225,5 +239,38 @@ Page({
     onReachBottom: function () {
         // 页面上拉触底事件的处理函数
 
-    }
+    },
+    //核销商品订单
+    writeOffOrder: function (e) {
+        var that = this;
+        var orderNo = e.currentTarget.dataset.id;
+        wx.showModal({
+            title: '确定要核销该订单吗？',
+            content: '',
+            success: function (res) {
+                if (res.confirm) {
+                    WXAPI.writeOffOrder(orderNo, wx.getStorageSync('token')).then(function (res) {
+                        if (res.code == 0) {
+                            that.onShow();
+                            wx.showToast({
+                                title: '订单核销成功', //提示的内容,
+                                icon: 'success', //图标,
+                                duration: 2000, //延迟时间,
+                                mask: true, //显示透明蒙层，防止触摸穿透,
+                                success: res => {}
+                            });
+                        } else {
+                            wx.showToast({
+                                title: '系统繁忙，请待会再尝试', //提示的内容,
+                                icon: 'success', //图标,
+                                duration: 3000, //延迟时间,
+                                mask: true, //显示透明蒙层，防止触摸穿透,
+                                success: res => {}
+                            });
+                        }
+                    });
+                }
+            }
+        })
+    },
 })

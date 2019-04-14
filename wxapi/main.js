@@ -299,5 +299,11 @@ module.exports = {
     },
     updateUserInfo: (userInfo) => {
         return request('/user/updateUserInfo', true, 'post', userInfo)
-    }
+    },
+    writeOffOrder: (orderNo, token) => {
+        return request('/order/writeOffOrder', true, 'post', {
+            orderNo,
+            token
+        })
+    },
 }
