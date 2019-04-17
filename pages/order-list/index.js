@@ -183,11 +183,17 @@ Page({
                 } else {
                     tabClass[3] = ""
                 }
-                // 待核销：商家要核销的自己的商品
-                if (res.data.writeoffing > 0) {
+                // 已取消
+                if (res.data.cancel > 0) {
                     tabClass[4] = "red-dot"
                 } else {
                     tabClass[4] = ""
+                }
+                // 待核销：商家要核销的自己的商品
+                if (res.data.writeoffing > 0) {
+                    tabClass[5] = "red-dot"
+                } else {
+                    tabClass[5] = ""
                 }
                 // 用户类型：0-普通购买用户,1-商家
                 var statusType = ["待付款", "去核销", "待评价", "已完成", "已取消"];
@@ -264,12 +270,21 @@ Page({
                                 success: res => {}
                             });
                         } else {
-                            wx.showToast({
-                                title: '系统繁忙，请待会再尝试', //提示的内容,
-                                icon: 'success', //图标,
-                                duration: 3000, //延迟时间,
-                                mask: true, //显示透明蒙层，防止触摸穿透,
-                                success: res => {}
+                            wx.showModal({
+                                title: '提示', //提示的标题,
+                                content: res.msg, //提示的内容,
+                                showCancel: true, //是否显示取消按钮,
+                                cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+                                cancelColor: '#000000', //取消按钮的文字颜色,
+                                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                                confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                                success: res => {
+                                    if (res.confirm) {
+
+                                    } else if (res.cancel) {
+
+                                    }
+                                }
                             });
                         }
                     });
