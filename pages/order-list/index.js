@@ -65,14 +65,13 @@ Page({
     // 马上付款
     toPayTap: function (e) {
         const that = this;
+        // orderId为订单号
         const orderId = e.currentTarget.dataset.id;
         let money = e.currentTarget.dataset.money;
         const needScore = e.currentTarget.dataset.score;
         WXAPI.userAmount(wx.getStorageSync('token')).then(function (res) {
             if (res.code == 0) {
-                // res.data.data.balance
-                // 用户余额，这里逻辑可能会要变化，我们这里暂时只要直接调用微信支付去付款就可以了：zgf
-                money = money - res.data.balance;
+                // 用户余额
                 if (res.data.score < needScore) {
                     wx.showModal({
                         title: '您的积分不足，无法支付',
@@ -98,17 +97,17 @@ Page({
                     }
                 }
                 if (needScore > 0) {
-                    _msg += ',并扣除 ' + money + ' 积分'
+                    _msg += ',并扣除 ' + needScore + ' 积分'
                 }
-                money = money - res.data.balance;
-                console.log("money = " + money);
+                // money = money - res.data.balance;
+                // 这里后台直接按照订单金额从余额里扣除相应部分费用
+                console.log("扣完余额剩余后的钱money = " + money);
                 wx.showModal({
                     title: '请确认支付',
                     content: _msg,
                     confirmText: "确认支付",
                     cancelText: "取消支付",
                     success: function (res) {
-                        console.log(res);
                         if (res.confirm) {
                             that._toPayTap(orderId, money)
                         } else {
@@ -121,7 +120,7 @@ Page({
                     title: '错误',
                     content: '无法获取用户资金信息',
                     showCancel: false
-                })
+                });
             }
         })
     },
@@ -129,10 +128,15 @@ Page({
         const _this = this
         if (money <= 0) {
             // 直接使用余额支付
-            console.log("马上付款：直接使用余额支付");
-            WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function (res) {
-                _this.onShow();
-            })
+            // console.log("马上付款：直接使用余额支付");
+            // WXAPI.orderPay(orderId, wx.getStorageSync('token')).then(function (res) {
+            //     _this.onShow();
+            // })
+            wx.showModal({
+                title: '错误',
+                content: '订单金额为0，无需支付',
+                showCancel: false
+            });
         } else {
             console.log("马上付款：直接付款");
             wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
