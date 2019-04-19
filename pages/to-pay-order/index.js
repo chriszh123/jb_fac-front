@@ -53,6 +53,7 @@ Page({
             goodsList: shopList,
             allGoodsAndYunPrice: allGoodsRealPrice
         });
+        // 送货地址
         that.initShippingAddress();
     },
 
@@ -98,6 +99,7 @@ Page({
         if (that.data.pingtuanOpenId) {
             postData.pingtuanOpenId = that.data.pingtuanOpenId
         }
+        // 暂时不需要物流
         if (that.data.isNeedLogistics > 0) {
             if (!that.data.curAddressData) {
                 wx.hideLoading();
@@ -118,6 +120,7 @@ Page({
             postData.mobile = that.data.curAddressData.mobile;
             postData.code = that.data.curAddressData.code;
         }
+        // 优惠券
         if (that.data.curCoupon) {
             postData.couponId = that.data.curCoupon.id;
         }
@@ -151,11 +154,12 @@ Page({
                 that.getMyCoupons();
                 return;
             }
+            // zgf
             WXAPI.addTempleMsgFormid({
                 token: wx.getStorageSync('token'),
                 type: 'form',
                 formId: e.detail.formId
-            })
+            });
             // 配置模板消息推送
             var postJsonString = {};
             postJsonString.keyword1 = {
@@ -178,6 +182,7 @@ Page({
                 value: '您可以重新下单，请在30分钟内完成支付',
                 color: '#173177'
             }
+            // zgf
             WXAPI.sendTempleMsg({
                 module: 'order',
                 business_id: res.data.id,
@@ -201,6 +206,7 @@ Page({
                 value: res.data.dateAdd,
                 color: '#173177'
             }
+            // zgf
             WXAPI.sendTempleMsg({
                 module: 'order',
                 business_id: res.data.id,
@@ -230,9 +236,11 @@ Page({
                     curAddressData: null
                 });
             }
+            // 运费
             that.processYunfei();
         })
     },
+    // 运费
     processYunfei: function () {
         var that = this;
         var goodsList = this.data.goodsList;
@@ -252,28 +260,18 @@ Page({
             if (carShopBean.logistics) {
                 isNeedLogistics = 1;
             }
+            // 商品总价
             allGoodsPrice += carShopBean.price * carShopBean.number;
-
             var goodsJsonStrTmp = '';
             if (i > 0) {
                 goodsJsonStrTmp = ",";
             }
-
-
-            // let inviter_id = 0;
-            // let inviter_id_storge = wx.getStorageSync('inviter_id_' + carShopBean.goodsId);
-            // if (inviter_id_storge) {
-            //     inviter_id = inviter_id_storge;
-            // }
-
-
+            // 每个商品对应的基本信息, 包括分享人
             goodsJsonStrTmp += '{"goodsId":' + carShopBean.goodsId + ',"number":' + carShopBean.number + ',"propertyChildIds":"' + carShopBean.propertyChildIds + '","logisticsType":0, "inviter_id":' + inviter_id + '}';
             goodsJsonStr += goodsJsonStrTmp;
-
-
         }
         goodsJsonStr += "]";
-        //console.log(goodsJsonStr);
+        // console.log(goodsJsonStr);
         that.setData({
             isNeedLogistics: isNeedLogistics,
             goodsJsonStr: goodsJsonStr

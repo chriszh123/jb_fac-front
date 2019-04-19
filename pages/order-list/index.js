@@ -250,16 +250,17 @@ Page({
         // 页面上拉触底事件的处理函数
 
     },
-    //核销商品订单
+    //核销订单商品
     writeOffOrder: function (e) {
         var that = this;
         var orderNo = e.currentTarget.dataset.id;
+        var prodId = e.currentTarget.dataset.prodId;
         wx.showModal({
             title: '确定要核销该订单吗？',
             content: '',
             success: function (res) {
                 if (res.confirm) {
-                    WXAPI.writeOffOrder(orderNo, wx.getStorageSync('token')).then(function (res) {
+                    WXAPI.writeOffOrder(orderNo, wx.getStorageSync('token'), prodId).then(function (res) {
                         if (res.code == 0) {
                             that.onShow();
                             wx.showToast({

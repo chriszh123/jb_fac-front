@@ -37,17 +37,17 @@ Page({
     },
     onLoad: function (e) {
         // inviter_id：邀请人id,有值时，说明这个商品明细页面是通过别人分享过来的，后面如果买了，需要给分享人佣金
-        // if (e.inviter_id) {
-        //     wx.setStorage({
-        //         key: 'inviter_id_' + e.id,
-        //         data: e.inviter_id
-        //     })
-        //     // 推荐者
-        //     wx.setStorage({
-        //         key: 'referrer',
-        //         data: e.inviter_id
-        //     })
-        // }
+        if (e.inviter_id) {
+            wx.setStorage({
+                key: 'inviter_id_' + e.id,
+                data: e.inviter_id
+            })
+            // 推荐者
+            wx.setStorage({
+                key: 'referrer',
+                data: e.inviter_id
+            })
+        }
         const that = this;
         // 砍价需求暂时忽略 20190215
         that.data.kjId = e.kjId;
