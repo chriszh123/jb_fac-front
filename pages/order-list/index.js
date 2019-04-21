@@ -254,7 +254,7 @@ Page({
     writeOffOrder: function (e) {
         var that = this;
         var orderNo = e.currentTarget.dataset.id;
-        var prodId = e.currentTarget.dataset.prodId;
+        var prodId = e.currentTarget.dataset.prodid;
         wx.showModal({
             title: '确定要核销该订单吗？',
             content: '',
