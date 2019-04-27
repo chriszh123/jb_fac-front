@@ -307,4 +307,14 @@ module.exports = {
             prodId
         })
     },
+    userSign: (token) => {
+        return request('/user/sign', true, 'post', {
+            token
+        })
+    },
+    userSignlogs: (token) => {
+        return request('/user/sign/logs', true, 'post', {
+            token
+        })
+    }
 }

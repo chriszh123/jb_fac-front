@@ -1332,7 +1332,7 @@ function mountEventsOnPage(page) {
 
 export default (config = {}) => {
   tips(
-    '使用中若遇问题请反馈至 https://github.com/treadpit/wx_calendar/issues ✍️'
+    // '使用中若遇问题请反馈至 https://github.com/treadpit/wx_calendar/issues ✍️'
   );
   const weeksCh = ['日', '一', '二', '三', '四', '五', '六'];
   currentPage = getCurrentPage();
