@@ -101,7 +101,7 @@ Page({
                             year: parseInt(_data.split("-")[0]),
                             month: parseInt(_data.split("-")[1]),
                             day: parseInt(_data.split("-")[2]),
-                            todoText: '已签到'
+                            todoText: '已签到:' + ele.point
                         }],
                     });
                 })
