@@ -65,7 +65,7 @@ Page({
                                 year: currentSelect.year,
                                 month: currentSelect.month,
                                 day: currentSelect.day,
-                                todoText: '已签到'
+                                todoText: '已签到:' + res.data
                             }],
                         });
                     } else {
