@@ -17,7 +17,7 @@ function wxpay(app, money, orderId, redirectUrl) {
         money: money,
         remark: remark,
         payName: "在线支付",
-        nextAction: JSON.stringify(nextAction)
+        nextAction: nextAction
     }).then(function (res) {
         if (res.code == 0) {
             // 发起支付

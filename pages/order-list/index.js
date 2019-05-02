@@ -89,15 +89,15 @@ Page({
                 //     wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
                 // }
 
-                let _msg = '订单金额: ' + money + ' 元'
+                let _msg = '商品金额: ' + money + ' 元';
                 if (res.data.balance > 0) {
-                    _msg += ',可用余额为 ' + res.data.balance + ' 元'
+                    _msg += ',可用余额为 ' + res.data.balance + ' 元';
                     if (money - res.data.balance > 0) {
-                        _msg += ',仍需微信支付 ' + (money - res.data.balance) + ' 元'
+                        _msg += ',仍需微信支付 ' + (money - res.data.balance) + ' 元';
                     }
                 }
                 if (needScore > 0) {
-                    _msg += ',并扣除 ' + needScore + ' 积分'
+                    _msg += '，系统将扣除 ' + needScore + ' 积分'
                 }
                 // money = money - res.data.balance;
                 // 这里后台直接按照订单金额从余额里扣除相应部分费用

@@ -12,6 +12,7 @@ Page({
         goodsJsonStr: "",
         orderType: "", //订单类型，购物车下单或立即支付下单，默认是购物车，
         pingtuanOpenId: undefined, //拼团的话记录团号
+        userScore: 0, // 是否使用积分:0-不使用，1-使用
 
         hasNoCoupons: true,
         coupons: [],
@@ -53,6 +54,8 @@ Page({
             goodsList: shopList,
             allGoodsAndYunPrice: allGoodsRealPrice
         });
+        // 初始化积分等信息
+        that.initUserAmount();
         // 送货地址
         that.initShippingAddress();
     },
@@ -78,7 +81,14 @@ Page({
         }
         return aaa;
     },
-
+    useScoreChange: function (e) {
+        console.log("userScore *************:" + e.detail.value);
+        var that = this;
+        that.setData({
+            userScore: e.detail.value ? 1 : 0
+        });
+        console.log("that.data.userScore *************:" + that.data.userScore);
+    },
     createOrder: function (e) {
         wx.showLoading();
         var that = this;
@@ -91,7 +101,8 @@ Page({
         var postData = {
             token: loginToken,
             goodsJsonStr: that.data.goodsJsonStr,
-            remark: remark
+            remark: remark,
+            userScore: that.data.userScore
         };
         if (that.data.kjId) {
             postData.kjid = that.data.kjId
@@ -222,6 +233,17 @@ Page({
                 url: "/pages/order-list/index"
             });
         })
+    },
+    initUserAmount: function () {
+        var that = this;
+        const token = wx.getStorageSync('token');
+        WXAPI.userAmount(token).then(function (res) {
+            if (res.code == 0) {
+                that.setData({
+                    totalScoreToPay: res.data.score
+                });
+            }
+        });
     },
     initShippingAddress: function () {
         var that = this;
