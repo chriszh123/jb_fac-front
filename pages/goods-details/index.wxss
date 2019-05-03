@@ -402,3 +402,27 @@ swiper-item image {
     height: 50rpx;
     margin-top: 15rpx;
 }
+
+.product-price-view {
+    font-size: 10px;
+    padding-left: 14px;
+}
+
+.product-price-now {
+    color: #e64340;
+    font-size: 28rpx;
+    font-weight: bold;
+    padding-right: 20rpx;
+}
+
+.product-price-original {
+    color: #999;
+    text-decoration: line-through;
+    padding-right: 20rpx;
+}
+
+.product-number-sells {
+    color: #999;
+    font-size: 24rpx;
+    font-weight: bold;
+}
