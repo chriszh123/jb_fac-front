@@ -7,6 +7,7 @@ Page({
         balance: 0.00,
         freeze: 0,
         score: 0,
+        userId: -1,
         score_sign_continuous: 0
     },
     onLoad() {
@@ -14,7 +15,12 @@ Page({
     },
     onShow() {
         let that = this;
-        let userInfo = wx.getStorageSync('userInfo')
+        let userInfo = wx.getStorageSync('userInfo');
+        // 当前用户id(后端用户wid)
+        var uid = wx.getStorageSync('uid');
+        that.setData({
+            userId: uid
+        });
         if (!userInfo) {
             app.goLoginPageTimeOut()
         } else {

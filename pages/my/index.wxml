@@ -1,7 +1,7 @@
 <view class="container">
 	<view class="userinfo">
 		<image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
-		<text class="userinfo-nickname">{{ userInfo.nickName }}</text>
+		<text class="userinfo-nickname">{{ userInfo.nickName }}(UID:{{userId}})</text>
 	</view>
   <view class="asset">
     <view class='item' bindtap='goAsset'>
