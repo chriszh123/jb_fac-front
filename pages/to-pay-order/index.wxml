@@ -27,20 +27,27 @@
             </view>
         </view>
      </view>
-     <view class="peisong-way">
+     <view class="peisong-way" style="margin-bottom: -34px;">
         <view class="row-box" wx:if="{{isNeedLogistics > 0}}">
             <view class="row-label">配送方式</view>
             <view class="right-text" wx:if="{{yunPrice > 0}}">快递</view>
             <view class="right-text" wx:if="{{yunPrice == 0}}">包邮</view>
         </view>
+        <view style="row-box" style="display:flex;" wx:if="{{totalScoreToPay > 0}}">
+            <view class="row-label user-score-label">是否使用积分(当前积分：{{totalScoreToPay}})</view>
+            <view class="right-text" style="">
+                <switch name="useScore" bindchange="useScoreChange" class="wx-switch-input"/>
+            </view>
+        </view>
         <view class="row-box">
-            <view class="row-label">备注</view>
-            <view class="right-text">
-                <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入" />
+            <view class="row-label" style="width:30px;">备注</view>
+            <view class="right-text" style="padding-left:-10rpx">
+                <!-- <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入" />  -->
+                <textarea name="remark" auto-height placeholder="如需备注请输入" class="order-remark"/>
             </view>
         </view>
      </view>
-     <view class="peisong-way" hidden="{{hasNoCoupons}}">
+     <!-- <view class="peisong-way" hidden="{{hasNoCoupons}}">
         <view class="row-box" style="border-bottom:none;">
             <view class="row-label">选择使用优惠券</view>
         </view>
@@ -52,10 +59,10 @@
             </picker-view-column>
           </picker-view>
         </view>
-     </view>
+     </view> -->
 
 
-     <view class="goods-info" wx:if="{{(isNeedLogistics > 0 && yunPrice > 0) || (!hasNoCoupons)}}">
+     <!-- <view class="goods-info" wx:if="{{(isNeedLogistics > 0 && yunPrice > 0) || (!hasNoCoupons)}}">
         <view class="row-box" wx:if="{{isNeedLogistics > 0 && yunPrice > 0}}">
             <view class="row-label">商品金额</view>
             <view class="right-text">¥ {{allGoodsPrice}}</view>
@@ -68,11 +75,11 @@
             <view class="row-label">优惠券</view>
             <view class="right-text">- ¥ {{youhuijine}}</view>
         </view>
-     </view>
+     </view> -->
 
      <view class="jiesuan-box">
         <view class="left-price">
-            <view class="total">合计：¥ {{allGoodsAndYunPrice - youhuijine}} + {{totalScoreToPay}} 积分</view>
+            <view class="total">商品金额：¥ {{allGoodsAndYunPrice - youhuijine}}</view>
         </view>
         <button class="to-pay-btn" formType="submit">提交订单</button>
     </view>

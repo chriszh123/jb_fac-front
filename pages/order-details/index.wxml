@@ -10,9 +10,10 @@
             </view>
             <view class="right-text">
                 <view class="status red">{{orderDetail.orderInfo.statusStr}}</view>
-                <view class="des" hidden="true">请于11时59分59秒内付款，超时订单将自动关闭</view>
+                <!-- <view class="des" hidden="true">请于11时59分59秒内付款，超时订单将自动关闭</view> -->
             </view>
         </view>
+        <!--物流-->
         <block wx:if="{{orderDetail.logistics}}">
           <view wx:if="{{orderDetail.logisticsTraces}}" class="wuliu-box">
               <view class="icon-box">
@@ -45,6 +46,9 @@
               <view class="right-box">
                   <view class="name-tel">{{orderDetail.logistics.linkMan}}  {{orderDetail.logistics.mobile}}</view>
                   <view class="text">
+                      {{orderDetail.logistics.provinceStr}}
+                      {{orderDetail.logistics.cityStr}}
+                      {{orderDetail.logistics.areaStr}}
                       {{orderDetail.logistics.address}}
                   </view>
               </view>
@@ -88,7 +92,7 @@
             </view>
             </block>
             <view class="btn-row" wx:if="{{orderDetail.orderInfo.status==3}}">                
-                <navigator style="float:right;" class="confirm-btn" target="miniProgram" app-id="wx56c8f077de74b07c" path="/open/order-comment/order-comment?appid={{appid}}&order_id={{orderDetail.orderInfo.orderNumber}}">去购物单评价</navigator>
+                <navigator style="float:right;" class="confirm-btn" target="miniProgram" app-id="wx29494f30fe5e1026" path="/open/order-comment/order-comment?appid={{appid}}&order_id={{orderDetail.orderInfo.orderNumber}}">去购物单评价</navigator>
                 <button style="float:right;" class="confirm-btn" formType="submit">提交评价</button>
             </view>
             </form>
@@ -115,7 +119,7 @@
                 <view class="row-label">商品金额</view>
                 <view class="right-text">¥ {{orderDetail.orderInfo.amount}}</view>
             </view>
-            <view class="row-box">
+            <view class="row-box" wx:if="{{orderDetail.orderInfo.amountLogistics}}">
                 <view class="row-label">运费</view>
                 <view class="right-text">+ ¥ {{orderDetail.orderInfo.amountLogistics}}</view>
             </view>

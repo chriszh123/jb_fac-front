@@ -1,3 +1,4 @@
+<!--收获地址：新增/修改页面-->
 <view class="container">
     <form bindsubmit="bindSave">
     <view class="form-box">
@@ -34,8 +35,8 @@
         <view class="addr-details">
             <view class="label">详细地址</view>
             <view class="label-right">
-                <!--<input class="input" type="text" placeholder="街道门牌信息"/>-->
-                <textarea name="address" auto-height placeholder="街道门牌信息"  value="{{addressData.address}}{{wxaddress.detailInfo}}"/>
+                <!--<input class="input" type="text" name="address" auto-height placeholder="街道门牌信息"  value="{{addressData.address}}{{wxaddress.detailInfo}}"/>-->
+                 <textarea name="address" auto-height placeholder="街道门牌信息"  value="{{addressData.address}}{{wxaddress.detailInfo}}"/> 
             </view>
         </view>
         <view class="row-wrap">
