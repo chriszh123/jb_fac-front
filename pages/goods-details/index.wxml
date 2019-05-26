@@ -37,7 +37,7 @@
    </view>
 
    <view class="goods-info business-info">
-        <view class="goods-title">卖家</view>
+        <view class="goods-title">{{goodsDetail.business.name}}</view>
         <view class="product-price-view business-info-address">
             地址：<text class="business-info-address-font">{{goodsDetail.business.address}}</text>
         </view>
