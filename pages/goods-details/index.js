@@ -9,6 +9,7 @@ Page({
         interval: 3000,
         duration: 1000,
         goodsDetail: {},
+        business: {},
         swiperCurrent: 0,
         hasMoreSelect: false,
         selectSize: "选择：",
@@ -27,7 +28,23 @@ Page({
         shopType: "addShopCar", //购物类型，加入购物车或立即购买，默认为加入购物车
         currentPages: undefined
     },
-
+    telBusiness: function (e) {
+        var that = this;
+        // 拨打商品商家电话
+        if (that.data.business && that.data.business.phone && that.data.business.phone != '') {
+            wx.makePhoneCall({
+                phoneNumber: that.data.business.phone
+            });
+        } else {
+            wx.showToast({
+                title: '请联系管理员，完善卖家手机号码', //提示的内容,
+                icon: 'none', //图标,
+                duration: 3000, //延迟时间,
+                mask: true, //显示透明蒙层，防止触摸穿透,
+                success: res => {}
+            });
+        }
+    },
     //事件处理函数
     swiperchange: function (e) {
         //console.log(e.detail.current)
@@ -87,6 +104,7 @@ Page({
             }
             that.setData({
                 goodsDetail: res.data,
+                business: res.data.business,
                 selectSizePrice: res.data.basicInfo.minPrice,
                 totalScoreToPay: res.data.basicInfo.minScore,
                 buyNumMax: res.data.basicInfo.stores,

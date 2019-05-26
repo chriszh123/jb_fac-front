@@ -47,7 +47,7 @@ Page({
         if (shopList && shopList.length > 0) {
             for (var i = 0, size = shopList.length; i < size; i++) {
                 var good = shopList[i];
-                allGoodsRealPrice = allGoodsRealPrice + (good.number * good.price);
+                allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number ,  good.price);
             }
         }
         that.setData({
@@ -344,5 +344,18 @@ Page({
             youhuijine: this.data.coupons[selIndex].money,
             curCoupon: this.data.coupons[selIndex]
         });
+    },
+    accMul: function (arg1, arg2) {
+        // 两数相乘，避免出现多位小数
+        var m = 0,
+            s1 = arg1.toString(),
+            s2 = arg2.toString();
+        try {
+            m += s1.split(".")[1].length
+        } catch (e) {}
+        try {
+            m += s2.split(".")[1].length
+        } catch (e) {}
+        return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
     }
 })

@@ -35,6 +35,17 @@
             <text>分享有赏</text>
         </view>
    </view>
+
+   <view class="goods-info business-info">
+        <view class="goods-title">卖家</view>
+        <view class="product-price-view business-info-address">
+            地址：<text class="business-info-address-font">{{goodsDetail.business.address}}</text>
+        </view>
+        <view bindtap='telBusiness' class="goods-info-fx">
+            <image src='../../images/telphone.png' />
+        </view>
+   </view>
+
    <view wx:if="{{curGoodsKanjia}}" class="row-arrow" bindtap="goKanjia">
       邀请好友帮忙砍价 ( <text style='color:red'>底价 {{curGoodsKanjia.minPrice}} 元</text> )
    </view>
@@ -55,6 +66,8 @@
    <view wx:if="{{hasMoreSelect}}" class="row-arrow" bindtap="bindGuiGeTap">
       {{selectSize}}
    </view>
+  
+
     <view class="goods-des-info">
         <view class="label-title">商品介绍</view>
         <view class="goods-text">
