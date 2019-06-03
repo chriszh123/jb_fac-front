@@ -48,8 +48,8 @@ swiper-item image {
 
 .goods-info {
     background-color: #fff;
-    padding: 35rpx 0;
-    margin-bottom: 24rpx;
+    padding: 5rpx 0;
+    margin-bottom: 16rpx;
     width: 100%;
     position: relative;
 }
@@ -97,7 +97,7 @@ swiper-item image {
     font-size: 32rpx;
     line-height: 1.4;
     color: #000;
-    margin-bottom: 14rpx;
+    margin-bottom: 12rpx;
     padding-right: 60px;
 }
 
@@ -107,7 +107,7 @@ swiper-item image {
     font-size: 25rpx;
     line-height: 1.4;
     color: #CC0000;
-    margin-bottom: 28rpx;
+    margin-bottom: 10rpx;
 }
 
 .goods-info .goods-price {
@@ -410,7 +410,7 @@ swiper-item image {
 
 .product-price-now {
     color: #e64340;
-    font-size: 28rpx;
+    font-size: 45rpx;
     font-weight: bold;
     padding-right: 20rpx;
 }
@@ -419,11 +419,12 @@ swiper-item image {
     color: #999;
     text-decoration: line-through;
     padding-right: 20rpx;
+    font-size:28rpx;
 }
 
 .product-number-sells {
     color: #999;
-    font-size: 24rpx;
+    font-size: 35rpx;
     font-weight: bold;
 }
 
