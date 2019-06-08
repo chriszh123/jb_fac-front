@@ -8,5 +8,5 @@
     <view class='typeStr'>{{ item.typeStr }} {{ item.remark? '('+ item.remark +')' : '' }}</view>
     <view class='dateAdd'>{{ item.dateAdd }}</view>
   </view>
-  <view class='amount' style="color: {{ (item.behavior ==0 ) ? 'red' : 'green' }}"> {{ (item.behavior ==0 ) ? '+' : '-' }} {{ item.score }} </view>
+  <view class='amount' style="font-weight: bold;color: {{ (item.behavior ==0 ) ? 'red' : 'green' }}"> {{ (item.behavior ==0 ) ? '+' : '-' }} {{ item.score }} </view>
 </view>
