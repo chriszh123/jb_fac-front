@@ -47,7 +47,7 @@ Page({
         if (shopList && shopList.length > 0) {
             for (var i = 0, size = shopList.length; i < size; i++) {
                 var good = shopList[i];
-                allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number ,  good.price);
+                allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, good.price);
             }
         }
         that.setData({
@@ -148,6 +148,27 @@ Page({
                     showCancel: false
                 })
                 return;
+            } else {
+                // 订单创建成功后需要清除相应商品对应的分享人缓存信息
+                var goodsList = that.data.goodsList;
+                for (let i = 0; i < goodsList.length; i++) {
+                    var prod = goodsList[i];
+                    // 商品id
+                    var prodId = prod.goodsId;
+                    // 每个商品对应的分享人 :{key:inviterid_ + 商品id, value:分享人id}
+                    var inviterKey = 'inviterid_' + prodId;
+                    var inviterId_storge = wx.getStorageSync(inviterKey);
+                    // 当前商品有其他人分享信息时才会做删除分享人缓存操作
+                    console.log('after create order success, remove inviter: inviterKey = ' + inviterKey + ", inviterId_storge = " + inviterId_storge);
+                    if (inviterId_storge) {
+                        try {
+                            wx.removeStorageSync(inviterKey);
+                            console.log('remove inviter success, inviterKey = ' + inviterKey);
+                        } catch (e) {
+                            console.log('remove inviter error, inviterKey = ' + inviterKey);
+                        }
+                    }
+                }
             }
 
             if (e && "buyNow" != that.data.orderType) {
@@ -270,13 +291,6 @@ Page({
         var isNeedLogistics = 0;
         var allGoodsPrice = 0;
 
-        // 分享人
-        let inviter_id = 0;
-        let inviter_id_storge = wx.getStorageSync('referrer');
-        if (inviter_id_storge) {
-            inviter_id = inviter_id_storge;
-        }
-
         for (let i = 0; i < goodsList.length; i++) {
             let carShopBean = goodsList[i];
             if (carShopBean.logistics) {
@@ -288,8 +302,19 @@ Page({
             if (i > 0) {
                 goodsJsonStrTmp = ",";
             }
+            // 商品id
+            var prodId = carShopBean.goodsId;
+            var inviter_id = 0;
+            // 每个商品对应的分享人 :{key:inviterid_ + 商品id, value:分享人id}
+            var inviterKey = 'inviterid_' + prodId;
+            var inviterId_storge = wx.getStorageSync(inviterKey);
+            if (inviterId_storge) {
+                inviter_id = inviterId_storge;
+            }
+            console.log('inviterKey =' + inviterKey + ", inviter_id = " + inviter_id + ", inviterId_storge = " + inviterId_storge);
+
             // 每个商品对应的基本信息, 包括分享人
-            goodsJsonStrTmp += '{"goodsId":' + carShopBean.goodsId + ',"number":' + carShopBean.number + ',"propertyChildIds":"' + carShopBean.propertyChildIds + '","logisticsType":0, "inviter_id":' + inviter_id + '}';
+            goodsJsonStrTmp += '{"goodsId":' + prodId + ',"number":' + carShopBean.number + ',"propertyChildIds":"' + carShopBean.propertyChildIds + '","logisticsType":0, "inviter_id":' + inviter_id + '}';
             goodsJsonStr += goodsJsonStrTmp;
         }
         goodsJsonStr += "]";

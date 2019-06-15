@@ -55,8 +55,9 @@ Page({
     onLoad: function (e) {
         // inviter_id：邀请人id,有值时，说明这个商品明细页面是通过别人分享过来的，后面如果买了，需要给分享人佣金
         if (e.inviter_id) {
+            // 当前商品分享人:{key:inviterid_ + 商品id, value:分享人id}
             wx.setStorage({
-                key: 'inviter_id_' + e.id,
+                key: 'inviterid_' + e.id,
                 data: e.inviter_id
             })
             // 推荐者
