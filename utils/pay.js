@@ -24,7 +24,7 @@ function wxpay(app, money, orderId, redirectUrl) {
             wx.requestPayment({
                 timeStamp: res.data.timeStamp,
                 nonceStr: res.data.nonceStr,
-                package: 'prepay_id=' + res.data.prepayId,
+                package: res.data.prepayId,
                 signType: 'MD5',
                 paySign: res.data.sign,
                 fail: function (error) {
