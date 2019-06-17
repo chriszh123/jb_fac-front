@@ -220,10 +220,25 @@ Page({
         this.getOrderStatistics();
         WXAPI.orderList(postData).then(function (res) {
             if (res.code == 0) {
+                var orderList = res.data.orderList;
+                var goodsMap = res.data.goodsMap;
+                if (orderList && goodsMap) {
+                    for (var i = 0, size = orderList.length; i < size; i++) {
+                        for (var prod in goodsMap) {
+                            if (prod == orderList[i].prodId) {
+                                var pics = goodsMap[prod][0].pic;
+                                if (pics) {
+                                    orderList[i].pic = pics.split(",")[0];
+                                }
+                            }
+                        }
+                    }
+                }
+                console.log("orderList = " + JSON.stringify(orderList));
                 that.setData({
-                    orderList: res.data.orderList,
+                    orderList: orderList,
                     //   logisticsMap: res.data.logisticsMap,
-                    goodsMap: res.data.goodsMap
+                    goodsMap: goodsMap
                 });
             } else {
                 that.setData({
