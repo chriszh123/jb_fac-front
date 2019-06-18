@@ -37,8 +37,21 @@
                 <view class="total-price" wx:if="{{item.score > 0}}">合计：¥ {{item.amountReal}} + {{item.score}} 积分</view>
                 <view class="btn cancel-btn" hidden="{{item.status==0? false : true}}" bindtap="cancelOrderTap"  data-id="{{item.orderNumber}}">取消订单</view>
                 <view class="btn topay-btn" hidden="{{item.status==0? false : true}}" bindtap="toPayTap" data-id="{{item.orderNumber}}" data-money="{{item.amountReal}}" data-score="{{item.score}}">马上付款</view> 
-                <view class="btn cancel-btn" hidden="{{item.status==5? false : true}}" bindtap="writeOffOrder"  data-id="{{item.orderNumber}}" data-prodid="{{item.prodId}}">核销商品</view>       
+                <view class="btn cancel-btn" hidden="{{item.status==5? false : true}}" bindtap="writeOffOrder"  data-id="{{item.orderNumber}}" data-prodid="{{item.prodId}}">核销商品</view>  
+                <view class="btn qrcode-btn" hidden="{{item.status==1? false : true}}" bindtap="ejectQrcode"  data-id="{{item.orderNumber}}" data-prodid="{{item.prodId}}">核销码</view>      
             </view>  
         </view>
     </view>
+
+    <view wx:if='{{showModal}}'>
+        <view class='mask_layer' bindtap='hideQrcode' />
+        <view class='modal_box'>
+            <view class="title">核销订单号：{{qrCodeOrderNo}}</view>
+            <view class='content'>
+                <canvas class="cavas-qrcode" canvas-id="qrcode" />
+            </view>
+        </view>
+    </view>
 </view>
+
+

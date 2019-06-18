@@ -1,5 +1,6 @@
 //订单列表
 const wxpay = require('../../utils/pay.js')
+const QR = require("../../utils/qrcode.js");
 const app = getApp()
 const WXAPI = require('../../wxapi/main')
 Page({
@@ -10,7 +11,9 @@ Page({
         currentType: 0,
         userType: 0, // 用户类型：0-普通购买用户,1-商家
         // tabClass: ["", "", "", "", ""]
-        tabClass: ["", "", "", "", ""]
+        tabClass: ["", "", "", "", ""],
+        showModal: false,
+        qrCodeOrderNo: ''
     },
     // 订单种类tab点击事件
     statusTap: function (e) {
@@ -264,6 +267,78 @@ Page({
     onReachBottom: function () {
         // 页面上拉触底事件的处理函数
 
+    },
+    ejectQrcode: function (e) {
+        // 弹出当前商品对应的核销二维码
+        var that = this;
+        var orderNo = e.currentTarget.dataset.id;
+        var prodId = e.currentTarget.dataset.prodid;
+        that.setData({
+            showModal: true,
+            qrCodeOrderNo: orderNo
+        });
+        // 核销码内容
+        var qrcodeData = orderNo + ',' + prodId;
+        var st = setTimeout(() => {
+            var size = that.setCanvasSize();
+            //绘制二维码
+            that.createQrCode(qrcodeData, 'qrcode', 292, 264);
+            that.setData({
+                maskHidden: true
+            });
+            clearTimeout(st);
+        }, 2000);
+    },
+    hideQrcode: function () {
+        // 隐藏当前商品对应的核销二维码弹框
+        var that = this;
+        that.setData({
+            showModal: false
+        });
+    },
+    createQrCode: function (url, canvasId, cavW, cavH) {
+        //调用插件中的draw方法，绘制二维码图片
+        QR.qrApi.draw(url, canvasId, cavW, cavH);
+        var that = this;
+        //二维码生成之后调用canvasToTempImage();延迟3s，否则获取图片路径为空
+        var st = setTimeout(() => {
+            that.canvasToTempImage();
+            clearTimeout(st);
+        }, 3000);
+    },
+    canvasToTempImage: function () {
+        //获取临时缓存照片路径，存入data中
+        var that = this;
+        wx.canvasToTempFilePath({
+            canvasId: 'qrcode',
+            success: function (res) {
+                var tempFilePath = res.tempFilePath;
+                console.log('tempFilePath = ' + tempFilePath);
+                that.setData({
+                    imagePath: tempFilePath
+                });
+            },
+            fail: function (res) {
+                console.log(res);
+            }
+        });
+    },
+    setCanvasSize: function () {
+        //适配不同屏幕大小的canvas
+        var size = {};
+        try {
+            var res = wx.getSystemInfoSync();
+            var scale = 750 / 686; //不同屏幕下canvas的适配比例；设计稿是750宽
+            var width = res.windowWidth / scale;
+            var height = width; //canvas画布为正方形
+            size.w = width;
+            size.h = height;
+        } catch (e) {
+            // Do something when catch error
+            console.log('获取设备信息失败' + e);
+        }
+
+        return size;
     },
     //核销订单商品
     writeOffOrder: function (e) {
