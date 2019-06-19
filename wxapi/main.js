@@ -317,5 +317,10 @@ module.exports = {
         return request('/user/sign/logs', true, 'post', {
             token
         })
-    }
+    },
+    userInfo: (token) => {
+        return request('/user/userInfo', true, 'post', {
+            token
+        })
+    },
 }

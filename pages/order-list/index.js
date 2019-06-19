@@ -277,10 +277,18 @@ Page({
             showModal: true,
             qrCodeOrderNo: orderNo
         });
+        wx.showToast({
+            title: '生成中...', //提示的内容,
+            icon: 'loading', //图标,
+            duration: 3000, //延迟时间,
+            //mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
+        });
         // 核销码内容
         var qrcodeData = orderNo + ',' + prodId;
         var st = setTimeout(() => {
-            var size = that.setCanvasSize();
+            wx.hideToast();
+            // var size = that.setCanvasSize();
             //绘制二维码
             that.createQrCode(qrcodeData, 'qrcode', 292, 264);
             that.setData({

@@ -214,14 +214,14 @@
 }
 
 .modal_box {
-    width: 72%;
+    width: 70%;
     overflow: hidden;
     position: fixed;
     top: 50%;
     left: 0;
     z-index: 1001;
     background: #fafafa;
-    margin: -150px 12% 0 12%;
+    margin: -150px 12% 0 15%;
     border-radius: 15px;
 }
 

@@ -8,7 +8,8 @@ Page({
         freeze: 0,
         score: 0,
         userId: -1,
-        score_sign_continuous: 0
+        score_sign_continuous: 0,
+        hiddenWriteoffProd: true
     },
     onLoad() {
 
@@ -31,6 +32,18 @@ Page({
         }
         this.getUserApiInfo();
         this.getUserAmount();
+        this.userInfo();
+    },
+    userInfo: function () {
+        var that = this;
+        var token = wx.getStorageSync('token');
+        WXAPI.userInfo(token).then(function (res) {
+            // 用户类型：0-普通购买用户,1-商家
+            var userType = res.data.userType;
+            that.setData({
+                hiddenWriteoffProd: (userType == 0)
+            });
+        });
     },
     aboutUs: function () {
         wx.showModal({
@@ -118,5 +131,66 @@ Page({
         wx.navigateTo({
             url: "/pages/order-list/index?type=" + e.currentTarget.dataset.type
         })
+    },
+    scacnQrcode: function () {
+        // 核销商品，扫描订单核销码
+        // 允许从相机和相册扫码
+        wx.scanCode({
+            success: (res) => {
+                var orderNoAndProdId = res.result;
+                // 本来是打算跳转到一个新页面后做一些核销后的操作的
+                // wx.navigateTo({
+                //     url: "/pages/writeoff-qrcode/index?orderNoAndProdId=" + orderNoAndProdId
+                // });
+                console.log('orderNoAndProdId = ' + orderNoAndProdId);
+                if (orderNoAndProdId) {
+                    var orderNoAndProdIdArr = orderNoAndProdId.split(',');
+                    if (orderNoAndProdIdArr.length < 2) {
+                        // 核销码对应二维码内容为空
+                        wx.showModal({
+                            title: '提示', //提示的标题,
+                            content: '订单核销码内容不正确，请联系管理员:' + orderNoAndProdId, //提示的内容,
+                            showCancel: false, //是否显示取消按钮,
+                            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                            confirmColor: '#3CC51F' //确定按钮的文字颜色,
+                        });
+                        return;
+                    }
+                    var orderNo = orderNoAndProdIdArr[0];
+                    var prodId = orderNoAndProdIdArr[1];
+                    var token = wx.getStorageSync('token');
+                    // 核销当前商品订单
+                    WXAPI.writeOffOrder(orderNo, token, prodId).then(function (res) {
+                        if (res.code != 0) {
+                            wx.showModal({
+                                title: '核销失败', //提示的标题,
+                                content: res.msg, //提示的内容,
+                                showCancel: false, //是否显示取消按钮,
+                                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                                confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                                success: res => {
+                                    if (res.confirm) {
+                                        console.log('用户点击确定')
+                                    } else if (res.cancel) {
+                                        console.log('用户点击取消')
+                                    }
+                                }
+                            });
+                            return;
+                        }
+                        // 商品订单核销成功
+                    });
+                } else {
+                    // 订单核销码内容为空
+                    wx.showModal({
+                        title: '提示', //提示的标题,
+                        content: '订单核销码内容为空，请联系管理员', //提示的内容,
+                        showCancel: false, //是否显示取消按钮,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F' //确定按钮的文字颜色,
+                    });
+                }
+            }
+        });
     }
 })
