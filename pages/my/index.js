@@ -1,6 +1,6 @@
-const app = getApp()
-const CONFIG = require('../../config.js')
-const WXAPI = require('../../wxapi/main')
+const app = getApp();
+const CONFIG = require('../../config.js');
+const WXAPI = require('../../wxapi/main');
 
 Page({
     data: {
@@ -145,7 +145,8 @@ Page({
                 console.log('orderNoAndProdId = ' + orderNoAndProdId);
                 if (orderNoAndProdId) {
                     var orderNoAndProdIdArr = orderNoAndProdId.split(',');
-                    if (orderNoAndProdIdArr.length < 2) {
+                    // 校验：属于我们江北福利抢购小程序特有的二维码内容
+                    if (orderNoAndProdIdArr.length < 3 || orderNoAndProdIdArr[0] != CONFIG.qrcodePrefix) {
                         // 核销码对应二维码内容为空
                         wx.showModal({
                             title: '提示', //提示的标题,
@@ -156,30 +157,53 @@ Page({
                         });
                         return;
                     }
-                    var orderNo = orderNoAndProdIdArr[0];
-                    var prodId = orderNoAndProdIdArr[1];
-                    var token = wx.getStorageSync('token');
-                    // 核销当前商品订单
-                    WXAPI.writeOffOrder(orderNo, token, prodId).then(function (res) {
-                        if (res.code != 0) {
-                            wx.showModal({
-                                title: '核销失败', //提示的标题,
-                                content: res.msg, //提示的内容,
-                                showCancel: false, //是否显示取消按钮,
-                                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                                confirmColor: '#3CC51F', //确定按钮的文字颜色,
-                                success: res => {
-                                    if (res.confirm) {
-                                        console.log('用户点击确定')
-                                    } else if (res.cancel) {
-                                        console.log('用户点击取消')
+
+                    wx.showModal({
+                        title: '提示',
+                        content: '确定要核销该订单吗？',
+                        showCancel: true, //是否显示取消按钮,
+                        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+                        cancelColor: '#000000', //取消按钮的文字颜色,
+                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                        success: function (res) {
+                            if (res.confirm) {
+                                var orderNo = orderNoAndProdIdArr[1];
+                                var prodId = orderNoAndProdIdArr[2];
+                                var token = wx.getStorageSync('token');
+
+                                // 核销当前商品订单
+                                WXAPI.writeOffOrder(orderNo, token, prodId).then(function (res) {
+                                    if (res.code != 0) {
+                                        wx.showModal({
+                                            title: '核销失败', //提示的标题,
+                                            content: res.msg, //提示的内容,
+                                            showCancel: false, //是否显示取消按钮,
+                                            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                                            confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                                            success: res => {
+                                                if (res.confirm) {
+                                                    console.log('用户点击确定')
+                                                } else if (res.cancel) {
+                                                    console.log('用户点击取消')
+                                                }
+                                            }
+                                        });
+                                        return;
                                     }
-                                }
-                            });
-                            return;
+                                    // 商品订单核销成功
+                                    wx.showModal({
+                                        title: '商品订单核销成功', //提示的标题,
+                                        content: '', //提示的内容,
+                                        showCancel: false, //是否显示取消按钮,
+                                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+
+                                    });
+                                });
+                            }
                         }
-                        // 商品订单核销成功
                     });
+
                 } else {
                     // 订单核销码内容为空
                     wx.showModal({

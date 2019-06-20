@@ -1,8 +1,10 @@
 //订单列表
-const wxpay = require('../../utils/pay.js')
+const wxpay = require('../../utils/pay.js');
 const QR = require("../../utils/qrcode.js");
-const app = getApp()
-const WXAPI = require('../../wxapi/main')
+const app = getApp();
+const WXAPI = require('../../wxapi/main');
+const CONFIG = require('../../config.js');
+
 Page({
     data: {
         // statusType: ["待付款", "待发货", "待收货", "待评价", "已完成"],
@@ -285,7 +287,7 @@ Page({
             success: res => {}
         });
         // 核销码内容
-        var qrcodeData = orderNo + ',' + prodId;
+        var qrcodeData = CONFIG.qrcodePrefix + ',' + orderNo + ',' + prodId;
         var st = setTimeout(() => {
             wx.hideToast();
             // var size = that.setCanvasSize();

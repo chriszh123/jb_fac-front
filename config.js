@@ -4,6 +4,7 @@ module.exports = {
 //   subDomain: "zgf", // 如果你的域名是： https://api.it120.cc/abcd 那么这里只要填写 abcd
   subDomain: "fac/client",
   appid: "wxd54ed7d779db1829", // 您的小程序的appid，购物单功能需要使用
+  qrcodePrefix: 'jbfac',
   shareProfile: '百款精品商品，总有一款适合您' // 首页转发的时候话术
 }
 /*

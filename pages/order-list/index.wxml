@@ -42,14 +42,14 @@
             </view>  
         </view>
     </view>
+</view>
 
-    <view wx:if='{{showModal}}'>
-        <view class='mask_layer' bindtap='hideQrcode' />
-        <view class='modal_box'>
-            <view class="title">核销订单号：{{qrCodeOrderNo}}</view>
-            <view class='content'>
-                <canvas class="cavas-qrcode" canvas-id="qrcode" />
-            </view>
+<view wx:if='{{showModal}}'>
+    <view class='mask_layer' bindtap='hideQrcode' />
+    <view class='modal_box'>
+        <view class="title">核销订单号：{{qrCodeOrderNo}}</view>
+        <view class='content'>
+            <canvas class="cavas-qrcode" canvas-id="qrcode" />
         </view>
     </view>
 </view>
