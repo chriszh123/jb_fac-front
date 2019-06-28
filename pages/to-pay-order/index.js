@@ -48,6 +48,7 @@ Page({
             for (var i = 0, size = shopList.length; i < size; i++) {
                 var good = shopList[i];
                 allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, good.price);
+                allGoodsRealPrice = that.accMul(1, allGoodsRealPrice);
             }
         }
         that.setData({
