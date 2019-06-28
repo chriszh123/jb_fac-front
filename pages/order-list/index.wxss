@@ -74,7 +74,7 @@
 
 .order-list .a-order .order-date {
     padding: 0 30rpx;
-    height: 88rpx;
+    height: 150rpx;
     display: flex;
     justify-content: space-between;
     font-size: 26rpx;

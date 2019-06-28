@@ -27,8 +27,8 @@
                 <view class="goods-des" style="height:140rpx;">
                    <view style="margin-bottom:3px;">{{product.prodName}} </view>
                    <view>
-                        <view style="margin-bottom:3px;color:red;margin-left:30px;">¥ {{product.price}}</view>
-                        <view style="margin-bottom:3px;margin-left:30px;">x {{product.number}}</view>
+                        <view style="margin-bottom:3px;color:red;margin-left:165px;">¥ {{product.price}}</view>
+                        <view style="margin-bottom:3px;margin-left:165px;">x {{product.number}}</view>
                    </view>
                 </view>
             </view>

@@ -142,7 +142,7 @@ Page({
                 // wx.navigateTo({
                 //     url: "/pages/writeoff-qrcode/index?orderNoData=" + /orderNoData
                 // });
-                console.log('scacnQrcode -> orderNo = ' + orderNo);
+                console.log('scacnQrcode -> orderNoData = ' + orderNoData);
                 if (orderNoData) {
                     var orderNoArr = orderNoData.split(',');
                     // 校验：属于我们江北福利抢购小程序特有的二维码内容

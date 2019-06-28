@@ -85,6 +85,9 @@ module.exports = {
     scoreLogs: (data) => {
         return request('/user/score/logs', true, 'post', data)
     },
+    amountLogs: (data) => {
+        return request('/user/amount/logs', true, 'post', data)
+    },
     kanjiaList: (data) => {
         return request('/shop/goods/kanjia/list', true, 'post', data)
     },
