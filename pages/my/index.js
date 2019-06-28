@@ -137,20 +137,20 @@ Page({
         // 允许从相机和相册扫码
         wx.scanCode({
             success: (res) => {
-                var orderNoAndProdId = res.result;
+                var orderNoData = res.result;
                 // 本来是打算跳转到一个新页面后做一些核销后的操作的
                 // wx.navigateTo({
-                //     url: "/pages/writeoff-qrcode/index?orderNoAndProdId=" + orderNoAndProdId
+                //     url: "/pages/writeoff-qrcode/index?orderNoData=" + /orderNoData
                 // });
-                console.log('orderNoAndProdId = ' + orderNoAndProdId);
-                if (orderNoAndProdId) {
-                    var orderNoAndProdIdArr = orderNoAndProdId.split(',');
+                console.log('scacnQrcode -> orderNo = ' + orderNo);
+                if (orderNoData) {
+                    var orderNoArr = orderNoData.split(',');
                     // 校验：属于我们江北福利抢购小程序特有的二维码内容
-                    if (orderNoAndProdIdArr.length < 3 || orderNoAndProdIdArr[0] != CONFIG.qrcodePrefix) {
+                    if (orderNoArr.length < 2 || orderNoArr[0] != CONFIG.qrcodePrefix) {
                         // 核销码对应二维码内容为空
                         wx.showModal({
                             title: '提示', //提示的标题,
-                            content: '订单核销码内容不正确，请联系管理员:' + orderNoAndProdId, //提示的内容,
+                            content: '订单核销码内容不正确，请联系管理员:' + orderNoData, //提示的内容,
                             showCancel: false, //是否显示取消按钮,
                             confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
                             confirmColor: '#3CC51F' //确定按钮的文字颜色,
@@ -168,10 +168,9 @@ Page({
                         confirmColor: '#3CC51F', //确定按钮的文字颜色,
                         success: function (res) {
                             if (res.confirm) {
-                                var orderNo = orderNoAndProdIdArr[1];
-                                var prodId = orderNoAndProdIdArr[2];
+                                var orderNo = orderNoArr[1];
+                                var prodId = '';
                                 var token = wx.getStorageSync('token');
-
                                 // 核销当前商品订单
                                 WXAPI.writeOffOrder(orderNo, token, prodId).then(function (res) {
                                     if (res.code != 0) {

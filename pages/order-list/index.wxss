@@ -152,6 +152,7 @@
 .order-list .a-order .price-box .total-price {
     font-size: 26rpx;
     color: #e64340;
+    margin-top: 12px
 }
 
 .a-order .price-box .btn {
@@ -168,12 +169,13 @@
     border: 1rpx solid #ccc;
     position: absolute;
     right: 216rpx;
-    top: 20rpx;
+    top: 30rpx;
 }
 
 .a-order .price-box .topay-btn {
     border: 1px solid #e64340;
     color: #e64340;
+    margin-top:7px;
 }
 
 .img-box {
@@ -195,7 +197,7 @@
     border: 1rpx solid #ccc;
     position: absolute;
     right: 15rpx;
-    top: 20rpx;
+    top: 32rpx;
     background-color: orange;
     font-weight: bold;
 }
@@ -288,3 +290,7 @@
 }
 
 /*核销二维码弹框 end*/
+
+.order-no {
+    margin-top: 10px;
+}
