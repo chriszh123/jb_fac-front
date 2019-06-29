@@ -152,7 +152,7 @@ Page({
                             title: '提示', //提示的标题,
                             content: '订单核销码内容不正确，请联系管理员:' + orderNoData, //提示的内容,
                             showCancel: false, //是否显示取消按钮,
-                            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                            confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
                             confirmColor: '#3CC51F' //确定按钮的文字颜色,
                         });
                         return;
@@ -178,7 +178,7 @@ Page({
                                             title: '核销失败', //提示的标题,
                                             content: res.msg, //提示的内容,
                                             showCancel: false, //是否显示取消按钮,
-                                            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                                            confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
                                             confirmColor: '#3CC51F', //确定按钮的文字颜色,
                                             success: res => {
                                                 if (res.confirm) {
@@ -195,7 +195,7 @@ Page({
                                         title: '商品订单核销成功', //提示的标题,
                                         content: '', //提示的内容,
                                         showCancel: false, //是否显示取消按钮,
-                                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                                        confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
 
                                     });
                                 });
@@ -209,7 +209,7 @@ Page({
                         title: '提示', //提示的标题,
                         content: '订单核销码内容为空，请联系管理员', //提示的内容,
                         showCancel: false, //是否显示取消按钮,
-                        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                        confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
                         confirmColor: '#3CC51F' //确定按钮的文字颜色,
                     });
                 }

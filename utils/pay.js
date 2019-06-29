@@ -28,9 +28,30 @@ function wxpay(app, money, orderId, redirectUrl) {
                 signType: 'MD5',
                 paySign: res.data.sign,
                 fail: function (error) {
-                    wx.showToast({
-                        title: '支付失败:' + error
-                    })
+                    if (error && error.errMsg && error.errMsg.toLowerCase().indexOf('cancel') >= 0) {
+                        wx.showToast({
+                            title: '支付取消成功', //提示的内容,
+                            icon: 'success', //图标,
+                            duration: 3000, //延迟时间,
+                            mask: true, //显示透明蒙层，防止触摸穿透,
+                            success: res => {}
+                        });
+                    } else {
+                        if (error && error.errMsg) {
+                            wx.showModal({
+                                title: '支付失败', //提示的标题,
+                                content: error.errMsg, //提示的内容,
+                                showCancel: false, //是否显示取消按钮,
+                                confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
+                                confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                                success: res => {}
+                            });
+                        } else {
+                            wx.showToast({
+                                title: '支付失败:' + error
+                            });
+                        }
+                    }
                 },
                 success: function () {
                     // 保存 formid
