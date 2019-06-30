@@ -1,7 +1,7 @@
 <view class="container">
 	<view class="userinfo">
 		<image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
-		<text class="userinfo-nickname">{{ userInfo.nickName }}</text>
+		<text class="userinfo-nickname">{{ userInfo.nickName }}(UID:{{userId}})</text>
 	</view>
   <view class="asset">
     <view class='item' bindtap='goAsset'>
@@ -72,10 +72,11 @@
     <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">绑定手机号码</button>
   </view> -->
   <view class="my-item  to-authorize">
+    <button hidden="{{hiddenWriteoffProd}}" type="primary" class="btn-writeoff-prod" bindtap="scacnQrcode">核销商品</button>
     <button type="warn" bindtap="relogin">重新授权登录</button>
   </view>
   
   <view style="height:20rpx;background: #eee;width:100%;"></view>
-  <view class="version">Powered by JB FAC V{{version}}</view>
+  <view class="version">Powered by JB FAC</view>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
 </view>

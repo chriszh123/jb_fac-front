@@ -10,32 +10,48 @@
         <view class="text">暂无订单</view>
     </view>
     <view class="order-list" hidden="{{orderList ? false : true}}">
-        <view class="a-order" wx:for-items="{{orderList}}" wx:key="{{index}}">
+        <view class="a-order" wx:for="{{orderList}}" wx:key="{{index}}" wx:for-item="item">
             <view class="order-date">
-                <view class="date-box">下单时间：{{item.dateAdd}}</view>
-                <view class="status {{(item.status==-1 || item.status==4) ? '':'red'}}">{{item.statusStr}}</view>
+                <view>
+                    <view class="date-box {{item.status != 0 ? 'order-no' : ''}}">下单时间：{{item.dateAdd}}</view>
+                    <view class="date-box">订单编号：{{item.orderNumber}} </view>
+                    <view wx:if="{{item.remark && item.remark != ''}}">备注： {{item.remark}}</view>
+                </view>
+                <!-- <view class="status {{(item.status==-1 || item.status==4) ? '':'red'}}">{{item.statusStr}}</view> -->
             </view>
-            <view class="goods-info" bindtap="orderDetail" data-id="{{item.id}}">
+            <!-- <view class="goods-info" bindtap="orderDetail" data-id="{{item.id}}"> -->
+            <view class="goods-info" wx:if="{{item.orderProducts}}" wx:for="{{item.orderProducts}}" wx:for-item="product" wx:key="{{prodIndex}}">
+                <view class="img-box">
+                    <image src="{{product.pic}}" class="img" />
+                </view>
                 <view class="goods-des" style="height:140rpx;">
-                   <view>订单号：{{item.orderNumber}} </view>
-                   <view wx:if="{{item.status==1}}">核销码：{{item.writeOffCode}}</view>
-                   <view wx:if="{{item.remark && item.remark != ''}}">备注： {{item.remark}}</view>
+                   <view style="margin-bottom:3px;">{{product.prodName}} </view>
+                   <view>
+                        <view style="margin-bottom:3px;color:red;margin-left:165px;">¥ {{product.price}}</view>
+                        <view style="margin-bottom:3px;margin-left:165px;">x {{product.number}}</view>
+                   </view>
                 </view>
             </view>
-            <!-- <view >
-                <scroll-view class="goods-img-container" scroll-x="true">
-                    <view class="img-box" wx:for-items="{{goodsMap[item.id]}}" wx:key="{{index}}">
-                        <image src="{{item.pic}}" class="goods-img"></image>
-                    </view>
-                </scroll-view>
-            </view> -->
             <view class="price-box">
                 <view class="total-price" wx:if="{{item.score <= 0}}">合计：¥ {{item.amountReal}}</view>
                 <view class="total-price" wx:if="{{item.score > 0}}">合计：¥ {{item.amountReal}} + {{item.score}} 积分</view>
                 <view class="btn cancel-btn" hidden="{{item.status==0? false : true}}" bindtap="cancelOrderTap"  data-id="{{item.orderNumber}}">取消订单</view>
-                <view class="btn topay-btn" hidden="{{item.status==0? false : true}}" bindtap="toPayTap" data-id="{{item.orderNumber}}" data-money="{{item.amountReal}}" data-score="{{item.score}}">马上付款</view> 
-                <view class="btn cancel-btn" hidden="{{item.status==5? false : true}}" bindtap="writeOffOrder"  data-id="{{item.orderNumber}}" data-prodid="{{item.prodId}}">核销商品</view>       
+                <view class="btn topay-btn" hidden="{{item.status==0? false : true}}" bindtap="toPayTap" data-id="{{item.orderNumber}}" data-prodid="{{item.prodId}}" data-money="{{item.amountReal}}" data-score="{{item.score}}">马上付款</view> 
+                <view class="btn qrcode-btn" hidden="{{item.status==5? false : true}}" bindtap="writeOffOrder"  data-id="{{item.orderNumber}}" data-prodid="{{item.prodId}}">核销商品</view>  
+                <view class="btn qrcode-btn" hidden="{{item.status==1? false : true}}" bindtap="ejectQrcode"  data-id="{{item.orderNumber}}" data-prodid="{{item.prodId}}">点我去核销</view>      
             </view>  
         </view>
     </view>
 </view>
+
+<view wx:if='{{showModal}}'>
+    <view class='mask_layer' bindtap='hideQrcode' />
+    <view class='modal_box'>
+        <view class="title">核销订单号：{{qrCodeOrderNo}}</view>
+        <view class='content'>
+            <canvas class="cavas-qrcode" canvas-id="qrcode" />
+        </view>
+    </view>
+</view>
+
+

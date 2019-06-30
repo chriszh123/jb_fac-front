@@ -236,7 +236,7 @@ form {
 }
 
 .user-score-label {
-    width: 135px;
+    width: 240px;
     padding-left: 12px;
     padding-top: 10px;
 }

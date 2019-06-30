@@ -2,11 +2,11 @@
     <view class="sec-wrap">
         <view class="order-status">
             <view class="icon-box">
-                <image wx:if="{{orderDetail.orderInfo.status==-1}}" class="icon" src="/images/order-details/icon-ddgb.png"></image>
+                <image wx:if="{{orderDetail.orderInfo.status==4}}" class="icon" src="/images/order-details/icon-ddgb.png"></image>
                 <image wx:elif="{{orderDetail.orderInfo.status==0}}" class="icon" src="/images/order-details/icon-ddfk.png"></image>
                 <image wx:elif="{{orderDetail.orderInfo.status==1}}" class="icon" src="/images/order-details/icon-ddfh.png"></image>
-                <image wx:elif="{{orderDetail.orderInfo.status==2}}" class="icon" src="/images/order-details/icon-ddsh.png"></image>
-                <image wx:elif="{{orderDetail.orderInfo.status==3 || orderDetail.orderInfo.status==4}}" class="icon" src="/images/order-details/icon-jycg.png"></image>
+                <image wx:elif="{{orderDetail.orderInfo.status==5}}" class="icon" src="/images/order-details/icon-ddsh.png"></image>
+                <image wx:elif="{{orderDetail.orderInfo.status==2 || orderDetail.orderInfo.status==3}}" class="icon" src="/images/order-details/icon-jycg.png"></image>
             </view>
             <view class="right-text">
                 <view class="status red">{{orderDetail.orderInfo.statusStr}}</view>
@@ -92,7 +92,7 @@
             </view>
             </block>
             <view class="btn-row" wx:if="{{orderDetail.orderInfo.status==3}}">                
-                <navigator style="float:right;" class="confirm-btn" target="miniProgram" app-id="wx29494f30fe5e1026" path="/open/order-comment/order-comment?appid={{appid}}&order_id={{orderDetail.orderInfo.orderNumber}}">去购物单评价</navigator>
+                <navigator style="float:right;" class="confirm-btn" target="miniProgram" app-id="wxd54ed7d779db1829" path="/open/order-comment/order-comment?appid={{appid}}&order_id={{orderDetail.orderInfo.orderNumber}}">去购物单评价</navigator>
                 <button style="float:right;" class="confirm-btn" formType="submit">提交评价</button>
             </view>
             </form>
@@ -115,10 +115,10 @@
             </view>
         </view>
         <view class="goods-info">
-            <view class="row-box">
+            <!-- <view class="row-box">
                 <view class="row-label">商品金额</view>
                 <view class="right-text">¥ {{orderDetail.orderInfo.amount}}</view>
-            </view>
+            </view> -->
             <view class="row-box" wx:if="{{orderDetail.orderInfo.amountLogistics}}">
                 <view class="row-label">运费</view>
                 <view class="right-text">+ ¥ {{orderDetail.orderInfo.amountLogistics}}</view>

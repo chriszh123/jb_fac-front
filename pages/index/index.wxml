@@ -63,10 +63,10 @@
            </view>
            <view class="goods-title">{{item.name}}</view>
            <view style='display:flex;'>
-            <view class="goods-price" style="width:35px;">¥ {{item.minPrice}}</view>
-            <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>¥ {{item.originalPrice}}</view>
+            <view class="goods-price" style="width:85px;">¥ {{item.minPrice}}</view>
+            <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="delete-price">¥ {{item.originalPrice}}</view>
            </view>           
         </view>
     </view>
-    <view hidden="{{loadingMoreHidden ? true : false}}" class="no-more-goods">没有更多啦</view>
+    <view hidden="{{loadingMoreHidden ? true : false}}" class="no-more-goods">我也是有底线的~</view>
 </view>

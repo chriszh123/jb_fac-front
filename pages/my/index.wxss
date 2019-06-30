@@ -111,3 +111,7 @@
     margin: 20rpx;
     width: 100%;
 }
+
+.btn-writeoff-prod {
+    margin-bottom: 7px;
+}

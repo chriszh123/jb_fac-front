@@ -60,7 +60,8 @@ App({
             key: 'mallName'
         }).then(function (res) {
             if (res.code == 0) {
-                wx.setStorageSync('mallName', res.data.value);
+                // wx.setStorageSync('mallName', res.data.value);
+                wx.setStorageSync('mallName', "江北福利抢购");
             }
         })
         WXAPI.scoreRules({
