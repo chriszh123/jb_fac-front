@@ -15,7 +15,7 @@
         <image class="smalltitle" src="/images/more/confirm-word1.png"></image>
         <form bindsubmit="goToIndex" report-submit="true">
           <button class="confirm-btn" form-type="submit">
-            <text >进入抢购</text>
+            <text style="font-weight:bold;">进入抢购</text>
           </button>
         </form>
         <text class="copyright">© 2019 All Rights Reserved. JB FAC </text>
