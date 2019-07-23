@@ -68,7 +68,7 @@ Page({
     WXAPI.kanjiaDetail(kjid, joiner).then(function(res) {
       if (res.code != 0) {
         wx.showModal({
-          title: '错误',
+          title: '',
           content: res.msg,
           showCancel: false
         })
@@ -95,7 +95,7 @@ Page({
     WXAPI.kanjiaHelp(that.data.kjId, that.data.joiner, wx.getStorageSync('token'), '').then(function(res) {
       if (res.code != 0) {
         wx.showModal({
-          title: '错误',
+          title: '',
           content: res.msg,
           showCancel: false
         })

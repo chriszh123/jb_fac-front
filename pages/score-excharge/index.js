@@ -70,7 +70,7 @@ Page({
 
     if (amount == "") {
       wx.showModal({
-        title: '错误',
+        title: '',
         content: '请填写正确的券号',
         showCancel: false
       })
@@ -79,7 +79,7 @@ Page({
     WXAPI.scoreExchange(amount, wx.getStorageSync('token')).then(function(res) {
       if (res.code == 700) {
         wx.showModal({
-          title: '错误',
+          title: '',
           content: '券号不正确',
           showCancel: false
         })
@@ -98,7 +98,7 @@ Page({
         })
       } else {
         wx.showModal({
-          title: '错误',
+          title: '',
           content: res.data.msg,
           showCancel: false
         })

@@ -21,7 +21,7 @@ Page({
         WXAPI.orderDetail(that.data.orderId, wx.getStorageSync('token')).then(function (res) {
             if (res.code != 0) {
                 wx.showModal({
-                    title: '错误',
+                    title: '',
                     content: res.msg,
                     showCancel: false
                 })

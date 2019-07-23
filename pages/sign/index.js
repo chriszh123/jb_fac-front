@@ -71,7 +71,7 @@ Page({
                     } else {
                         // 签到操作发生异常
                         wx.showModal({
-                            title: '提示', //提示的标题,
+                            title: '', //提示的标题,
                             content: res.msg, //提示的内容,
                             confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
                             confirmColor: '#3CC51F', //确定按钮的文字颜色,
@@ -108,7 +108,7 @@ Page({
             } else {
                 // 查询接口发生异常
                 wx.showModal({
-                    title: '提示', //提示的标题,
+                    title: '', //提示的标题,
                     content: res.msg, //提示的内容,
                     confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
                     confirmColor: '#3CC51F', //确定按钮的文字颜色,

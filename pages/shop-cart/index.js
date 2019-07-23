@@ -305,7 +305,7 @@ Page({
                     if (res.data.properties) {
                         console.log("555")
                         wx.showModal({
-                            title: '提示',
+                            title: '',
                             content: res.data.basicInfo.name + ' 商品已失效，请重新购买',
                             showCancel: false
                         })
@@ -315,7 +315,7 @@ Page({
                     }
                     if (res.data.basicInfo.stores < carShopBean.number) {
                         wx.showModal({
-                            title: '提示',
+                            title: '',
                             content: res.data.basicInfo.name + ' 库存不足，请重新购买',
                             showCancel: false
                         })
@@ -325,7 +325,7 @@ Page({
                     }
                     if (res.data.basicInfo.minPrice != carShopBean.price) {
                         wx.showModal({
-                            title: '提示',
+                            title: '',
                             content: res.data.basicInfo.name + ' 价格有调整，请重新购买',
                             showCancel: false
                         })
@@ -346,7 +346,7 @@ Page({
                     doneNumber++;
                     if (res.data.stores < carShopBean.number) {
                         wx.showModal({
-                            title: '提示',
+                            title: '',
                             content: carShopBean.name + ' 库存不足，请重新购买',
                             showCancel: false
                         })
@@ -356,7 +356,7 @@ Page({
                     }
                     if (res.data.price != carShopBean.price) {
                         wx.showModal({
-                            title: '提示',
+                            title: '',
                             content: carShopBean.name + ' 价格有调整，请重新购买',
                             showCancel: false
                         })

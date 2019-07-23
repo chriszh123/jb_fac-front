@@ -51,7 +51,7 @@ swiper-item image {
     white-space: nowrap;
     height: 88rpx;
     width: 100%;
-    background-color: #fff;
+    background-color:#ffffff;
 }
 
 ::-webkit-scrollbar {
@@ -61,13 +61,14 @@ swiper-item image {
 }
 
 .type-box {
-    width: 160rpx;
+    width: 120rpx;
     box-sizing: content-box;
-    font-size: 24rpx;
+    font-size: 34rpx;
     line-height: 84rpx;
     text-align: center;
     display: inline-block;
     overflow: hidden;
+
 }
 
 .type-navbar-item {

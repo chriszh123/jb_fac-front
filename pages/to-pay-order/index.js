@@ -116,7 +116,7 @@ Page({
             if (!that.data.curAddressData) {
                 wx.hideLoading();
                 wx.showModal({
-                    title: '错误',
+                    title: '',
                     content: '请先设置您的收货地址！',
                     showCancel: false
                 })
@@ -144,7 +144,7 @@ Page({
             wx.hideLoading();
             if (res.code != 0) {
                 wx.showModal({
-                    title: '错误',
+                    title: '',
                     content: res.msg,
                     showCancel: false
                 })

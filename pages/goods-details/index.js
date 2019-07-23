@@ -258,7 +258,7 @@ Page({
         if (this.data.goodsDetail.properties && !this.data.canSubmit) {
             if (!this.data.canSubmit) {
                 wx.showModal({
-                    title: '提示',
+                    title: '',
                     content: '请选择商品规格！',
                     showCancel: false
                 })
@@ -268,7 +268,7 @@ Page({
         }
         if (this.data.buyNumber < 1) {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '购买数量不能为0！',
                 showCancel: false
             })
@@ -308,14 +308,14 @@ Page({
         if (this.data.goodsDetail.properties && !this.data.canSubmit) {
             if (!this.data.canSubmit) {
                 wx.showModal({
-                    title: '提示',
+                    title: '',
                     content: '请选择商品规格！',
                     showCancel: false
                 })
             }
             this.bindGuiGeTap();
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '请先选择规格尺寸哦~',
                 showCancel: false
             })
@@ -324,7 +324,7 @@ Page({
 
         if (this.data.buyNumber < 1) {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '购买数量不能为0！',
                 showCancel: false
             })
@@ -541,7 +541,7 @@ Page({
                 })
             } else {
                 wx.showModal({
-                    title: '错误',
+                    title: '',
                     content: res.msg,
                     showCancel: false
                 })

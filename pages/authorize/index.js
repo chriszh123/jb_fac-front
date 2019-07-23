@@ -106,7 +106,7 @@ Page({
                         // 登录错误
                         wx.hideLoading();
                         wx.showModal({
-                            title: '提示',
+                            title: '',
                             content: '无法登录，请重试',
                             showCancel: false
                         })
@@ -131,7 +131,7 @@ Page({
                             WXAPI.updateUserInfo(userInfo).then(function (data) {
                                 if (data.code != 0) {
                                     wx.showModal({
-                                        title: '提示',
+                                        title: '',
                                         content: data.msg,
                                         showCancel: false
                                     })
