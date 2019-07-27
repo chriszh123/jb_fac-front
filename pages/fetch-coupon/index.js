@@ -77,7 +77,7 @@ Page({
     const pwd = e.detail.value.pwd;
     if (!pwd) {
       wx.showModal({
-        title: '错误',
+        title: '提示',
         content: '请输入口令',
         showCancel: false
       })
@@ -95,7 +95,7 @@ Page({
     }).then(function (res) {
       if (res.code == 20001 || res.code == 20002) {
         wx.showModal({
-          title: '错误',
+          title: '提示',
           content: '来晚了',
           showCancel: false
         })
@@ -103,7 +103,7 @@ Page({
       }
       if (res.code == 20003) {
         wx.showModal({
-          title: '错误',
+          title: '提示',
           content: '你领过了，别贪心哦~',
           showCancel: false
         })
@@ -111,7 +111,7 @@ Page({
       }
       if (res.code == 30001) {
         wx.showModal({
-          title: '错误',
+          title: '',
           content: '您的积分不足',
           showCancel: false
         })
@@ -119,7 +119,7 @@ Page({
       }
       if (res.code == 20004) {
         wx.showModal({
-          title: '错误',
+          title: '提示',
           content: '已过期~',
           showCancel: false
         })
@@ -127,7 +127,7 @@ Page({
       }
       if (res.code == 700) {
         wx.showModal({
-          title: '错误',
+          title: '',
           content: '口令错误~',
           showCancel: false
         })
@@ -144,7 +144,7 @@ Page({
         }, 1000)
       } else {
         wx.showModal({
-          title: '错误',
+          title: '提示',
           content: res.msg,
           showCancel: false
         })

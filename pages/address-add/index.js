@@ -28,7 +28,7 @@ Page({
 
         if (linkMan == "") {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '请填写联系人姓名',
                 showCancel: false
             })
@@ -36,7 +36,7 @@ Page({
         }
         if (mobile == "") {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '请填写手机号码',
                 showCancel: false
             })
@@ -44,7 +44,7 @@ Page({
         }
         if (this.data.selProvince == "请选择") {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '请选择地区',
                 showCancel: false
             })
@@ -52,7 +52,7 @@ Page({
         }
         if (this.data.selCity == "请选择") {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '请选择地区',
                 showCancel: false
             })
@@ -67,7 +67,7 @@ Page({
         }
         if (address == "") {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '请填写详细地址',
                 showCancel: false
             })
@@ -75,7 +75,7 @@ Page({
         }
         if (code == "") {
             wx.showModal({
-                title: '提示',
+                title: '',
                 content: '请填写邮编',
                 showCancel: false
             })
@@ -228,7 +228,7 @@ Page({
                     return;
                 } else {
                     wx.showModal({
-                        title: '提示',
+                        title: '',
                         content: '无法获取快递地址数据',
                         showCancel: false
                     })
@@ -262,7 +262,7 @@ Page({
         var that = this;
         var id = e.currentTarget.dataset.id;
         wx.showModal({
-            title: '提示',
+            title: '',
             content: '确定要删除该收货地址吗？',
             success: function (res) {
                 if (res.confirm) {

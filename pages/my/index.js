@@ -196,7 +196,7 @@ Page({
                                         content: '', //提示的内容,
                                         showCancel: false, //是否显示取消按钮,
                                         confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
-
+                                        confirmColor: '#3CC51F' //确定按钮的文字颜色,
                                     });
                                 });
                             }
@@ -206,7 +206,7 @@ Page({
                 } else {
                     // 订单核销码内容为空
                     wx.showModal({
-                        title: '提示', //提示的标题,
+                        title: '', //提示的标题,
                         content: '订单核销码内容为空，请联系管理员', //提示的内容,
                         showCancel: false, //是否显示取消按钮,
                         confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,

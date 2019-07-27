@@ -122,7 +122,7 @@ Page({
                 });
             } else {
                 wx.showModal({
-                    title: '错误',
+                    title: '',
                     content: '无法获取用户资金信息',
                     showCancel: false
                 });
@@ -138,7 +138,7 @@ Page({
             //     _this.onShow();
             // })
             wx.showModal({
-                title: '错误',
+                title: '',
                 content: '订单金额为0，无需支付',
                 showCancel: false
             });
@@ -358,7 +358,7 @@ Page({
                             });
                         } else {
                             wx.showModal({
-                                title: '提示', //提示的标题,
+                                title: '', //提示的标题,
                                 content: res.msg, //提示的内容,
                                 showCancel: true, //是否显示取消按钮,
                                 cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,

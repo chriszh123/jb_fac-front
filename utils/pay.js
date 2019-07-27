@@ -71,8 +71,8 @@ function wxpay(app, money, orderId, redirectUrl) {
             })
         } else {
             wx.showModal({
-                title: '出错了',
-                content: res.code + ':' + res.msg + ':' + res.data,
+                title: '',
+                content: res.msg,
                 showCancel: false,
                 success: function (res) {
 

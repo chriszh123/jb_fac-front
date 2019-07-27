@@ -107,7 +107,7 @@ Page({
 
         if (amount == "" || amount * 1 < 0) {
             wx.showModal({
-                title: '错误',
+                title: '',
                 content: '请填写正确的充值金额',
                 showCancel: false
             })
@@ -115,7 +115,7 @@ Page({
         }
         if (amount * 1 < that.data.recharge_amount_min * 1) {
             wx.showModal({
-                title: '错误',
+                title: '',
                 content: '单次充值金额至少' + that.data.recharge_amount_min + '元',
                 showCancel: false
             })
@@ -135,7 +135,7 @@ Page({
             }, 'post').then(res => {
                 if (res.code != 0) {
                     wx.showModal({
-                        title: '错误',
+                        title: '',
                         content: res.msg,
                         showCancel: false
                     })
@@ -163,7 +163,7 @@ Page({
                             content: '已保存到手机相册',
                             showCancel: false,
                             confirmText: '知道了',
-                            confirmColor: '#333'
+                            confirmColor: '#3CC51F'
                         })
                     },
                     fail: (res) => {

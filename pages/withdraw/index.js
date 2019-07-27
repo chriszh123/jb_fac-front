@@ -78,7 +78,7 @@ Page({
 
     if (amount == "" || amount * 1 < 100) {
       wx.showModal({
-        title: '错误',
+        title: '',
         content: '请填写正确的提现金额',
         showCancel: false
       })
@@ -98,7 +98,7 @@ Page({
         })
       } else {
         wx.showModal({
-          title: '错误',
+          title: '',
           content: res.msg,
           showCancel: false
         })
