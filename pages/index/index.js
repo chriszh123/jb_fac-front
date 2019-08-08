@@ -22,6 +22,12 @@ Page({
         coupons: [],
         searchInput: '',
 
+        kanjiaList: [], //砍价商品列表
+        kanjiaGoodsMap: {}, //砍价活动商品列表
+
+
+
+
         curPage: 1,
         pageSize: 20,
         cateScrollTop: 0
@@ -80,8 +86,8 @@ Page({
          */
         WXAPI.banners().then(function (res) {
             if (res.code == 404) {
-               // 后台暂时没有 banner 轮播图片
-               console.log("后台暂时没有配置banner轮播图片");
+                // 后台暂时没有 banner 轮播图片
+                console.log("后台暂时没有配置banner轮播图片");
             } else if (res.code == 0) {
                 that.setData({
                     banners: res.data
@@ -121,6 +127,8 @@ Page({
         that.getCoupons();
         // 公告
         that.getNotice();
+        // 砍价
+        that.kanjiaGoods();
     },
 
     onPageScroll(e) {
@@ -249,6 +257,18 @@ Page({
                 // 转发失败
             }
         }
+    },
+    // 砍价商品列表
+    kanjiaGoods() {
+        const that = this;
+        WXAPI.kanjiaList().then(function (res) {
+            if (res.code == 0) {
+                that.setData({
+                    kanjiaList: res.data.result,
+                    kanjiaGoodsMap: res.data.goodsMap
+                })
+            }
+        })
     },
     getNotice: function () {
         var that = this;
