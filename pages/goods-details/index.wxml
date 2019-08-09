@@ -46,6 +46,38 @@
         </view>
    </view>
 
+
+
+<view class="page__bd" wx:if="{{curGoodsKanjia}}" style='width:750rpx;'>
+    <view class="weui-cells__title">商品砍价设置</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">限量</view>
+        <view class="weui-cell__ft">{{curGoodsKanjia.number}}份</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">已售</view>
+        <view class="weui-cell__ft">{{curGoodsKanjia.numberBuy}}份</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">原价</view>
+        <view class="weui-cell__ft">￥{{curGoodsKanjia.originalPrice}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">底价</view>
+        <view class="weui-cell__ft">￥{{curGoodsKanjia.minPrice}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">截止</view>
+        <view class="weui-cell__ft">{{curGoodsKanjia.dateEnd}}</view>
+      </view>
+    </view>
+  </view>
+
+
+
+
+
    <view wx:if="{{curGoodsKanjia}}" class="row-arrow" bindtap="goKanjia">
       邀请好友帮忙砍价 ( <text style='color:red'>底价 {{curGoodsKanjia.minPrice}} 元</text> )
    </view>

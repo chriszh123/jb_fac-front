@@ -2,6 +2,8 @@ const WXAPI = require('../../wxapi/main')
 //获取应用实例
 var app = getApp();
 var WxParse = require('../../wxParse/wxParse.js');
+const regeneratorRuntime = require('../../utils/runtime');
+const SelectSizePrefix = "选择："
 
 Page({
     data: {
@@ -41,7 +43,7 @@ Page({
                 icon: 'none', //图标,
                 duration: 3000, //延迟时间,
                 mask: true, //显示透明蒙层，防止触摸穿透,
-                success: res => {}
+                success: res => { }
             });
         }
     },
@@ -59,16 +61,20 @@ Page({
             wx.setStorage({
                 key: 'inviterid_' + e.id,
                 data: e.inviter_id
-            })
+            });
             // 推荐者
             wx.setStorage({
                 key: 'referrer',
                 data: e.inviter_id
             })
         }
+
+        this.data.goodsId = e.id;
         const that = this;
+        this.data.kjJoinUid = e.kjJoinUid;
+
         // 砍价需求暂时忽略 20190215
-        that.data.kjId = e.kjId;
+        // that.data.kjId = e.kjId;
         // 获取购物车数据
         wx.getStorage({
             key: 'shopCarInfo',
@@ -116,7 +122,68 @@ Page({
         })
         this.reputation(e.id);
         // 砍价需求暂时忽略 20190215
-        this.getKanjiaInfo(e.id);
+        // this.getKanjiaInfo(e.id);
+    },
+    onShow: function () {
+        this.getGoodsDetailAndKanjieInfo(this.data.goodsId);
+    },
+    async getGoodsDetailAndKanjieInfo(goodsId) {
+        const that = this;
+        const goodsDetailRes = await WXAPI.goodsDetail(goodsId)
+        const goodsKanjiaSetRes = await WXAPI.kanjiaSet(goodsId)
+        if (goodsDetailRes.code == 0) {
+            var selectSizeTemp = SelectSizePrefix;
+            if (goodsDetailRes.data.properties) {
+                for (var i = 0; i < goodsDetailRes.data.properties.length; i++) {
+                    selectSizeTemp = selectSizeTemp + " " + goodsDetailRes.data.properties[i].name;
+                }
+                that.setData({
+                    hasMoreSelect: true,
+                    selectSize: selectSizeTemp,
+                    selectSizePrice: goodsDetailRes.data.basicInfo.minPrice,
+                    totalScoreToPay: goodsDetailRes.data.basicInfo.minScore
+                });
+            }
+            if (goodsDetailRes.data.basicInfo.pingtuan) {
+                that.pingtuanList(goodsId)
+            }
+            that.data.goodsDetail = goodsDetailRes.data;
+            if (goodsDetailRes.data.basicInfo.videoId) {
+                that.getVideoSrc(goodsDetailRes.data.basicInfo.videoId);
+            }
+            let _data = {
+                goodsDetail: goodsDetailRes.data,
+                selectSizePrice: goodsDetailRes.data.basicInfo.minPrice,
+                totalScoreToPay: goodsDetailRes.data.basicInfo.minScore,
+                buyNumMax: goodsDetailRes.data.basicInfo.stores,
+                buyNumber: (goodsDetailRes.data.basicInfo.stores > 0) ? 1 : 0,
+                currentPages: getCurrentPages()
+            }
+            if (goodsKanjiaSetRes.code == 0) {
+                _data.curGoodsKanjia = goodsKanjiaSetRes.data;
+                that.data.kjId = goodsKanjiaSetRes.data.id;
+                // 获取当前砍价进度
+                if (!that.data.kjJoinUid) {
+                    that.data.kjJoinUid = wx.getStorageSync('uid')
+                }
+                const curKanjiaprogress = await WXAPI.kanjiaDetail(goodsKanjiaSetRes.data.id, that.data.kjJoinUid)
+                const myHelpDetail = await WXAPI.kanjiaHelpDetail(goodsKanjiaSetRes.data.id, that.data.kjJoinUid, wx.getStorageSync('token'))
+                if (curKanjiaprogress.code == 0) {
+                    _data.curKanjiaprogress = curKanjiaprogress.data
+                }
+                if (myHelpDetail.code == 0) {
+                    _data.myHelpDetail = myHelpDetail.data
+                }
+            }
+            if (goodsDetailRes.data.basicInfo.pingtuan) {
+                const pingtuanSetRes = await WXAPI.pingtuanSet(goodsId)
+                if (pingtuanSetRes.code == 0) {
+                    _data.pingtuanSet = pingtuanSetRes.data
+                }
+            }
+            that.setData(_data);
+            WxParse.wxParse('article', 'html', goodsDetailRes.data.content, that, 5);
+        }
     },
     // 去购物车
     goShopCar: function () {

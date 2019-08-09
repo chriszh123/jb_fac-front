@@ -158,6 +158,9 @@ module.exports = {
             id
         })
     },
+    kanjiaSet: (goodsId) => {
+        return request('/shop/goods/kanjia/set', true, 'post', { goodsId })
+    },
     goodsPrice: (data) => {
         return request('/shop/goods/price', true, 'post', data)
     },
