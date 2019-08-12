@@ -81,7 +81,8 @@ Page({
             success: function (res) {
                 that.setData({
                     shopCarInfo: res.data,
-                    shopNum: res.data.shopNum
+                    shopNum: res.data.shopNum,
+                    curuid: wx.getStorageSync('uid')
                 });
             }
         });
@@ -164,9 +165,9 @@ Page({
                 that.data.kjId = goodsKanjiaSetRes.data.id;
                 // 获取当前砍价进度
                 if (!that.data.kjJoinUid) {
-                    that.data.kjJoinUid = wx.getStorageSync('uid')
+                    that.data.kjJoinUid = wx.getStorageSync('uid');
                 }
-                const curKanjiaprogress = await WXAPI.kanjiaDetail(goodsKanjiaSetRes.data.id, that.data.kjJoinUid)
+                const curKanjiaprogress = await WXAPI.kanjiaDetail(goodsKanjiaSetRes.data.id, that.data.kjJoinUid);
                 const myHelpDetail = await WXAPI.kanjiaHelpDetail(goodsKanjiaSetRes.data.id, that.data.kjJoinUid, wx.getStorageSync('token'))
                 if (curKanjiaprogress.code == 0) {
                     _data.curKanjiaprogress = curKanjiaprogress.data
@@ -184,6 +185,28 @@ Page({
             that.setData(_data);
             WxParse.wxParse('article', 'html', goodsDetailRes.data.content, that, 5);
         }
+    },
+    joinKanjia: function () { // 报名参加砍价活动
+        const _this = this;
+        if (!_this.data.curGoodsKanjia) {
+            return;
+        }
+        wx.showLoading({
+            title: '加载中',
+            mask: true
+        })
+        WXAPI.kanjiaJoin(_this.data.curGoodsKanjia.id, wx.getStorageSync('token')).then(function (res) {
+            wx.hideLoading()
+            if (res.code == 0) {
+                _this.data.kjJoinUid = wx.getStorageSync('uid')
+                _this.getGoodsDetailAndKanjieInfo(_this.data.goodsDetail.basicInfo.id)
+            } else {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
+            }
+        })
     },
     // 去购物车
     goShopCar: function () {

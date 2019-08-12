@@ -74,13 +74,66 @@
     </view>
   </view>
 
+  <view class="curKanjiaprogress" wx:if="{{curKanjiaprogress}}">
+    <view class="name">帮
+      <text style='color:red;font-weight:bold;'>{{curKanjiaprogress.joiner.nick}}</text> 砍价吧！</view>
+    <view class="weui-badge">当前价格 ￥ {{curKanjiaprogress.kanjiaInfo.curPrice}}
+    </view>
+    <view class="weui-progress" style='background-color:#fff;'>
+      <view class="weui-progress__bar">
+        <progress percent="{{100 * (curGoodsKanjia.originalPrice - curKanjiaprogress.kanjiaInfo.curPrice) / (curGoodsKanjia.originalPrice - curGoodsKanjia.minPrice)}}" stroke-width="8" />
+      </view>
+    </view>
+    <view class="weui-flex">
+      <view>
+        <view class="placeholder">{{curGoodsKanjia.originalPrice}}</view>
+      </view>
+      <view class="weui-flex__item"></view>
+      <view>
+        <view class="placeholder">{{curGoodsKanjia.minPrice}}</view>
+      </view>
+    </view>
+    <view class="weui-flex">
+      <view>
+        <view class="placeholder">原价</view>
+      </view>
+      <view class="weui-flex__item"></view>
+      <view>
+        <view class="placeholder">底价</view>
+      </view>
+    </view>
+    <view class="weui-flex">
+      <view class="weui-flex__item kjbutton">
+        <button class="weui-btn" type="primary" open-type="share">邀请朋友帮忙</button>
+      </view>
+      <view class="weui-flex__item kjbutton">
+        <button class="weui-btn" type="warn" bindtap="helpKanjia" disabled="{{myHelpDetail}}">{{myHelpDetail?"您已砍过":"帮TA砍"}}</button>
+      </view>
+    </view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">帮砍人数</view>
+        <view class="weui-cell__ft">{{curKanjiaprogress.kanjiaInfo .helpNumber}}
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">状态</view>
+        <view class="weui-cell__ft">{{curKanjiaprogress.kanjiaInfo .statusStr}}
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">报名时间</view>
+        <view class="weui-cell__ft">￥{{curKanjiaprogress.kanjiaInfo .dateAdd}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+<button wx:if="{{curGoodsKanjia && (!curKanjiaprogress || curKanjiaprogress.kanjiaInfo.uid != curuid)}}" class="weui-btn" type="warn" bindtap="joinKanjia" style='width:700rpx;'>我也要报名参与</button>
 
 
 
 
-   <view wx:if="{{curGoodsKanjia}}" class="row-arrow" bindtap="goKanjia">
-      邀请好友帮忙砍价 ( <text style='color:red'>底价 {{curGoodsKanjia.minPrice}} 元</text> )
-   </view>
    <view class="goods-des-info" style="margin-top:35rpx;" wx:if="{{pingtuanList}}">
       <view class="label-title" style="border-bottom:1px solid #eee;">{{pingtuanList.length}}人在拼单，可直接参与</view>
         <view class="goods-text" style="margin-top:15rpx;border-bottom:1px solid #eee;" wx:for="{{pingtuanList}}" wx:key="id">
