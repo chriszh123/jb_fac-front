@@ -74,10 +74,14 @@
     </view>
   </view>
 
-  <view class="curKanjiaprogress" wx:if="{{curKanjiaprogress}}">
-    <view class="name">帮
-      <text style='color:red;font-weight:bold;'>{{curKanjiaprogress.joiner.nick}}</text> 砍价吧！</view>
-    <view class="weui-badge">当前价格 ￥ {{curKanjiaprogress.kanjiaInfo.curPrice}}
+  <view class="curKanjiaprogress" wx:if="{{curKanjiaprogress}}" style="width: 100%;">
+    <view class="name" style="text-align:center;margin-top:5px;background-color:#fff;">帮
+      <text style='color:red;font-weight:bold;'>{{curKanjiaprogress.joiner.nick}}</text> 砍价吧！
+    </view>
+    <view class="name" style="text-align:center;background-color:#fff;">
+      <view class="weui-badge">当前价格 ￥ {{curKanjiaprogress.kanjiaInfo.curPrice}}
+    </view>
+    
     </view>
     <view class="weui-progress" style='background-color:#fff;'>
       <view class="weui-progress__bar">
