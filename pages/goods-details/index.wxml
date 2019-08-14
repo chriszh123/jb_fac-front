@@ -163,6 +163,8 @@
             <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
          </view>
     </view>
+
+
     <view class="goods-des-info" style="margin-top:35rpx;" wx:if="{{reputation}}">
         <view class="label-title" style="border-bottom:1px solid #eee;">大家评价<text style="color:red">（{{reputation.length}}）</text></view>
         <view class="goods-text" style="margin-top:15rpx;" wx:for="{{reputation}}" wx:key="id">
@@ -176,7 +178,30 @@
           </view>
         </view>
     </view>
-    <view class="footer-box">        
+
+ <view wx:if="{{curKanjiaprogress && curKanjiaprogress.helps && curKanjiaprogress.helps.length>0}}" class="weui-panel weui-panel_access" style="width:750rpx;">
+    <view class="weui-panel__hd">砍价记录</view>
+    <view class="weui-panel__bd">
+      <view wx:for="{{curKanjiaprogress.helps}}" wx:key="*this" class="weui-media-box weui-media-box_appmsg">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{item.avatarUrl}}" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title" style='color:red;'>￥ {{item.cutPrice}}</view>
+          <view class="weui-media-box__desc" style='margin-top:10rpx;'>好友
+            <text style='color:red;'>{{item.nick}}</text> 于 {{item.dateAdd}} 帮砍</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class='kjBuyButton' wx:if="{{curGoodsKanjia}}" style="margin-top: 15px;margin-bottom: -45px;width: 95%;">
+    <button class="weui-btn" type="warn" bindtap="tobuy">用当前价购买</button>
+  </view>
+
+
+    <view wx:if="{{!curGoodsKanjia}}" class="footer-box">        
         <view class="contact">
           <contact-button style="opacity:0;position:absolute;" type="default-dark"  session-from="weapp" size="27"></contact-button>
           <view style='position:absolute;bottom:10rpx;'> 客服 </view>
@@ -190,6 +215,8 @@
         <view wx:if="{{goodsDetail.basicInfo.pingtuan}}" class="join-shop-cart" bindtap="tobuy">单独购买</view>
         <view wx:if="{{goodsDetail.basicInfo.pingtuan}}" class="now-buy" bindtap="toPingtuan">发起拼团</view>
    </view>
+
+
     <view class="show-popup" hidden="{{hideShopPopup}}" catchtouchmove="true">
         <view class="popup-mask" bindtap="closePopupTap"></view>
         <view class="popup-contents">
@@ -231,6 +258,7 @@
              </view>                      
         </view>
     </view>
+
 </view>
 <view wx:if="{{currentPages.length == 1}}" class='goIndex' bindtap="goIndex">
   <image class="goIndex-icon" src="/images/nav/home-on.png"></image>
