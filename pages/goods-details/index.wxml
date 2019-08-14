@@ -74,21 +74,21 @@
     </view>
   </view>
 
-  <view class="curKanjiaprogress" wx:if="{{curKanjiaprogress}}" style="width: 100%;">
+  <view class="curKanjiaprogress" wx:if="{{curKanjiaprogress}}" style="width: 100%;background-color: #fff;">
     <view class="name" style="text-align:center;margin-top:5px;background-color:#fff;">帮
       <text style='color:red;font-weight:bold;'>{{curKanjiaprogress.joiner.nick}}</text> 砍价吧！
     </view>
-    <view class="name" style="text-align:center;background-color:#fff;">
+    <view class="name" style="text-align:center;">
       <view class="weui-badge">当前价格 ￥ {{curKanjiaprogress.kanjiaInfo.curPrice}}
     </view>
     
     </view>
-    <view class="weui-progress" style='background-color:#fff;'>
+    <view class="weui-progress" style=''>
       <view class="weui-progress__bar">
         <progress percent="{{100 * (curGoodsKanjia.originalPrice - curKanjiaprogress.kanjiaInfo.curPrice) / (curGoodsKanjia.originalPrice - curGoodsKanjia.minPrice)}}" stroke-width="8" />
       </view>
     </view>
-    <view class="weui-flex">
+    <view class="weui-flex" style="padding-left:50rpx;padding-right:50rpx;">
       <view>
         <view class="placeholder">{{curGoodsKanjia.originalPrice}}</view>
       </view>
@@ -97,7 +97,7 @@
         <view class="placeholder">{{curGoodsKanjia.minPrice}}</view>
       </view>
     </view>
-    <view class="weui-flex">
+    <view class="weui-flex" style="padding-left:50rpx;padding-right:50rpx;">
       <view>
         <view class="placeholder">原价</view>
       </view>
@@ -106,12 +106,12 @@
         <view class="placeholder">底价</view>
       </view>
     </view>
-    <view class="weui-flex">
+    <view class="weui-flex" style="margin-top: 10px;margin-bottom: 10px;">
       <view class="weui-flex__item kjbutton">
-        <button class="weui-btn" type="primary" open-type="share">邀请朋友帮忙</button>
+        <button class="weui-btn" type="primary" open-type="share" style="margin-left: 15px;margin-right: 15px;">邀请朋友帮忙</button>
       </view>
       <view class="weui-flex__item kjbutton">
-        <button class="weui-btn" type="warn" bindtap="helpKanjia" disabled="{{myHelpDetail}}">{{myHelpDetail?"您已砍过":"帮TA砍"}}</button>
+        <button class="weui-btn" type="warn" style="margin-left: 15px;margin-right: 15px;" bindtap="helpKanjia" disabled="{{myHelpDetail}}">{{myHelpDetail?"您已砍过":"帮TA砍"}}</button>
       </view>
     </view>
     <view class="weui-cells weui-cells_after-title">
