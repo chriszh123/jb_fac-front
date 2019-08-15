@@ -208,6 +208,34 @@ Page({
             }
         })
     },
+
+    helpKanjia() {
+        const _this = this;
+        _this.helpKanjiaDone();
+    },
+
+    helpKanjiaDone() {
+        const _this = this;
+        WXAPI.kanjiaHelp(_this.data.kjId, _this.data.kjJoinUid, wx.getStorageSync('token'), '').then(function (res) {
+            if (res.code != 0) {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
+                return;
+            }
+            _this.setData({
+                myHelpDetail: res.data
+            });
+            wx.showModal({
+                title: '成功',
+                content: '成功帮TA砍掉 ' + res.data.cutPrice + ' 元',
+                showCancel: false
+            })
+            _this.getGoodsDetailAndKanjieInfo(_this.data.goodsDetail.basicInfo.id)
+        })
+    },
+
     // 去购物车
     goShopCar: function () {
         wx.reLaunch({
