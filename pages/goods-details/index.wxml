@@ -184,7 +184,7 @@
     <view class="weui-panel__bd">
       <view wx:for="{{curKanjiaprogress.helps}}" wx:key="*this" class="weui-media-box weui-media-box_appmsg">
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-          <image class="weui-media-box__thumb" src="{{item.avatarUrl}}" />
+          <image class="weui-media-box__thumb" src="{{item.avatarUrl}}" style="border-radius:5px;" />
         </view>
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title" style='color:red;'>￥ {{item.cutPrice}}</view>
