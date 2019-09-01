@@ -30,7 +30,7 @@ Page({
             var buyNowInfoMem = wx.getStorageSync('buyNowInfo');
             that.data.kjId = buyNowInfoMem.kjId;
             if (buyNowInfoMem && buyNowInfoMem.shopList) {
-                shopList = buyNowInfoMem.shopList
+                shopList = buyNowInfoMem.shopList;
             }
         } else {
             //购物车下单
@@ -47,10 +47,22 @@ Page({
         if (shopList && shopList.length > 0) {
             for (var i = 0, size = shopList.length; i < size; i++) {
                 var good = shopList[i];
-                allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, good.price);
+                var prodId = good.goodsId;
+                // 处理砍价活动对应的商品的最新价格
+                var kjprodKey = "kjprod_" + prodId;
+                var kjProdCurPrice = wx.getStorageSync(kjprodKey);
+                if (kjProdCurPrice) {
+                    allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, kjProdCurPrice);
+                    // 删除当前砍价商品活动对应的本地介个存储数据
+                    wx.removeStorageSync(kjprodKey);
+                } else {
+                    allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, good.price);
+                }               
                 allGoodsRealPrice = that.accMul(1, allGoodsRealPrice);
             }
         }
+
+        // 
         that.setData({
             goodsList: shopList,
             allGoodsAndYunPrice: allGoodsRealPrice

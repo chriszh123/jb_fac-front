@@ -255,6 +255,19 @@ Page({
             shopType: "tobuy",
             selectSizePrice: this.data.goodsDetail.basicInfo.minPrice
         });
+
+        // 存储当前砍价活动的最新价格
+        var that =  this;
+        var curKanjiaprogress = that.data.curKanjiaprogress;
+        if (curKanjiaprogress && curKanjiaprogress.kanjiaInfo) {
+            var prodId = curKanjiaprogress.kanjiaInfo.prodId;
+            var curPrice = curKanjiaprogress.kanjiaInfo.curPrice;
+            var kjprodKey = "kjprod_" + prodId;
+            var kjprodValue = curPrice;
+            wx.setStorageSync(kjprodKey, kjprodValue);
+            console.log("*******************kjprodKey = " + kjprodKey, " , kjprodValue = " + kjprodValue);
+        }
+        
         this.bindGuiGeTap();
     },
     // 去拼单: 拼团暂忽略 20190215
