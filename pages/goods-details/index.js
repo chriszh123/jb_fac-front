@@ -71,6 +71,7 @@ Page({
 
         this.data.goodsId = e.id;
         const that = this;
+        // 砍价助力者打开商品详情页时
         this.data.kjJoinUid = e.kjJoinUid;
 
         // 砍价需求暂时忽略 20190215
@@ -257,7 +258,7 @@ Page({
         });
 
         // 存储当前砍价活动的最新价格
-        var that =  this;
+        var that = this;
         var curKanjiaprogress = that.data.curKanjiaprogress;
         if (curKanjiaprogress && curKanjiaprogress.kanjiaInfo) {
             var prodId = curKanjiaprogress.kanjiaInfo.prodId;
@@ -267,7 +268,7 @@ Page({
             wx.setStorageSync(kjprodKey, kjprodValue);
             console.log("*******************kjprodKey = " + kjprodKey, " , kjprodValue = " + kjprodValue);
         }
-        
+
         this.bindGuiGeTap();
     },
     // 去拼单: 拼团暂忽略 20190215
@@ -596,7 +597,7 @@ Page({
         return buyNowInfo;
     },
     onShareAppMessage: function () {
-        return {
+        let _data = {
             title: this.data.goodsDetail.basicInfo.name,
             path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'), // 商品分享出去时带上当前用户id
             success: function (res) {
@@ -605,7 +606,15 @@ Page({
             fail: function (res) {
                 // 转发失败
             }
+        };
+
+        // 砍价助力跳转
+        if (this.data.kjJoinUid) {
+            _data.title = this.data.curKanjiaprogress.joiner.nick + '邀请您帮TA砍价',
+            _data.path += '&kjJoinUid=' + this.data.kjJoinUid
         }
+
+        return _data;
     },
     reputation: function (goodsId) {
         var that = this;

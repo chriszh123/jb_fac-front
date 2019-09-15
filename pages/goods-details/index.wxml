@@ -21,8 +21,8 @@
    </view>
    <view class="goods-info">
         <view class="goods-title">{{goodsDetail.basicInfo.name}}</view>
-        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 1}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}} 积分奖励</view>
-        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 2}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}}元 现金奖励</view>
+        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 1 && !curGoodsKanjia}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}} 积分奖励</view>
+        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 2 && !curGoodsKanjia}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}}元 现金奖励</view>
         <view class="product-price-view" wx:if="{{!curGoodsKanjia}}">
             现价：<text class="product-price-now">¥ {{selectSizePrice}}</text>
             原价：<text class="product-price-original"> ¥ {{goodsDetail.basicInfo.originalPrice}} </text>
@@ -33,7 +33,7 @@
             已售：<text class="product-number-sells">{{goodsDetail.basicInfo.numberSells}}份</text>
         </view>
         <!-- <view class="goods-price" style="color:#999;font-size:24rpx;">共收到 {{goodsDetail.basicInfo.numberGoodReputation}} 次好评</view> -->
-        <view class="goods-info-fx" wx:if="{{goodsDetail.basicInfo.commissionType}}">
+        <view class="goods-info-fx" wx:if="{{goodsDetail.basicInfo.commissionType && !curGoodsKanjia}}">
             <image src='../../images/qd.png' />
             <button open-type="share">分享</button>
             <text>分享有赏</text>
