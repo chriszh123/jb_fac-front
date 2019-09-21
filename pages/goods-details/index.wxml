@@ -33,7 +33,7 @@
             已售：<text class="product-number-sells">{{goodsDetail.basicInfo.numberSells}}份</text>
         </view>
         <!-- <view class="goods-price" style="color:#999;font-size:24rpx;">共收到 {{goodsDetail.basicInfo.numberGoodReputation}} 次好评</view> -->
-        <view class="goods-info-fx" wx:if="{{goodsDetail.basicInfo.commissionType && !curGoodsKanjia}}">
+        <view class="goods-info-fx" wx:if="{{(goodsDetail.basicInfo.commissionType == 1 || goodsDetail.basicInfo.commissionType == 2) && !curGoodsKanjia}}">
             <image src='../../images/qd.png' />
             <button open-type="share">分享</button>
             <text>分享有赏</text>

@@ -45,7 +45,7 @@
     <navigator url="/pages/asset/index" hover-class="navigator-hover">资金明细</navigator>
   </view>
   <view class="my-item">
-    <navigator url="/pages/sign/index" hover-class="navigator-hover">每日签到</navigator>
+    <navigator url="/pages/sign/index" hover-class="navigator-hover">签到有礼</navigator>
   </view>
   <!-- <view class="my-item">
     <navigator url="/pages/score-excharge/index" hover-class="navigator-hover">积分兑换</navigator>
