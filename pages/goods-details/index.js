@@ -28,7 +28,12 @@ Page({
         canSubmit: false, //  选中规格尺寸时候是否允许加入购物车
         shopCarInfo: {},
         shopType: "addShopCar", //购物类型，加入购物车或立即购买，默认为加入购物车
-        currentPages: undefined
+        currentPages: undefined,
+        showSignUpBtn: false, // 我也要报名参与 按钮是否显示
+        disabaleInvitedHelpJjBtn: true, // 邀请朋友帮忙按钮是否可以点击
+        showBuyBtn4Kanjia : false, // 是否显示砍价商品详情页上的“用当前价购买”按钮
+        curuid: undefined // 当前用户uid
+
     },
     telBusiness: function (e) {
         var that = this;
@@ -183,8 +188,30 @@ Page({
                     _data.pingtuanSet = pingtuanSetRes.data
                 }
             }
+
+            // 是否显示 我也要报名按钮
+            _data.curuid = wx.getStorageSync('uid');
+            var showSignUpBtn = _data.curGoodsKanjia && (!_data.curKanjiaprogress || (_data.curKanjiaprogress.kanjiaInfo && _data.curKanjiaprogress.kanjiaInfo.uid != _data.curuid));
+            _data.showSignUpBtn = showSignUpBtn;
+
+            // 邀请朋友帮忙按钮是否可以点击
+            _data.disabaleInvitedHelpJjBtn = false;
+            if (_data.curGoodsKanjia && _data.curKanjiaprogress && _data.curKanjiaprogress.kanjiaInfo) {
+                _data.disabaleInvitedHelpJjBtn = _data.curKanjiaprogress.kanjiaInfo.upToMinPrice;
+            }
+            console.log("---------------_data.disabaleInvitedHelpJjBtn = " + _data.disabaleInvitedHelpJjBtn);
+
+            // 详情页上是否显示“用当前价购买”按钮：是砍价商品 + 当前用户是砍价活动参与者
+            _data.showBuyBtn4Kanjia = false;
+            if (_data.curGoodsKanjia && _data.curKanjiaprogress && _data.curKanjiaprogress.kanjiaInfo && _data.curKanjiaprogress.kanjiaInfo.uid) {
+                var showBuyBtn4Kanjia = _data.curKanjiaprogress.kanjiaInfo.uid == _data.curuid;
+                _data.showBuyBtn4Kanjia = showBuyBtn4Kanjia;
+            }
+
             that.setData(_data);
             WxParse.wxParse('article', 'html', goodsDetailRes.data.content, that, 5);
+
+
         }
     },
     joinKanjia: function () { // 报名参加砍价活动
@@ -611,7 +638,7 @@ Page({
         // 砍价助力跳转
         if (this.data.kjJoinUid) {
             _data.title = this.data.curKanjiaprogress.joiner.nick + '邀请您帮TA砍价',
-            _data.path += '&kjJoinUid=' + this.data.kjJoinUid
+                _data.path += '&kjJoinUid=' + this.data.kjJoinUid
         }
 
         return _data;

@@ -112,7 +112,7 @@
     </view>
     <view class="weui-flex" style="margin-top: 10px;margin-bottom: 10px;">
       <view class="weui-flex__item kjbutton">
-        <button class="weui-btn" type="primary" open-type="share" style="margin-left: 15px;margin-right: 15px;">邀请朋友帮忙</button>
+        <button class="weui-btn" type="primary" open-type="share" style="margin-left: 15px;margin-right: 15px;" disabled="{{disabaleInvitedHelpJjBtn }}">邀请朋友帮忙</button>
       </view>
       <view class="weui-flex__item kjbutton">
         <button class="weui-btn" type="warn" style="margin-left: 15px;margin-right: 15px;" bindtap="helpKanjia" disabled="{{myHelpDetail}}">{{myHelpDetail?"您已砍过":"帮TA砍"}}</button>
@@ -137,7 +137,7 @@
     </view>
   </view>
 
-<button wx:if="{{curGoodsKanjia && (!curKanjiaprogress || curKanjiaprogress.kanjiaInfo.uid != curuid)}}" class="weui-btn" type="warn" bindtap="joinKanjia" style='width:700rpx;'>我也要报名参与</button>
+<button wx:if="{{showSignUpBtn}}" class="weui-btn" type="warn" bindtap="joinKanjia" style='width:700rpx;'>我也要报名参与</button>
 
 
 
@@ -200,7 +200,7 @@
   </view>
 
 
-  <view class='kjBuyButton' wx:if="{{curGoodsKanjia}}" style="margin-top: 15px;margin-bottom: -45px;width: 95%;">
+  <view class='kjBuyButton' wx:if="{{showBuyBtn4Kanjia}}" style="margin-top: 15px;margin-bottom: -45px;width: 95%;">
     <button class="weui-btn" type="warn" bindtap="tobuy">用当前价购买</button>
   </view>
 
