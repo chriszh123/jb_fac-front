@@ -33,11 +33,31 @@
             已售：<text class="product-number-sells">{{goodsDetail.basicInfo.numberSells}}份</text>
         </view>
         <!-- <view class="goods-price" style="color:#999;font-size:24rpx;">共收到 {{goodsDetail.basicInfo.numberGoodReputation}} 次好评</view> -->
-        <view class="goods-info-fx" wx:if="{{(goodsDetail.basicInfo.commissionType == 1 || goodsDetail.basicInfo.commissionType == 2) && !curGoodsKanjia}}">
-            <image src='../../images/qd.png' />
-            <button open-type="share">分享</button>
-            <text>分享有赏</text>
+
+
+        <view class="goods-info-fx" bindtap='openShareDiv'>
+            <image src='../../images/share.png' />
+            <!-- <button open-type="share">分享</button>
+            <text>分享有赏</text> -->
         </view>
+
+
+        <view wx:if="{{openShare}}" class="shareFloatDiv2">
+          <view class="p1">    
+            <view class="weui-flex">
+              <view class="weui-flex__item qrcode-button"  wx:if="{{(goodsDetail.basicInfo.commissionType == 1 || goodsDetail.basicInfo.commissionType == 2) && !curGoodsKanjia}}">
+                <button class="weui-btn" type="primary" open-type="share">分享有赏</button>
+              </view>
+              <view class="weui-flex__item qrcode-button">
+                <button class="weui-btn" type="primary" bindtap="toPoster" data-goodsid="{{goodsDetail.basicInfo.id}}">生成海报</button>
+              </view>
+            </view>
+          </view>
+          <view class="p2"></view>
+          <view class="p3" bindtap="closeShareDiv"> 取消分享 </view>
+      </view>
+
+
    </view>
 
    <view class="goods-info business-info">

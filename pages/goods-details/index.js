@@ -23,6 +23,8 @@ Page({
         buyNumMin: 1,
         buyNumMax: 0,
 
+        openShare: false,
+
         propertyChildIds: "",
         propertyChildNames: "",
         canSubmit: false, //  选中规格尺寸时候是否允许加入购物车
@@ -31,7 +33,7 @@ Page({
         currentPages: undefined,
         showSignUpBtn: false, // 我也要报名参与 按钮是否显示
         disabaleInvitedHelpJjBtn: true, // 邀请朋友帮忙按钮是否可以点击
-        showBuyBtn4Kanjia : false, // 是否显示砍价商品详情页上的“用当前价购买”按钮
+        showBuyBtn4Kanjia: false, // 是否显示砍价商品详情页上的“用当前价购买”按钮
         curuid: undefined // 当前用户uid
 
     },
@@ -192,6 +194,9 @@ Page({
             // 是否显示 我也要报名按钮
             _data.curuid = wx.getStorageSync('uid');
             var showSignUpBtn = _data.curGoodsKanjia && (!_data.curKanjiaprogress || (_data.curKanjiaprogress.kanjiaInfo && _data.curKanjiaprogress.kanjiaInfo.uid != _data.curuid));
+            if (showSignUpBtn == undefined) {
+                showSignUpBtn = false;
+            }
             _data.showSignUpBtn = showSignUpBtn;
 
             // 邀请朋友帮忙按钮是否可以点击
@@ -725,5 +730,21 @@ Page({
         wx.switchTab({
             url: '/pages/index/index',
         });
+    },
+    openShareDiv() {
+        this.setData({
+            openShare: true
+        })
+    },
+    closeShareDiv() {
+        this.setData({
+            openShare: false
+        });
+    },
+    toPoster: function (e) {
+        // 点击生成海报界面
+        wx.navigateTo({
+            url: "/pages/goods-details/poster?goodsid=" + e.currentTarget.dataset.goodsid
+        })
     }
 })
