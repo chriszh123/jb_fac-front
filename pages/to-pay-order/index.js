@@ -57,7 +57,7 @@ Page({
                     wx.removeStorageSync(kjprodKey);
                 } else {
                     allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, good.price);
-                }               
+                }
                 allGoodsRealPrice = that.accMul(1, allGoodsRealPrice);
             }
         }
@@ -158,8 +158,16 @@ Page({
                 wx.showModal({
                     title: '',
                     content: res.msg,
-                    showCancel: false
-                })
+                    showCancel: false,
+                    cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+                    cancelColor: '#000000', //取消按钮的文字颜色,
+                    confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
+                    confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                    success: res => {
+                        if (res.confirm) {} else if (res.cancel) {}
+                    }
+                });
+
                 return;
             } else {
                 // 订单创建成功后需要清除相应商品对应的分享人缓存信息
