@@ -69,7 +69,7 @@ Page({
         ctx.setStrokeStyle('#eee');
         ctx.stroke();
 
-        _this.downLoadQrcode(imageSize);
+        _this.downLoadQrcode2(imageSize);
       }
     })
   },
@@ -97,7 +97,9 @@ Page({
   downLoadQrcode2(_imageSize) {
     const _this = this;
     WXAPI.wxaQrcode({
-      scene: _this.data.goodsid + ',' + wx.getStorageSync('uid'),
+      productId : _this.data.goodsid,
+      inviterUid :wx.getStorageSync('uid'),
+      // scene: _this.data.goodsid + ',' + wx.getStorageSync('uid'),
       page: 'pages/goods-details/index',
       is_hyaline: true,
       expireHours: 1
@@ -109,17 +111,18 @@ Page({
           duration: 2000
         })
       } else {
-        const imageUrl = res.data;
+        const imageUrl = res.data.imageUrl;
         wx.getImageInfo({
           src: imageUrl,
           success: (res) => {
-            let left = _imageSize.windowWidth / 3;
-            ctx.drawImage(res.path, left, _imageSize.imageHeight + 80, _imageSize.windowWidth / 3, _imageSize.windowWidth / 3);
+            let left = _imageSize.windowWidth / 4;
+            ctx.drawImage(res.path, left, _imageSize.imageHeight + 80, _imageSize.windowWidth / 2, _imageSize.windowWidth / 2);
 
             ctx.setFontSize(12);
             ctx.setFillStyle('#e64340');
             ctx.setTextAlign('center');
-            ctx.fillText('长按识别小程序码 即可买买买~', _imageSize.windowWidth / 2, _imageSize.imageHeight + 80 + left + 50);
+            // ctx.fillText('长按识别小程序码 即可购买,￥:' + res.data.prodPrice, _imageSize.windowWidth / 2, _imageSize.imageHeight + 80 + left + 50);
+            ctx.fillText('长按识别小程序码 即可购买,￥:', _imageSize.windowWidth / 2, _imageSize.imageHeight + 80 + left + 50);
 
             setTimeout(function () {
               wx.hideLoading();

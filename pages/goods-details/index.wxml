@@ -35,7 +35,7 @@
         <!-- <view class="goods-price" style="color:#999;font-size:24rpx;">共收到 {{goodsDetail.basicInfo.numberGoodReputation}} 次好评</view> -->
 
 
-        <view class="goods-info-fx" bindtap='openShareDiv'>
+        <view class="goods-info-fx" bindtap='openShareDiv' wx:if="{{!curGoodsKanjia}}">
             <image src='../../images/share.png' />
             <!-- <button open-type="share">分享</button>
             <text>分享有赏</text> -->

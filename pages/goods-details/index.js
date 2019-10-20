@@ -62,6 +62,22 @@ Page({
         })
     },
     onLoad: function (e) {
+        if (e && e.scene) {
+            // 处理扫码进商品详情页面的逻辑：扫描小程序码
+            const scene = decodeURIComponent(e.scene);
+            if (scene) {
+                // 商品id
+                var prodId = scene.split(',')[0];
+                e.id = prodId;
+                // 邀请人uid
+                var inviterUid = scene.split(',')[1];
+                wx.setStorage({
+                    key: 'inviterid_' + prodId,
+                    data: inviterUid
+                });
+            }
+        }
+
         // inviter_id：邀请人id,有值时，说明这个商品明细页面是通过别人分享过来的，后面如果买了，需要给分享人佣金
         if (e.inviter_id) {
             // 当前商品分享人:{key:inviterid_ + 商品id, value:分享人id}
