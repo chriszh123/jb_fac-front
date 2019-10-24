@@ -1,6 +1,6 @@
 <view class="container">
 	<view class="userinfo">
-		<image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
+		<image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar"  style="border-radius:30px;" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
 		<text class="userinfo-nickname">{{ userInfo.nickName }}(UID:{{userId}})</text>
 	</view>
   <view class="asset">
@@ -45,7 +45,7 @@
     <navigator url="/pages/asset/index" hover-class="navigator-hover">资金明细</navigator>
   </view>
   <view class="my-item">
-    <navigator url="/pages/sign/index" hover-class="navigator-hover">每日签到</navigator>
+    <navigator url="/pages/sign/index" hover-class="navigator-hover">签到有礼</navigator>
   </view>
   <!-- <view class="my-item">
     <navigator url="/pages/score-excharge/index" hover-class="navigator-hover">积分兑换</navigator>

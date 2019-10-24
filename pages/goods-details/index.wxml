@@ -21,19 +21,43 @@
    </view>
    <view class="goods-info">
         <view class="goods-title">{{goodsDetail.basicInfo.name}}</view>
-        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 1}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}} 积分奖励</view>
-        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 2}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}}元 现金奖励</view>
-        <view class="product-price-view">
+        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 1 && !curGoodsKanjia}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}} 积分奖励</view>
+        <view class="goods-share" wx:if="{{goodsDetail.basicInfo.commissionType == 2 && !curGoodsKanjia}}">分享有赏，好友下单后可得 {{goodsDetail.basicInfo.commission}}元 现金奖励</view>
+        <view class="product-price-view" wx:if="{{!curGoodsKanjia}}">
             现价：<text class="product-price-now">¥ {{selectSizePrice}}</text>
             原价：<text class="product-price-original"> ¥ {{goodsDetail.basicInfo.originalPrice}} </text>
             已售：<text class="product-number-sells">{{goodsDetail.basicInfo.numberSells}}份</text>
         </view>
-        <!-- <view class="goods-price" style="color:#999;font-size:24rpx;">共收到 {{goodsDetail.basicInfo.numberGoodReputation}} 次好评</view> -->
-        <view class="goods-info-fx" wx:if="{{goodsDetail.basicInfo.commissionType}}">
-            <image src='../../images/qd.png' />
-            <button open-type="share">分享</button>
-            <text>分享有赏</text>
+        <view class="product-price-view" wx:if="{{curGoodsKanjia}}">
+            现价：<text class="product-price-now">¥ {{selectSizePrice}}</text>
+            已售：<text class="product-number-sells">{{goodsDetail.basicInfo.numberSells}}份</text>
         </view>
+        <!-- <view class="goods-price" style="color:#999;font-size:24rpx;">共收到 {{goodsDetail.basicInfo.numberGoodReputation}} 次好评</view> -->
+
+
+        <view class="goods-info-fx" bindtap='openShareDiv' wx:if="{{!curGoodsKanjia}}">
+            <image src='../../images/share.png' />
+            <!-- <button open-type="share">分享</button>
+            <text>分享有赏</text> -->
+        </view>
+
+
+        <view wx:if="{{openShare}}" class="shareFloatDiv2">
+          <view class="p1">    
+            <view class="weui-flex">
+              <view class="weui-flex__item qrcode-button"  wx:if="{{(goodsDetail.basicInfo.commissionType == 1 || goodsDetail.basicInfo.commissionType == 2) && !curGoodsKanjia}}">
+                <button class="weui-btn" type="primary" open-type="share">分享有赏</button>
+              </view>
+              <view class="weui-flex__item qrcode-button">
+                <button class="weui-btn" type="primary" bindtap="toPoster" data-goodsid="{{goodsDetail.basicInfo.id}}">生成海报</button>
+              </view>
+            </view>
+          </view>
+          <view class="p2"></view>
+          <view class="p3" bindtap="closeShareDiv"> 取消分享 </view>
+      </view>
+
+
    </view>
 
    <view class="goods-info business-info">
@@ -46,9 +70,98 @@
         </view>
    </view>
 
-   <view wx:if="{{curGoodsKanjia}}" class="row-arrow" bindtap="goKanjia">
-      邀请好友帮忙砍价 ( <text style='color:red'>底价 {{curGoodsKanjia.minPrice}} 元</text> )
-   </view>
+
+
+<view class="page__bd" wx:if="{{curGoodsKanjia}}" style='width:750rpx;'>
+    <view class="weui-cells__title">商品砍价设置</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">限量</view>
+        <view class="weui-cell__ft">{{curGoodsKanjia.number}}份</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">已售</view>
+        <view class="weui-cell__ft">{{curGoodsKanjia.numberBuy}}份</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">原价</view>
+        <view class="weui-cell__ft">￥{{curGoodsKanjia.originalPrice}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">底价</view>
+        <view class="weui-cell__ft">￥{{curGoodsKanjia.minPrice}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">截止</view>
+        <view class="weui-cell__ft">{{curGoodsKanjia.dateEnd}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="curKanjiaprogress" wx:if="{{curKanjiaprogress}}" style="width: 100%;background-color: #fff;">
+    <view class="name" style="text-align:center;margin-top:5px;background-color:#fff;">帮
+      <text style='color:red;font-weight:bold;'>{{curKanjiaprogress.joiner.nick}}</text> 砍价吧！
+    </view>
+    <view class="name" style="text-align:center;">
+      <view class="weui-badge">当前价格 ￥ {{curKanjiaprogress.kanjiaInfo.curPrice}}
+    </view>
+    
+    </view>
+    <view class="weui-progress" style=''>
+      <view class="weui-progress__bar">
+        <progress percent="{{100 * (curGoodsKanjia.originalPrice - curKanjiaprogress.kanjiaInfo.curPrice) / (curGoodsKanjia.originalPrice - curGoodsKanjia.minPrice)}}" stroke-width="8" />
+      </view>
+    </view>
+    <view class="weui-flex" style="padding-left:50rpx;padding-right:50rpx;">
+      <view>
+        <view class="placeholder">{{curGoodsKanjia.originalPrice}}</view>
+      </view>
+      <view class="weui-flex__item"></view>
+      <view>
+        <view class="placeholder">{{curGoodsKanjia.minPrice}}</view>
+      </view>
+    </view>
+    <view class="weui-flex" style="padding-left:50rpx;padding-right:50rpx;">
+      <view>
+        <view class="placeholder">原价</view>
+      </view>
+      <view class="weui-flex__item"></view>
+      <view>
+        <view class="placeholder">底价</view>
+      </view>
+    </view>
+    <view class="weui-flex" style="margin-top: 10px;margin-bottom: 10px;">
+      <view class="weui-flex__item kjbutton">
+        <button class="weui-btn" type="primary" open-type="share" style="margin-left: 15px;margin-right: 15px;" disabled="{{disabaleInvitedHelpJjBtn }}">邀请朋友帮忙</button>
+      </view>
+      <view class="weui-flex__item kjbutton">
+        <button class="weui-btn" type="warn" style="margin-left: 15px;margin-right: 15px;" bindtap="helpKanjia" disabled="{{myHelpDetail}}">{{myHelpDetail?"您已砍过":"帮TA砍"}}</button>
+      </view>
+    </view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">帮砍人数</view>
+        <view class="weui-cell__ft">{{curKanjiaprogress.kanjiaInfo .helpNumber}}
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">状态</view>
+        <view class="weui-cell__ft">{{curKanjiaprogress.kanjiaInfo .statusStr}}
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">报名时间</view>
+        <view class="weui-cell__ft">￥{{curKanjiaprogress.kanjiaInfo .dateAdd}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+<button wx:if="{{showSignUpBtn}}" class="weui-btn" type="warn" bindtap="joinKanjia" style='width:700rpx;'>我也要报名参与</button>
+
+
+
+
    <view class="goods-des-info" style="margin-top:35rpx;" wx:if="{{pingtuanList}}">
       <view class="label-title" style="border-bottom:1px solid #eee;">{{pingtuanList.length}}人在拼单，可直接参与</view>
         <view class="goods-text" style="margin-top:15rpx;border-bottom:1px solid #eee;" wx:for="{{pingtuanList}}" wx:key="id">
@@ -74,6 +187,8 @@
             <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
          </view>
     </view>
+
+
     <view class="goods-des-info" style="margin-top:35rpx;" wx:if="{{reputation}}">
         <view class="label-title" style="border-bottom:1px solid #eee;">大家评价<text style="color:red">（{{reputation.length}}）</text></view>
         <view class="goods-text" style="margin-top:15rpx;" wx:for="{{reputation}}" wx:key="id">
@@ -87,7 +202,30 @@
           </view>
         </view>
     </view>
-    <view class="footer-box">        
+
+ <view wx:if="{{curKanjiaprogress && curKanjiaprogress.helps && curKanjiaprogress.helps.length>0}}" class="weui-panel weui-panel_access" style="width:750rpx;">
+    <view class="weui-panel__hd">砍价记录</view>
+    <view class="weui-panel__bd">
+      <view wx:for="{{curKanjiaprogress.helps}}" wx:key="*this" class="weui-media-box weui-media-box_appmsg">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{item.avatarUrl}}" style="border-radius:5px;" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title" style='color:red;'>￥ {{item.cutPrice}}</view>
+          <view class="weui-media-box__desc" style='margin-top:10rpx;'>好友
+            <text style='color:red;'>{{item.nick}}</text> 于 {{item.dateAdd}} 帮砍</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class='kjBuyButton' wx:if="{{showBuyBtn4Kanjia}}" style="margin-top: 15px;margin-bottom: -45px;width: 95%;">
+    <button class="weui-btn" type="warn" bindtap="tobuy">用当前价购买</button>
+  </view>
+
+
+    <view wx:if="{{!curGoodsKanjia}}" class="footer-box">        
         <view class="contact">
           <contact-button style="opacity:0;position:absolute;" type="default-dark"  session-from="weapp" size="27"></contact-button>
           <view style='position:absolute;bottom:10rpx;'> 客服 </view>
@@ -101,6 +239,8 @@
         <view wx:if="{{goodsDetail.basicInfo.pingtuan}}" class="join-shop-cart" bindtap="tobuy">单独购买</view>
         <view wx:if="{{goodsDetail.basicInfo.pingtuan}}" class="now-buy" bindtap="toPingtuan">发起拼团</view>
    </view>
+
+
     <view class="show-popup" hidden="{{hideShopPopup}}" catchtouchmove="true">
         <view class="popup-mask" bindtap="closePopupTap"></view>
         <view class="popup-contents">
@@ -142,6 +282,7 @@
              </view>                      
         </view>
     </view>
+
 </view>
 <view wx:if="{{currentPages.length == 1}}" class='goIndex' bindtap="goIndex">
   <image class="goIndex-icon" src="/images/nav/home-on.png"></image>

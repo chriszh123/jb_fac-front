@@ -1,7 +1,7 @@
 // 小程序开发api接口工具包，https://github.com/gooking/wxapi
 const CONFIG = require('./config.js')
 // const API_BASE_URL = 'https://api.it120.cc'
-// const API_BASE_URL = 'http://192.168.0.6:80'
+// const API_BASE_URL = 'http://192.168.0.5:80'
 const API_BASE_URL = 'https://www.jbfac.xyz'
 
 const request = (url, needSubDomain, method, data) => {
@@ -157,6 +157,12 @@ module.exports = {
         return request('/shop/goods/detail', true, 'post', {
             id
         })
+    },
+    wxaQrcode: (data) => {
+        return request('/shop/wxaQrcode', true, 'post', data)
+    },
+    kanjiaSet: (goodsId) => {
+        return request('/shop/goods/kanjia/set', true, 'post', { goodsId })
     },
     goodsPrice: (data) => {
         return request('/shop/goods/price', true, 'post', data)

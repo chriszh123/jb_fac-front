@@ -30,7 +30,7 @@ Page({
             var buyNowInfoMem = wx.getStorageSync('buyNowInfo');
             that.data.kjId = buyNowInfoMem.kjId;
             if (buyNowInfoMem && buyNowInfoMem.shopList) {
-                shopList = buyNowInfoMem.shopList
+                shopList = buyNowInfoMem.shopList;
             }
         } else {
             //购物车下单
@@ -47,10 +47,22 @@ Page({
         if (shopList && shopList.length > 0) {
             for (var i = 0, size = shopList.length; i < size; i++) {
                 var good = shopList[i];
-                allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, good.price);
+                var prodId = good.goodsId;
+                // 处理砍价活动对应的商品的最新价格
+                var kjprodKey = "kjprod_" + prodId;
+                var kjProdCurPrice = wx.getStorageSync(kjprodKey);
+                if (kjProdCurPrice) {
+                    allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, kjProdCurPrice);
+                    // 删除当前砍价商品活动对应的本地介个存储数据
+                    wx.removeStorageSync(kjprodKey);
+                } else {
+                    allGoodsRealPrice = allGoodsRealPrice + that.accMul(good.number, good.price);
+                }
                 allGoodsRealPrice = that.accMul(1, allGoodsRealPrice);
             }
         }
+
+        // 
         that.setData({
             goodsList: shopList,
             allGoodsAndYunPrice: allGoodsRealPrice
@@ -146,8 +158,16 @@ Page({
                 wx.showModal({
                     title: '',
                     content: res.msg,
-                    showCancel: false
-                })
+                    showCancel: false,
+                    cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+                    cancelColor: '#000000', //取消按钮的文字颜色,
+                    confirmText: '知道了', //确定按钮的文字，默认为取消，最多 4 个字符,
+                    confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                    success: res => {
+                        if (res.confirm) {} else if (res.cancel) {}
+                    }
+                });
+
                 return;
             } else {
                 // 订单创建成功后需要清除相应商品对应的分享人缓存信息

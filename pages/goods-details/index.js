@@ -2,6 +2,8 @@ const WXAPI = require('../../wxapi/main')
 //获取应用实例
 var app = getApp();
 var WxParse = require('../../wxParse/wxParse.js');
+const regeneratorRuntime = require('../../utils/runtime');
+const SelectSizePrefix = "选择："
 
 Page({
     data: {
@@ -21,12 +23,19 @@ Page({
         buyNumMin: 1,
         buyNumMax: 0,
 
+        openShare: false,
+
         propertyChildIds: "",
         propertyChildNames: "",
         canSubmit: false, //  选中规格尺寸时候是否允许加入购物车
         shopCarInfo: {},
         shopType: "addShopCar", //购物类型，加入购物车或立即购买，默认为加入购物车
-        currentPages: undefined
+        currentPages: undefined,
+        showSignUpBtn: false, // 我也要报名参与 按钮是否显示
+        disabaleInvitedHelpJjBtn: true, // 邀请朋友帮忙按钮是否可以点击
+        showBuyBtn4Kanjia: false, // 是否显示砍价商品详情页上的“用当前价购买”按钮
+        curuid: undefined // 当前用户uid
+
     },
     telBusiness: function (e) {
         var that = this;
@@ -41,7 +50,7 @@ Page({
                 icon: 'none', //图标,
                 duration: 3000, //延迟时间,
                 mask: true, //显示透明蒙层，防止触摸穿透,
-                success: res => {}
+                success: res => { }
             });
         }
     },
@@ -53,29 +62,51 @@ Page({
         })
     },
     onLoad: function (e) {
+        if (e && e.scene) {
+            // 处理扫码进商品详情页面的逻辑：扫描小程序码
+            const scene = decodeURIComponent(e.scene);
+            if (scene) {
+                // 商品id
+                var prodId = scene.split(',')[0];
+                e.id = prodId;
+                // 邀请人uid
+                var inviterUid = scene.split(',')[1];
+                wx.setStorage({
+                    key: 'inviterid_' + prodId,
+                    data: inviterUid
+                });
+            }
+        }
+
         // inviter_id：邀请人id,有值时，说明这个商品明细页面是通过别人分享过来的，后面如果买了，需要给分享人佣金
         if (e.inviter_id) {
             // 当前商品分享人:{key:inviterid_ + 商品id, value:分享人id}
             wx.setStorage({
                 key: 'inviterid_' + e.id,
                 data: e.inviter_id
-            })
+            });
             // 推荐者
             wx.setStorage({
                 key: 'referrer',
                 data: e.inviter_id
             })
         }
+
+        this.data.goodsId = e.id;
         const that = this;
+        // 砍价助力者打开商品详情页时
+        this.data.kjJoinUid = e.kjJoinUid;
+
         // 砍价需求暂时忽略 20190215
-        that.data.kjId = e.kjId;
+        // that.data.kjId = e.kjId;
         // 获取购物车数据
         wx.getStorage({
             key: 'shopCarInfo',
             success: function (res) {
                 that.setData({
                     shopCarInfo: res.data,
-                    shopNum: res.data.shopNum
+                    shopNum: res.data.shopNum,
+                    curuid: wx.getStorageSync('uid')
                 });
             }
         });
@@ -116,8 +147,144 @@ Page({
         })
         this.reputation(e.id);
         // 砍价需求暂时忽略 20190215
-        this.getKanjiaInfo(e.id);
+        // this.getKanjiaInfo(e.id);
     },
+    onShow: function () {
+        this.getGoodsDetailAndKanjieInfo(this.data.goodsId);
+    },
+    async getGoodsDetailAndKanjieInfo(goodsId) {
+        const that = this;
+        const goodsDetailRes = await WXAPI.goodsDetail(goodsId)
+        const goodsKanjiaSetRes = await WXAPI.kanjiaSet(goodsId)
+        if (goodsDetailRes.code == 0) {
+            var selectSizeTemp = SelectSizePrefix;
+            if (goodsDetailRes.data.properties) {
+                for (var i = 0; i < goodsDetailRes.data.properties.length; i++) {
+                    selectSizeTemp = selectSizeTemp + " " + goodsDetailRes.data.properties[i].name;
+                }
+                that.setData({
+                    hasMoreSelect: true,
+                    selectSize: selectSizeTemp,
+                    selectSizePrice: goodsDetailRes.data.basicInfo.minPrice,
+                    totalScoreToPay: goodsDetailRes.data.basicInfo.minScore
+                });
+            }
+            if (goodsDetailRes.data.basicInfo.pingtuan) {
+                that.pingtuanList(goodsId)
+            }
+            that.data.goodsDetail = goodsDetailRes.data;
+            if (goodsDetailRes.data.basicInfo.videoId) {
+                that.getVideoSrc(goodsDetailRes.data.basicInfo.videoId);
+            }
+            let _data = {
+                goodsDetail: goodsDetailRes.data,
+                selectSizePrice: goodsDetailRes.data.basicInfo.minPrice,
+                totalScoreToPay: goodsDetailRes.data.basicInfo.minScore,
+                buyNumMax: goodsDetailRes.data.basicInfo.stores,
+                buyNumber: (goodsDetailRes.data.basicInfo.stores > 0) ? 1 : 0,
+                currentPages: getCurrentPages()
+            }
+            if (goodsKanjiaSetRes.code == 0) {
+                _data.curGoodsKanjia = goodsKanjiaSetRes.data;
+                that.data.kjId = goodsKanjiaSetRes.data.id;
+                // 获取当前砍价进度
+                if (!that.data.kjJoinUid) {
+                    that.data.kjJoinUid = wx.getStorageSync('uid');
+                }
+                const curKanjiaprogress = await WXAPI.kanjiaDetail(goodsKanjiaSetRes.data.id, that.data.kjJoinUid);
+                const myHelpDetail = await WXAPI.kanjiaHelpDetail(goodsKanjiaSetRes.data.id, that.data.kjJoinUid, wx.getStorageSync('token'))
+                if (curKanjiaprogress.code == 0) {
+                    _data.curKanjiaprogress = curKanjiaprogress.data
+                }
+                if (myHelpDetail.code == 0) {
+                    _data.myHelpDetail = myHelpDetail.data
+                }
+            }
+            if (goodsDetailRes.data.basicInfo.pingtuan) {
+                const pingtuanSetRes = await WXAPI.pingtuanSet(goodsId)
+                if (pingtuanSetRes.code == 0) {
+                    _data.pingtuanSet = pingtuanSetRes.data
+                }
+            }
+
+            // 是否显示 我也要报名按钮
+            _data.curuid = wx.getStorageSync('uid');
+            var showSignUpBtn = _data.curGoodsKanjia && (!_data.curKanjiaprogress || (_data.curKanjiaprogress.kanjiaInfo && _data.curKanjiaprogress.kanjiaInfo.uid != _data.curuid));
+            if (showSignUpBtn == undefined) {
+                showSignUpBtn = false;
+            }
+            _data.showSignUpBtn = showSignUpBtn;
+
+            // 邀请朋友帮忙按钮是否可以点击
+            _data.disabaleInvitedHelpJjBtn = false;
+            if (_data.curGoodsKanjia && _data.curKanjiaprogress && _data.curKanjiaprogress.kanjiaInfo) {
+                _data.disabaleInvitedHelpJjBtn = _data.curKanjiaprogress.kanjiaInfo.upToMinPrice;
+            }
+            console.log("---------------_data.disabaleInvitedHelpJjBtn = " + _data.disabaleInvitedHelpJjBtn);
+
+            // 详情页上是否显示“用当前价购买”按钮：是砍价商品 + 当前用户是砍价活动参与者
+            _data.showBuyBtn4Kanjia = false;
+            if (_data.curGoodsKanjia && _data.curKanjiaprogress && _data.curKanjiaprogress.kanjiaInfo && _data.curKanjiaprogress.kanjiaInfo.uid) {
+                var showBuyBtn4Kanjia = _data.curKanjiaprogress.kanjiaInfo.uid == _data.curuid;
+                _data.showBuyBtn4Kanjia = showBuyBtn4Kanjia;
+            }
+
+            that.setData(_data);
+            WxParse.wxParse('article', 'html', goodsDetailRes.data.content, that, 5);
+
+
+        }
+    },
+    joinKanjia: function () { // 报名参加砍价活动
+        const _this = this;
+        if (!_this.data.curGoodsKanjia) {
+            return;
+        }
+        wx.showLoading({
+            title: '加载中',
+            mask: true
+        })
+        WXAPI.kanjiaJoin(_this.data.curGoodsKanjia.id, wx.getStorageSync('token')).then(function (res) {
+            wx.hideLoading()
+            if (res.code == 0) {
+                _this.data.kjJoinUid = wx.getStorageSync('uid')
+                _this.getGoodsDetailAndKanjieInfo(_this.data.goodsDetail.basicInfo.id)
+            } else {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
+            }
+        })
+    },
+
+    helpKanjia() {
+        const _this = this;
+        _this.helpKanjiaDone();
+    },
+
+    helpKanjiaDone() {
+        const _this = this;
+        WXAPI.kanjiaHelp(_this.data.kjId, _this.data.kjJoinUid, wx.getStorageSync('token'), '').then(function (res) {
+            if (res.code != 0) {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
+                return;
+            }
+            _this.setData({
+                myHelpDetail: res.data
+            });
+            wx.showModal({
+                title: '成功',
+                content: '成功帮TA砍掉 ' + res.data.cutPrice + ' 元',
+                showCancel: false
+            })
+            _this.getGoodsDetailAndKanjieInfo(_this.data.goodsDetail.basicInfo.id)
+        })
+    },
+
     // 去购物车
     goShopCar: function () {
         wx.reLaunch({
@@ -137,6 +304,19 @@ Page({
             shopType: "tobuy",
             selectSizePrice: this.data.goodsDetail.basicInfo.minPrice
         });
+
+        // 存储当前砍价活动的最新价格
+        var that = this;
+        var curKanjiaprogress = that.data.curKanjiaprogress;
+        if (curKanjiaprogress && curKanjiaprogress.kanjiaInfo) {
+            var prodId = curKanjiaprogress.kanjiaInfo.prodId;
+            var curPrice = curKanjiaprogress.kanjiaInfo.curPrice;
+            var kjprodKey = "kjprod_" + prodId;
+            var kjprodValue = curPrice;
+            wx.setStorageSync(kjprodKey, kjprodValue);
+            console.log("*******************kjprodKey = " + kjprodKey, " , kjprodValue = " + kjprodValue);
+        }
+
         this.bindGuiGeTap();
     },
     // 去拼单: 拼团暂忽略 20190215
@@ -465,7 +645,7 @@ Page({
         return buyNowInfo;
     },
     onShareAppMessage: function () {
-        return {
+        let _data = {
             title: this.data.goodsDetail.basicInfo.name,
             path: '/pages/goods-details/index?id=' + this.data.goodsDetail.basicInfo.id + '&inviter_id=' + wx.getStorageSync('uid'), // 商品分享出去时带上当前用户id
             success: function (res) {
@@ -474,7 +654,15 @@ Page({
             fail: function (res) {
                 // 转发失败
             }
+        };
+
+        // 砍价助力跳转
+        if (this.data.kjJoinUid) {
+            _data.title = this.data.curKanjiaprogress.joiner.nick + '邀请您帮TA砍价',
+                _data.path += '&kjJoinUid=' + this.data.kjJoinUid
         }
+
+        return _data;
     },
     reputation: function (goodsId) {
         var that = this;
@@ -558,5 +746,21 @@ Page({
         wx.switchTab({
             url: '/pages/index/index',
         });
+    },
+    openShareDiv() {
+        this.setData({
+            openShare: true
+        })
+    },
+    closeShareDiv() {
+        this.setData({
+            openShare: false
+        });
+    },
+    toPoster: function (e) {
+        // 点击生成海报界面
+        wx.navigateTo({
+            url: "/pages/goods-details/poster?goodsid=" + e.currentTarget.dataset.goodsid
+        })
     }
 })
