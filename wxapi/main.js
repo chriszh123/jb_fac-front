@@ -1,8 +1,8 @@
 // 小程序开发api接口工具包，https://github.com/gooking/wxapi
 const CONFIG = require('./config.js')
-// const API_BASE_URL = 'https://api.it120.cc'
-// const API_BASE_URL = 'http://192.168.0.5:80'
-const API_BASE_URL = 'https://www.jbfac.xyz'
+    // const API_BASE_URL = 'https://api.it120.cc'
+const API_BASE_URL = 'http://192.168.0.5:80'
+    // const API_BASE_URL = 'https://www.jbfac.xyz'
 
 const request = (url, needSubDomain, method, data) => {
     let _url = API_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + url;
@@ -32,19 +32,19 @@ const request = (url, needSubDomain, method, data) => {
 /**
  * 小程序的promise没有finally方法，自己扩展下
  */
-Promise.prototype.finally = function (callback) {
+Promise.prototype.finally = function(callback) {
     var Promise = this.constructor;
     return this.then(
-        function (value) {
+        function(value) {
             Promise.resolve(callback()).then(
-                function () {
+                function() {
                     return value;
                 }
             );
         },
-        function (reason) {
+        function(reason) {
             Promise.resolve(callback()).then(
-                function () {
+                function() {
                     throw reason;
                 }
             );
@@ -332,4 +332,23 @@ module.exports = {
             token
         })
     },
+    listLeaveMessage: (token, page, size) => {
+        return request('/user/leavemessage/list', true, 'post', {
+            token,
+            page,
+            size
+        })
+    },
+    addLeaveMessage: (token, remark) => {
+        return request('/user/leavemessage/add', true, 'post', {
+            token,
+            remark
+        })
+    },
+    removeLeaveMessage: (token, id) => {
+        return request('/user/leavemessage/remove', true, 'post', {
+            token,
+            id
+        })
+    }
 }

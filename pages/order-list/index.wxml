@@ -44,7 +44,7 @@
     </view>
 </view>
 
-<view wx:if='{{showModal}}'>
+<view wx:if='{{showModal}}' catchtouchmove="preventTouchMove">
     <view class='mask_layer' bindtap='hideQrcode' />
     <view class='modal_box'>
         <view class="title">核销订单号：{{qrCodeOrderNo}}</view>

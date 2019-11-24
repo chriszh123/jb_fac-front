@@ -1,0 +1,52 @@
+<view class="main">
+   <image class='post' src='/images/post-question.jpg' bindtap='post'></image>
+   <scroll-view scroll-y class="list" bindscrolltolower="onReachBottom">
+      <view class="item" wx:for="{{list}}" wx:key="{{id}}" wx:for-index="idx" wx:for-item="item" bind:tap="clickQuestion" data-id="{{item.id}}">
+         <view class="item-ask" data-remark="{{item.remark}}" data-mngtRemark="{{item.mngtRemark}}">
+            <image src='/images/ask.png' class='icon'></image>
+            <text class='ask'>{{item.remark}}</text>
+            <!-- 提问时间 -->
+            <text style="font-size:25rpx;float:right;color:red;">{{item.createTime}}</text>
+            <!-- <text bind:tap="withdrawMessage" data-id="{{item.id}}" style="width:35px;height:25px;font-size:15px;font-weight:bold;color:red;">删除</text> -->
+            <image src='/images/withdraw.jpg' class='icon' style="width:35px;height:25px;" alt="撤回" bindtap="withdrawMessage" data-id="{{item.id}}"></image>
+         </view>
+         <view class="item-answer">
+            <image src='/images/answer.png' class='icon'></image>
+            <text class='answer'>{{item.mngtRemark || "暂无回答"}}</text>
+         </view>
+         <view class='menu'>
+            <!-- <view class='menu-item'>
+               <image src='/images/comment.png'></image>
+               <text>{{item.commentCount || 0}}</text>
+            </view>
+            <view class='menu-item'>
+               <image src='/images/like.png'></image>
+               <text>{{item.likeCount || 0}}</text>
+            </view>
+            <view class='menu-item'>
+               <image src='/images/view.png'></image>
+               <text>{{item.viewCount || 0}}</text>
+            </view> -->
+            <!-- 回复时间 -->
+            <view class='menu-item'>
+               <text style="font-size:25rpx;float:right;">{{item.createTime}}</text>
+            </view>
+         </view>
+      </view>
+   </scroll-view>
+</view>
+<!-- 弹窗 -->
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
+   <view class="modal-content">
+      <view class="modal-input">
+         <textarea auto-height name="remark" maxlength="150" value="{{remark}}" />
+      </view>
+      <view class="modal-input">
+         <textarea auto-height name="remark" maxlength="150" value="{{mngtRemark}}" />
+      </view>
+   </view>
+   <view class="modal-footer">
+      <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
+   </view>
+</view>

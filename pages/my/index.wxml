@@ -47,6 +47,9 @@
   <view class="my-item">
     <navigator url="/pages/sign/index" hover-class="navigator-hover">签到有礼</navigator>
   </view>
+  <view class="my-item">
+    <navigator url="/pages/leave-message/list" hover-class="navigator-hover">您的留言</navigator>
+  </view>
   <!-- <view class="my-item">
     <navigator url="/pages/score-excharge/index" hover-class="navigator-hover">积分兑换</navigator>
   </view>   -->

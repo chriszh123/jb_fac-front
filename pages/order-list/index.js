@@ -18,7 +18,7 @@ Page({
         qrCodeOrderNo: ''
     },
     // 订单种类tab点击事件
-    statusTap: function (e) {
+    statusTap: function(e) {
         const curType = e.currentTarget.dataset.index;
         this.data.currentType = curType
         this.setData({
@@ -27,22 +27,22 @@ Page({
         this.onShow();
     },
     // 当条订单
-    orderDetail: function (e) {
+    orderDetail: function(e) {
         var orderId = e.currentTarget.dataset.id;
         wx.navigateTo({
             url: "/pages/order-details/index?id=" + orderId
         })
     },
     //取消订单
-    cancelOrderTap: function (e) {
+    cancelOrderTap: function(e) {
         var that = this;
         var orderNo = e.currentTarget.dataset.id;
         wx.showModal({
             title: '确定要取消该订单吗？',
             content: '',
-            success: function (res) {
+            success: function(res) {
                 if (res.confirm) {
-                    WXAPI.orderClose(orderNo, wx.getStorageSync('token')).then(function (res) {
+                    WXAPI.orderClose(orderNo, wx.getStorageSync('token')).then(function(res) {
                         if (res.code == 0) {
                             that.onShow();
                             wx.showToast({
@@ -68,13 +68,13 @@ Page({
     },
 
     // 马上付款
-    toPayTap: function (e) {
+    toPayTap: function(e) {
         const that = this;
         // orderId为订单号
         const orderId = e.currentTarget.dataset.id;
         let money = e.currentTarget.dataset.money;
         const needScore = e.currentTarget.dataset.score;
-        WXAPI.userAmount(wx.getStorageSync('token')).then(function (res) {
+        WXAPI.userAmount(wx.getStorageSync('token')).then(function(res) {
             if (res.code == 0) {
                 // 用户余额
                 if (res.data.score < needScore) {
@@ -112,7 +112,7 @@ Page({
                     content: _msg,
                     confirmText: "确认支付",
                     cancelText: "取消支付",
-                    success: function (res) {
+                    success: function(res) {
                         if (res.confirm) {
                             that._toPayTap(orderId, money)
                         } else {
@@ -129,7 +129,7 @@ Page({
             }
         })
     },
-    _toPayTap: function (orderId, money) {
+    _toPayTap: function(orderId, money) {
         const _this = this
         if (money <= 0) {
             // 直接使用余额支付
@@ -147,20 +147,20 @@ Page({
             wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
         }
     },
-    onLoad: function (options) {
+    onLoad: function(options) {
         if (options && options.type) {
             this.setData({
                 currentType: options.type
             });
         }
     },
-    onReady: function () {
+    onReady: function() {
         // 生命周期函数--监听页面初次渲染完成
 
     },
-    getOrderStatistics: function () {
+    getOrderStatistics: function() {
         var that = this;
-        WXAPI.orderStatistics(wx.getStorageSync('token')).then(function (res) {
+        WXAPI.orderStatistics(wx.getStorageSync('token')).then(function(res) {
             if (res.code == 0) {
                 var tabClass = that.data.tabClass;
                 // 待付款
@@ -214,7 +214,7 @@ Page({
             }
         })
     },
-    onShow: function () {
+    onShow: function() {
         // 获取订单列表
         var that = this;
         var postData = {
@@ -223,7 +223,7 @@ Page({
         postData.status = that.data.currentType;
         // 存在订单的tab标红点
         this.getOrderStatistics();
-        WXAPI.orderList(postData).then(function (res) {
+        WXAPI.orderList(postData).then(function(res) {
             if (res.code == 0) {
                 var orderList = res.data.orderList;
                 that.setData({
@@ -240,23 +240,26 @@ Page({
             }
         })
     },
-    onHide: function () {
+    onHide: function() {
         // 生命周期函数--监听页面隐藏
 
     },
-    onUnload: function () {
+    onUnload: function() {
         // 生命周期函数--监听页面卸载
 
     },
-    onPullDownRefresh: function () {
+    onPullDownRefresh: function() {
         // 页面相关事件处理函数--监听用户下拉动作
 
     },
-    onReachBottom: function () {
+    onReachBottom: function() {
         // 页面上拉触底事件的处理函数
 
     },
-    ejectQrcode: function (e) {
+    preventTouchMove: function() {
+        // 空方法：阻断事件向下传递，避免在弹窗后还可以点击或者滑动蒙层下的界面
+    },
+    ejectQrcode: function(e) {
         // 弹出当前商品对应的核销二维码
         var that = this;
         var orderNo = e.currentTarget.dataset.id;
@@ -285,14 +288,14 @@ Page({
             clearTimeout(st);
         }, 2000);
     },
-    hideQrcode: function () {
+    hideQrcode: function() {
         // 隐藏当前商品对应的核销二维码弹框
         var that = this;
         that.setData({
             showModal: false
         });
     },
-    createQrCode: function (url, canvasId, cavW, cavH) {
+    createQrCode: function(url, canvasId, cavW, cavH) {
         //调用插件中的draw方法，绘制二维码图片
         QR.qrApi.draw(url, canvasId, cavW, cavH);
         var that = this;
@@ -302,24 +305,24 @@ Page({
             clearTimeout(st);
         }, 3000);
     },
-    canvasToTempImage: function () {
+    canvasToTempImage: function() {
         //获取临时缓存照片路径，存入data中
         var that = this;
         wx.canvasToTempFilePath({
             canvasId: 'qrcode',
-            success: function (res) {
+            success: function(res) {
                 var tempFilePath = res.tempFilePath;
                 console.log('tempFilePath = ' + tempFilePath);
                 that.setData({
                     imagePath: tempFilePath
                 });
             },
-            fail: function (res) {
+            fail: function(res) {
                 console.log(res);
             }
         });
     },
-    setCanvasSize: function () {
+    setCanvasSize: function() {
         //适配不同屏幕大小的canvas
         var size = {};
         try {
@@ -337,16 +340,16 @@ Page({
         return size;
     },
     //核销订单商品
-    writeOffOrder: function (e) {
+    writeOffOrder: function(e) {
         var that = this;
         var orderNo = e.currentTarget.dataset.id;
         var prodId = e.currentTarget.dataset.prodid;
         wx.showModal({
             title: '确定要核销该订单吗？',
             content: '',
-            success: function (res) {
+            success: function(res) {
                 if (res.confirm) {
-                    WXAPI.writeOffOrder(orderNo, wx.getStorageSync('token'), prodId).then(function (res) {
+                    WXAPI.writeOffOrder(orderNo, wx.getStorageSync('token'), prodId).then(function(res) {
                         if (res.code == 0) {
                             that.onShow();
                             wx.showToast({

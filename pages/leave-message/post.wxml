@@ -1,0 +1,15 @@
+<view>
+    <form bind:submit="post">
+        <!-- 内容 -->
+        <view class="page-section">
+            <view class="weui-cells__title">留言内容(最多50个汉字，不要输入表情符号哦~)：</view>
+            <view class="textarea-wrp">
+                <textarea auto-height name="remark" maxlength="50" placeholder="点我开始输入......"/>
+            </view>
+        </view>
+        <!-- 按钮 -->
+        <view class='page-section'>
+            <button form-type='submit' bindtap="primary" type="primary" class='weui-btn'>提交</button>
+        </view>
+    </form>
+</view>
